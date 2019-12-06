@@ -1,7 +1,21 @@
 <template>
   <!--Navbar-->
   <nav class="navbar navbar-expand-lg navbar-light" style="color:#FFFDED">
-    <span class="glyphicon glyphicon-search"></span>
+    <button
+      aria-expanded="false"
+      aria-controls="nav-drawer"
+      type="button"
+      class="btn nav-link float-sm-left mr-1 btn-secondary"
+      data-action="toggle-drawer"
+      data-side="left"
+      data-preference="drawer-open-nav"
+    >
+      <i class="icon fa fa-bars fa-fw" aria-hidden="true"></i>
+      <span class="sr-only">Painel lateral</span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </button>
 
     <button
       class="navbar-toggler"
@@ -44,7 +58,7 @@
           <a class="nav-link" href="#">SOBRE</a>
         </li>
       </ul>
-      
+
       <ul class="nav navbar-nav navbar-right">
         <li>
           <div class="btn-nav">
