@@ -3,10 +3,10 @@ import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import Admin from "../views/Admin.vue";
 import About from "../views/About.vue";
+import PercursosHome from "../views/PercursosHome.vue";
 import Percursos from "../views/Percursos.vue";
 import CriarPercurso from "../views/CriarPercurso.vue";
 import DetalhesPercurso from "../views/DetalhesPercurso.vue";
-import Registar from "../views/Registar.vue";
 
 Vue.use(VueRouter);
 
@@ -16,13 +16,13 @@ const routes = [
     name: "home",
     component: Home,
     children: [
-      { path: 'registar', component: Registar, name: 'Registar' },
+      { path: 'registar', component: Register, name: 'Registar' },
     ]
   },
   {
     path: "/about",
     name: "about",
-    component: About
+    component: About 
   },
   {
     path: "/admin",
@@ -32,18 +32,12 @@ const routes = [
   {
     path: "/percursos",
     name: "percursos",
-    component: Percursos
-    
-  },
-  {
-    path: '/percursos/criar',
-    component: CriarPercurso,
-    name: 'criarPercurso'
-  },
-  {
-    path: '/percursos/detalhes',
-    component: DetalhesPercurso,
-    name: 'DetalhesPercurso'
+    component: Percursos,
+    children: [
+      { path: '', component: PercursosHome, name: 'percursoshome' },
+      { path: 'criar', component: CriarPercurso, name: 'criarPercurso' },
+      { path: 'detalhes', component: DetalhesPercurso, name: 'detalhesPercurso' }
+    ]
   },
   {
     path: "/",
