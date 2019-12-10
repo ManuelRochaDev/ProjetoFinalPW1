@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import Admin from "../views/Admin.vue";
 import About from "../views/About.vue";
+import PercursosHome from "../views/PercursosHome.vue";
 import Percursos from "../views/Percursos.vue";
 import CriarPercurso from "../views/CriarPercurso.vue";
 
@@ -29,7 +30,8 @@ const routes = [
     name: "percursos",
     component: Percursos,
     children: [
-      { path: 'criarpercurso', component: CriarPercurso }
+      { path: '', component: PercursosHome, name: 'percursoshome' },
+      { path: 'criar', component: CriarPercurso, name: 'criarPercurso' }
     ]
   },
   {
