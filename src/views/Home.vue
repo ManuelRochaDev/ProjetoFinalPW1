@@ -1,9 +1,7 @@
 <template>
   <div class="home">
     <Navbar></Navbar>
-    <input type="text" placeholder="User" id="userField">    
-    <input type="password" placeholder="Password" id="pwField">
-    <input type="button" value="REGISTAR" id="registerButton">
+    
     <!-- <landingImage></landingImage> -->
     
   </div>
@@ -19,6 +17,11 @@ export default {
   components: {
     Navbar
     //landingImage
+  },
+  methods: {
+    /* register(){
+      this.$store.commit("REGISTER_USER", payload)
+    } */
   }
 };
 </script>

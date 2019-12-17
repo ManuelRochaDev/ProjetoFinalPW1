@@ -5,36 +5,81 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    users: [],
+    users: [{
+      id: 0,
+      name: "Manuel",
+      lastName: "Rocha",
+      email: "admin@admin.com",
+      password: "123",
+      userType: "admin"
+    }],
     appRoutes: [],
     comments: [],
     spotsOfInterest: [],
-    currentUser: -1, //Se o valor for -1, não está nenhum utilizador logado
+    currentUserID: -1, //Se o valor for -1, não está nenhum utilizador logado
     currentRoute: 0,
-    numbero: 0
+    numero: 0,
+    credCorrect: false
 
   },
   mutations: {
-    /* CREATE_USER(state) {
+    REGISTER_USER(state, payload) {
 
-    } */
-    CREATE_NUM(state){
-      state.numbero++
+      if (!state.users.some(user => user.email === payload.email)) {
+
+        state.users.push({
+          id: payload.id,
+          email: payload.email,
+          name: payload.name,
+          lastName: payload.lastName,
+          password: payload.password,
+          usertype: payload.usertype
+        })
+        localStorage.setItem("users", JSON.stringify(state.users))
+        alert("register ok");
+        //window.history.back();
+
+      } else {
+        alert("existing email");
+      }
+    },
+
+    LOGIN(state, payload) {
+      for (const user of state.users) {
+        if (user.email === payload.email && user.password === payload.password) {
+          state.currentUserID = user.id
+          alert(state.currentUserID)
+          localStorage.setItem("currentUserID", JSON.stringify(state.currentUserID))
+          alert("login ok")
+          state.credCorrect = true
+          /* if (user.userType === "admin") {
+            window.location.href = "../views/Home.vue#/adminHome"
+          } else if (user.userType === "cliente") {
+            window.location.href = "../views/Home.vue"
+          } */
+        }
+
+        if (state.userExists === false) {
+          alert("Credenciais Inválidas");
+        } else {
+          state.credCorrect = false;
+        }
+      }
+    },
+
+    LOGOUT(state) {
+      state.currentUserID = -1
     }
+
   },
   getters: {
-    getNum: state => {
-      const top = state.scores.sort(
-        function orderByLessAttempts(a, b) {
-          if (a.attempts > b.attempts) return 1;
-          if (a.attempts < b.attempts) return -1;
-          else return 0;
-        }
-      )
-      return top.slice(0, state.top)
+    lastId(state) {
+      if (state.users.length) {
+        return state.users[state.users.length - 1].id
+      } else {
+        return 0
+      }
     }
-
-    
   }
   //modules: {}
 });

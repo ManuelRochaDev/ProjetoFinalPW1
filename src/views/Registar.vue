@@ -1,3 +1,19 @@
 <template>
-  <h1>REGISTE-SE AQUI</h1>
+    <div>
+        <Registration/>
+    </div>
 </template>
+
+<script>
+    import Registration from "../components/Registration.vue"
+    export default {
+        name: "register",
+        components:{
+            Registration
+        }
+    }
+</script>
+
+<style scoped>
+
+</style>

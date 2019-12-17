@@ -7,6 +7,7 @@ import Percursos from "../views/Percursos.vue";
 import CriarPercurso from "../views/CriarPercurso.vue";
 import DetalhesPercurso from "../views/DetalhesPercurso.vue";
 import Registar from "../views/Registar.vue";
+import Login from "../views/Login.vue";
 
 Vue.use(VueRouter);
 
@@ -15,9 +16,16 @@ const routes = [
     path: "/",
     name: "home",
     component: Home,
-    children: [
-      { path: 'registar', component: Registar, name: 'Registar' },
-    ]
+  },
+  {
+    path: "/login",
+    name: "login",
+    component: Login,
+  },
+  {
+    path: '/registar', 
+    name: "registar", 
+    component: Registar,
   },
   {
     path: "/about",
@@ -33,7 +41,7 @@ const routes = [
     path: "/percursos",
     name: "percursos",
     component: Percursos
-    
+
   },
   {
     path: '/percursos/criar',
