@@ -1,15 +1,15 @@
 <template>
     <div>
-        <Registration/>
+        <InfoPerfil/>
     </div>
 </template>
 
 <script>
-    import Registration from "../components/Registration.vue"
+    import InfoPerfil from "../components/InfoPerfil.vue"
     export default {
-        name: "register",
+        name: "Perfil",
         components:{
-            Registration
+            InfoPerfil
         }
     }
 </script>

@@ -8,6 +8,7 @@ import CriarPercurso from "../views/CriarPercurso.vue";
 import DetalhesPercurso from "../views/DetalhesPercurso.vue";
 import Registar from "../views/Registar.vue";
 import Login from "../views/Login.vue";
+import Perfil from "../views/Perfil.vue";
 
 Vue.use(VueRouter);
 
@@ -57,6 +58,11 @@ const routes = [
     path: "/",
     name: "",
     component: Admin
+  },
+  {
+    path: "/perfil",
+    name: "",
+    component: Perfil
   }
 ];
 

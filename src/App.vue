@@ -1,11 +1,30 @@
 <template>
   <div id="app">
     <div id="nav">
+      <Navbar></Navbar>
       <router-link to="/"></router-link>
     </div>
     <router-view />
   </div>
 </template>
+
+<script>
+// @ is an alias to /src
+import Navbar from "@/components/Navbar.vue";
+
+
+export default {
+  name: "home",
+  components: {
+    Navbar
+  },
+  methods: {
+    /* register(){
+      this.$store.commit("REGISTER_USER", payload)
+    } */
+  }
+};
+</script>
 
 <style>
 #app {

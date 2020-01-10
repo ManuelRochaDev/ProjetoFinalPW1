@@ -70,7 +70,7 @@ export default new Vuex.Store({
       state.currentUserID = -1
       localStorage.setItem("currentUserID", JSON.stringify(state.currentUserID));
       window.location.href = ".."
-      
+
     }
 
   },
@@ -80,6 +80,14 @@ export default new Vuex.Store({
         return state.users[state.users.length - 1].id
       } else {
         return 0
+      }
+    },
+    getUserInfo(state) {
+      for (const user of state.users) {
+        if (user.id === state.id) {
+          1 ==
+           1
+        }
       }
     }
   }
