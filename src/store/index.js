@@ -7,18 +7,17 @@ export default new Vuex.Store({
   state: {
     users: [{
       id: 0,
+      email: "admin@admin.com",
       name: "Manuel",
       lastName: "Rocha",
-      email: "admin@admin.com",
       password: "123",
-      userType: "admin"
+      userType: 0
     }],
     appRoutes: [],
     comments: [],
     spotsOfInterest: [],
     currentUserID: -1, //Se o valor for -1, não está nenhum utilizador logado
     currentRoute: 0,
-    numero: 0,
     credCorrect: false
 
   },
@@ -69,6 +68,9 @@ export default new Vuex.Store({
 
     LOGOUT(state) {
       state.currentUserID = -1
+      localStorage.setItem("currentUserID", JSON.stringify(state.currentUserID));
+      window.location.href = ".."
+      
     }
 
   },

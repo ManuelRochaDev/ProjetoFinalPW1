@@ -36,7 +36,7 @@
           <div class="row">
             <div class="col-sm-6">
               <button id="show-btn" squared>
-                <router-link id="link" to="/register">Registar</router-link>
+                <router-link id="link" to="/registar">Registar</router-link>
               </button>
             </div>
             <div class="col-sm-6">
@@ -45,6 +45,16 @@
           </div>
         </div>
       </form>
+
+      <form v-on:submit.prevent="logout()" v-if="show">
+            <div class="col-sm-6">
+              <button type="submit" id="logout-btn" squared>Logout</button>
+            </div>
+      </form>
+
+
+
+
     </div>
   </div>
 </template>
@@ -73,7 +83,13 @@ export default {
       this.$store.commit("LOGIN", {
         email: this.emailLogin,
         password: this.passwordLogin
-      });
+      })
+    },
+    
+    logout() {
+      this.$store.commit("LOGOUT", {
+        email: this.emailLogin
+      })
     }
   }
 };

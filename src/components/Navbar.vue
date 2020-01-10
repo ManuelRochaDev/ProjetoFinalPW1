@@ -1,6 +1,8 @@
 <template>
   <!--Navbar-->
+  
   <nav class="navbar navbar-expand-lg navbar-light" style="color:#FFFDED">
+    
     <button
       aria-expanded="false"
       aria-controls="nav-drawer"
@@ -68,6 +70,7 @@
       </ul>
     </div>
   </nav>
+  
 </template>
 
 <script>
