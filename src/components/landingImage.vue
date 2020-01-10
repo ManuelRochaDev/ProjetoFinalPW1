@@ -1,7 +1,8 @@
 <template>
   <div>
     <!-- <img src="@/assets/landing.jpg" reverse /> -->
-    <div id="“myMap”" style="“width:500px;" height:500px”></div>
+<!--     <button @click="initMap()">RENDER MAP</button>
+    <div id="map" class="google-map"></div> -->
   </div>
 </template>
 
@@ -13,16 +14,14 @@ export default {
   }
 };
 
-let myMap = document.getElementById("myMap");
-function initMap() {
-  let mapProp = {
-    center: new google.maps.LatLng(37.508742, -0.42085),
+/* function initMap() {
+  const map = new google.maps.Map(document.getElementById("map"), {
+    center: { lat: 34.397, lng: 150.664 },
     zoom: 5
-  };
-  let map = new google.maps.Map(myMap, mapProp);
-}
+  }); 
+}*/
 
-initMap()
+
 </script>
 
 <script>
