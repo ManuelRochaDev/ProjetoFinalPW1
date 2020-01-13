@@ -80,15 +80,15 @@ export default {
     name: "",
     lastName: "",
     password: "",
-    usertype: "" //0 = admin, 1 = user normal
+    userType: "" //0 = admin, 1 = user normal
   }),
   created: function() {
     window.addEventListener("unload", this.saveStorage)
     if (localStorage.getItem("users")) {
       this.$store.state.users = JSON.parse(localStorage.getItem("users"))
     }
-    if (localStorage.getItem("currentUserID")) {
-      this.$store.state.currentUserID = JSON.parse(localStorage.getItem("currentUserID"))
+    if (localStorage.getItem("currentUser")) {
+      this.$store.state.currentUser = JSON.parse(localStorage.getItem("currentUser"))
     }
   },
   methods: {
@@ -102,12 +102,12 @@ export default {
         name: this.name,
         lastName: this.lastName,
         password: this.password,
-        usertype: 1
+        userType: 1
       });
     },
     saveStorage() {
       localStorage.setItem("users", JSON.stringify(this.$store.state.users));
-      localStorage.setItem("currentUserID", JSON.stringify(this.$store.state.currentUserID));
+      localStorage.setItem("currentUser", JSON.stringify(this.$store.state.currentUser));
     }
   }
 };
