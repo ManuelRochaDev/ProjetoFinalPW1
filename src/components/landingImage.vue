@@ -1,7 +1,6 @@
 <template>
   <div>
     <h1>MAPS WITH VUE</h1>
-    <button @click="renderMap()">RENDER MAP</button>
     <div class="google-map" id="myMap"></div>
   </div>
 </template>
@@ -16,13 +15,17 @@ export default {
   methods: {
     renderMap() {
       this.map = new google.maps.Map(document.querySelector("#myMap"), {
-        center: { lat: -34.397, lng: 150.644 },
-        zoom: 8
+        center: { lat: 41.366177, lng: -8.739455 },
+        zoom: 18
       });
       this.map.setMapTypeId(google.maps.MapTypeId.SATELLITE);
-    }
-  }
+    },
+  },
+  mounted(){
+    this.renderMap()
+ }
 };
+
 </script>
 
 
