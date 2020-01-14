@@ -7,12 +7,8 @@
     <input type="text" name="city" id="routeCity" v-model="city" />
     <br />
     <br />Pontos de interesse:
-    <button
-      name="addText"
-      id="addText"
-      role="button"
-      @click="createRoute()"
-    >Adicionar novo</button>
+
+    <button name="addText" id="addText" role="button" @click="createRoute()">Adicionar novo</button>
     <br />
     <form v-on:submit.prevent="addRoute()">
       <button name="addText" id="addText" role="button">Adicionar Percurso</button>
@@ -23,7 +19,7 @@
 </template>
 
 <script>
-let idRoute = 0
+let idRoute = 0;
 
 export default {
   name: "AdminForm",
@@ -64,11 +60,12 @@ export default {
       return this.$store.getters.lastRouteId;
     },
     addRoute() {
-      let interestPoints = []
-      
-      for (let i = 0; i < idRoute; i++) {
-        alert(this.pointTextbox2)
-        interestPoints.push(this.pointTextbox2)
+      let interestPoints = [];
+      let textBox2
+
+      for (let i = 1; i < idRoute + 1; i++) {
+        textBox2 = "pointTextbox" + i
+        interestPoints.push(document.getElementById(textBox2).value)
       }
 
       this.$store.commit("ADD_ROUTE", {
@@ -85,8 +82,8 @@ export default {
       );
     }
   },
-  mounted(){
-    this.createRoute()
+  mounted() {
+    this.createRoute();
   }
 };
 </script>
