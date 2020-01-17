@@ -36,7 +36,7 @@ export default new Vuex.Store({
     }],
     comments: [],
     spotsOfInterest: [],
-    currentUserID: -1, //Se o valor for -1, não está nenhum utilizador logado
+    currentUser: [], //Se o valor for -1, não está nenhum utilizador logado
     currentRoute: 0,
     credCorrect: false
 
@@ -52,7 +52,7 @@ export default new Vuex.Store({
           name: payload.name,
           lastName: payload.lastName,
           password: payload.password,
-          usertype: payload.usertype
+          userType: payload.userType
         })
         localStorage.setItem("users", JSON.stringify(state.users))
         alert("register ok");
@@ -66,13 +66,21 @@ export default new Vuex.Store({
     LOGIN(state, payload) {
       for (const user of state.users) {
         if (user.email === payload.email && user.password === payload.password) {
-          state.currentUserID = user.id
-          alert(state.currentUserID)
-          localStorage.setItem("currentUserID", JSON.stringify(state.currentUserID))
+          state.currentUser.push({
+            id: user.id,
+            name: user.name,
+            lastName: user.lastName,
+            email: payload.email,
+            password: payload.password,
+            userType: user.userType
+            
+          }),
           alert("login ok")
+          localStorage.setItem("currentUser", JSON.stringify(this.state.currentUser))
+          
           state.credCorrect = true
           /* if (user.userType === "admin") {
-            window.location.href = "../views/Home.vue#/adminHome"
+            window.location.href = "../views/admin"
           } else if (user.userType === "cliente") {
             window.location.href = "../views/Home.vue"
           } */
@@ -87,9 +95,9 @@ export default new Vuex.Store({
     },
 
     LOGOUT(state) {
-      state.currentUserID = -1
-      localStorage.setItem("currentUserID", JSON.stringify(state.currentUserID));
-      window.location.href = ".."
+      state.currentUser.pop();
+      localStorage.removeItem("currentUser", JSON.stringify(this.state.currentUser));
+      //window.location.href = ".."
 
     },
 
@@ -117,6 +125,18 @@ export default new Vuex.Store({
 
   },
   getters: {
+    name(state) {
+      return state.currentUser[0].name;
+    },
+    lastName(state) {
+      return state.currentUser[0].lastName;
+    },
+    email(state) {
+      return state.currentUser[0].email;
+    },
+    userType(state) {
+      return state.currentUser[0].userType;
+    },
     lastId(state) {
       if (state.users.length) {
         return state.users[state.users.length - 1].id

@@ -47,14 +47,10 @@
       </form>
 
       <form v-on:submit.prevent="logout()" v-if="show">
-            <div class="col-sm-6">
-              <button type="submit" id="logout-btn" squared>Logout</button>
-            </div>
+        <div class="col-sm-6">
+          <button type="submit" id="logout-btn" squared>Logout</button>
+        </div>
       </form>
-
-
-
-
     </div>
   </div>
 </template>
@@ -72,9 +68,9 @@ export default {
     if (localStorage.getItem("users")) {
       this.$store.state.users = JSON.parse(localStorage.getItem("users"));
     }
-    if (localStorage.getItem("currentUserID")) {
-      this.$store.state.currentUserID = JSON.parse(
-        localStorage.getItem("currentUserID")
+    if (localStorage.getItem("currentUser")) {
+      this.$store.state.currentUser = JSON.parse(
+        localStorage.getItem("currentUser")
       );
     }
   },
@@ -83,13 +79,13 @@ export default {
       this.$store.commit("LOGIN", {
         email: this.emailLogin,
         password: this.passwordLogin
-      })
+      });
     },
-    
+
     logout() {
       this.$store.commit("LOGOUT", {
         email: this.emailLogin
-      })
+      });
     }
   }
 };
