@@ -17,7 +17,7 @@ export default new Vuex.Store({
       id: 0,
       title: "Percurso do rio",
       city: "Vila do Conde",
-      interestPoints: [{
+      pois: [{
         id: 0,
         name: "Bacchus Wine Bar",
         audio: "", //aqui seria um link para o áudio
@@ -70,7 +70,7 @@ export default new Vuex.Store({
           
           state.credCorrect = true
           /* if (user.userType === "admin") {
-            window.location.href = "../views/Home.vue#/adminHome"
+            window.location.href = "../views/admin"
           } else if (user.userType === "cliente") {
             window.location.href = "../views/Home.vue"
           } */
@@ -98,7 +98,7 @@ export default new Vuex.Store({
           id: payload.id,
           title: payload.title,
           city: payload.city,
-          interestPoints: payload.interestPoints
+          pois: payload.pois
         })
         localStorage.setItem("appRoutes", JSON.stringify(state.appRoutes))
         alert("new route");

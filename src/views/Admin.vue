@@ -1,18 +1,17 @@
 <template>
   <div>
     <h1>Admin page</h1>
-    <AdminForm></AdminForm>
+    <CreateRoute></CreateRoute>
   </div>
 </template>
 
 
 <script>
-import AdminForm from "../components/AdminForm.vue";
+import CreateRoute from "@/components/CreateRoute.vue";
 export default {
   name: "admin",
   components: {
-    AdminForm
-  },
-  
+    CreateRoute
+  }
 };
 </script>

@@ -7,9 +7,20 @@
     <input type="text" name="city" id="routeCity" v-model="city" />
     <br />
     <br />Pontos de interesse:
-
-    <button name="addText" id="addText" role="button" @click="createRoute()">Adicionar novo</button>
+    <button
+      name="addText"
+      id="addText"
+      role="button"
+      @click="addTextbox()"
+    >Adicionar novo</button>
     <br />
+    <p v-for="poi in pois" :key="poi.id">
+      <input type="text" v-model="poi.name" />
+    </p>
+    <pre>
+      {{this.pois}}
+    </pre>
+
     <form v-on:submit.prevent="addRoute()">
       <button name="addText" id="addText" role="button">Adicionar Percurso</button>
       <br />
@@ -19,13 +30,17 @@
 </template>
 
 <script>
-let idRoute = 0;
+/* let idRoute = 0; */
 
 export default {
   name: "AdminForm",
   props: {
     msg: String
   },
+  data: () => ({
+    pois: [],
+    idTextbox: 0
+  }),
   created: function() {
     window.addEventListener("unload", this.saveStorage);
     if (localStorage.getItem("appRoutes")) {
@@ -35,44 +50,19 @@ export default {
     }
   },
   methods: {
-    createRoute() {
-      idRoute++;
-      let rDiv = document.getElementById("routeDiv");
-
-      let textBox = document.createElement("input");
-      textBox.setAttribute("type", "text");
-      //textBox.setAttribute("v-model", "pointTextbox" + idRoute);
-      textBox.id = "pointTextbox" + idRoute;
-      rDiv.appendChild(textBox);
-
-      //X
-      let btn = document.createElement("BUTTON");
-      btn.innerHTML = "X";
-      rDiv.appendChild(btn);
-
-      //ORGANIZAÇÃO
-      let br = document.createElement("br");
-      rDiv.appendChild(br);
-      let br2 = document.createElement("br");
-      rDiv.appendChild(br2);
+    addTextbox() {
+      this.idTextbox++
+      this.pois.push({id: this.idTextbox, name: ""})
     },
     getLastRouteId() {
       return this.$store.getters.lastRouteId;
     },
     addRoute() {
-      let interestPoints = [];
-      let textBox2
-
-      for (let i = 1; i < idRoute + 1; i++) {
-        textBox2 = "pointTextbox" + i
-        interestPoints.push(document.getElementById(textBox2).value)
-      }
-
       this.$store.commit("ADD_ROUTE", {
         id: this.getLastRouteId() + 1,
         title: this.title,
         city: this.city,
-        interestPoints: interestPoints
+        pois: this.pois
       });
     },
     saveStorage() {
@@ -83,8 +73,8 @@ export default {
     }
   },
   mounted() {
-    this.createRoute();
-  }
+    this.addTextbox();
+      }
 };
 </script>
 

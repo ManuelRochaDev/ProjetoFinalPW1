@@ -1,8 +1,7 @@
 <template>
   <!--Navbar-->
-  
+
   <nav class="navbar navbar-expand-lg navbar-light" style="color:#FFFDED">
-    
     <button
       aria-expanded="false"
       aria-controls="nav-drawer"
@@ -67,10 +66,10 @@
             <img src="@/assets/search.png" class="srcIcon" />
           </div>
         </li>
+        <button v-if="this.$store.state.currentUser[0].userType == 0">ADMIN</button>
       </ul>
     </div>
   </nav>
-  
 </template>
 
 <script>
@@ -78,9 +77,18 @@ export default {
   name: "Navbar",
   props: {
     msg: String
+  },
+  created: function() {
+    //qd abres esta pagina vai acontecer isto
+    if (localStorage.getItem("currentUser")) {
+      this.$store.state.currentUser = JSON.parse(
+        localStorage.getItem("currentUser")
+      )
+    }
   }
 };
 </script>
+
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
