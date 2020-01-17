@@ -13,7 +13,27 @@ export default new Vuex.Store({
       password: "123",
       userType: 0
     }],
-    appRoutes: [],
+    appRoutes: [{
+      id: "",
+      title: "",
+      pois: [{
+          id: 0,
+          lat: 0,
+          lng: 0,
+          name: "Bacchus Wine Bar",
+          audio: "", //aqui seria um link para o áudio
+          img: "https://b.zmtcdn.com/data/pictures/8/18859338/2ef0c452a621c193425c98ef7db94ed5_featured_v2.jpg"
+        },
+        {
+          id: 1,
+          lat: 0,
+          lng: 0,
+          name: "Antonio's shop",
+          audio: "",
+          img: "https://rohanclinnick.files.wordpress.com/2013/11/shop-interior-photographer-london.jpg"
+        }
+      ]
+    }],
     comments: [],
     spotsOfInterest: [],
     currentUserID: -1, //Se o valor for -1, não está nenhum utilizador logado
@@ -71,7 +91,29 @@ export default new Vuex.Store({
       localStorage.setItem("currentUserID", JSON.stringify(state.currentUserID));
       window.location.href = ".."
 
-    }
+    },
+
+    /**
+     * Register all routes
+     */
+    ADD_ROUTE(state, payload) {
+      if (!state.appRoutes.some(appRoute => appRoute.title === payload.title)) {
+        state.appRoutes.push({
+          id: payload.id,
+          title: payload.title,
+          city: payload.city,
+          pois: payload.pois
+        })
+        localStorage.setItem("appRoutes", JSON.stringify(state.appRoutes))
+
+        alert("new route");
+        //window.history.back();
+      } else {
+        alert("Route already exists");
+      }
+    },
+
+    
 
   },
   getters: {
@@ -86,10 +128,17 @@ export default new Vuex.Store({
       for (const user of state.users) {
         if (user.id === state.id) {
           1 ==
-           1
+            1
         }
       }
+    },
+    getLastRouteId(state) {
+      if (state.appRoutes.length) {
+        return state.appRoutes[state.appRoutes.length - 1].id
+      } else {
+        return 0
+      }
+
     }
   }
-  //modules: {}
 });
