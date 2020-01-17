@@ -4,7 +4,6 @@ import Home from "../views/Home.vue";
 import Admin from "../views/Admin.vue";
 import About from "../views/About.vue";
 import Percursos from "../views/Percursos.vue";
-import CriarPercurso from "../views/CriarPercurso.vue";
 import DetalhesPercurso from "../views/DetalhesPercurso.vue";
 import Registar from "../views/Registar.vue";
 import Login from "../views/Login.vue";
@@ -43,11 +42,6 @@ const routes = [
     name: "percursos",
     component: Percursos
 
-  },
-  {
-    path: '/percursos/criar',
-    component: CriarPercurso,
-    name: 'criarPercurso'
   },
   {
     path: '/percursos/detalhes',
