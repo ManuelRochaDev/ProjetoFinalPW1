@@ -5,18 +5,22 @@
       <router-link to="/"></router-link>
     </div>
     <router-view />
+    <div id="footer">
+      <Footer></Footer>
+    </div>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
 import Navbar from "@/components/Navbar.vue";
-
+import Footer from "@/components/Footer.vue";
 
 export default {
   name: "home",
   components: {
-    Navbar
+    Navbar,
+    Footer
   },
   methods: {
     /* register(){
@@ -41,10 +45,15 @@ export default {
 
 #nav a {
   font-weight: bold;
-  color: #2c3e50;
+  color: #ffffff;
 }
 
-#nav a.router-link-exact-active {
-  color: #42b983;
+#nav a:hover {
+  color: rgb(105, 105, 105);
+}
+
+#nav .navbar-nav li.active > a {
+  background-color: #671919;
+  color: #fff;
 }
 </style>
