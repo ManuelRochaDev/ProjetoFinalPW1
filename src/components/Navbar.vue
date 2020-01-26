@@ -66,7 +66,7 @@
             <img src="@/assets/search.png" class="srcIcon" />
           </div>
         </li>
-        <button v-if="this.$store.state.currentUser[0].userType == 0">ADMIN</button>
+        <button v-if="this.$store.state.currentUser[0].userType == 0">ADMIN</button> 
       </ul>
     </div>
   </nav>

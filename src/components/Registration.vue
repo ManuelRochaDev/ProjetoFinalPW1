@@ -83,17 +83,19 @@ export default {
     userType: "" //0 = admin, 1 = user normal
   }),
   created: function() {
-    window.addEventListener("unload", this.saveStorage)
+    window.addEventListener("unload", this.saveStorage);
     if (localStorage.getItem("users")) {
-      this.$store.state.users = JSON.parse(localStorage.getItem("users"))
+      this.$store.state.users = JSON.parse(localStorage.getItem("users"));
     }
     if (localStorage.getItem("currentUser")) {
-      this.$store.state.currentUser = JSON.parse(localStorage.getItem("currentUser"))
+      this.$store.state.currentUser = JSON.parse(
+        localStorage.getItem("currentUser")
+      );
     }
   },
   methods: {
     getLastId() {
-      return this.$store.getters.lastId
+      return this.$store.getters.lastId;
     },
     addUser() {
       this.$store.commit("REGISTER_USER", {
@@ -107,7 +109,10 @@ export default {
     },
     saveStorage() {
       localStorage.setItem("users", JSON.stringify(this.$store.state.users));
-      localStorage.setItem("currentUser", JSON.stringify(this.$store.state.currentUser));
+      localStorage.setItem(
+        "currentUser",
+        JSON.stringify(this.$store.state.currentUser)
+      );
     }
   }
 };

@@ -54,7 +54,7 @@ export default new Vuex.Store({
           password: payload.password,
           userType: payload.userType
         })
-        localStorage.setItem("users", JSON.stringify(state.users))
+        localStorage.setItem("users", JSON.stringify(this.state.users))
         alert("register ok");
         //window.history.back();
 
@@ -67,17 +67,17 @@ export default new Vuex.Store({
       for (const user of state.users) {
         if (user.email === payload.email && user.password === payload.password) {
           state.currentUser.push({
-            id: user.id,
-            name: user.name,
-            lastName: user.lastName,
-            email: payload.email,
-            password: payload.password,
-            userType: user.userType
-            
-          }),
-          alert("login ok")
+              id: user.id,
+              name: user.name,
+              lastName: user.lastName,
+              email: payload.email,
+              password: payload.password,
+              userType: user.userType
+
+            }),
+            alert("login ok")
           localStorage.setItem("currentUser", JSON.stringify(this.state.currentUser))
-          
+
           state.credCorrect = true
           /* if (user.userType === "admin") {
             window.location.href = "../views/admin"
@@ -110,9 +110,11 @@ export default new Vuex.Store({
           id: payload.id,
           title: payload.title,
           city: payload.city,
-          pois: payload.pois
+          pois: payload.pois,
+          lat: payload.lat,
+          lng: payload.lng
         })
-        localStorage.setItem("appRoutes", JSON.stringify(state.appRoutes))
+        localStorage.setItem("appRoutes", JSON.stringify(this.state.appRoutes))
 
         alert("new route");
         //window.history.back();
@@ -121,7 +123,23 @@ export default new Vuex.Store({
       }
     },
 
-    
+    //remove user
+    REMOVE_USER(state, payload) {
+      state.users = state.users.filter(user => user.id !== payload.id);
+      localStorage.setItem("user", JSON.stringify(this.state.users))
+    },
+
+    //promote or demote user
+    CHANGE_USER_TYPE(state, payload) {
+      if (state.users[payload.id].userType === 0) {
+        state.users[payload.id].userType = 1
+      } else {
+        state.users[payload.id].userType = 0
+      }
+      localStorage.setItem("user", JSON.stringify(this.state.users))
+    }
+
+
 
   },
   getters: {
@@ -159,6 +177,6 @@ export default new Vuex.Store({
         return 0
       }
 
-    }
+    },
   }
 });
