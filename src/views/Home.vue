@@ -14,9 +14,7 @@ export default {
     landingImage
   },
   methods: {
-    /* register(){
-      this.$store.commit("REGISTER_USER", payload)
-    } */
+
   }
 };
 </script>

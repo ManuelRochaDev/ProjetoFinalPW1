@@ -165,6 +165,7 @@ export default new Vuex.Store({
     getUserInfo(state) {
       for (const user of state.users) {
         if (user.id === state.id) {
+          //testing
           1 ==
             1
         }
