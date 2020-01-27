@@ -16,7 +16,6 @@ export default {
   created: function(){
     //Get path
     this.$store.state.currentPath = window.location.pathname
-    alert(this.$store.state.currentPath)
     
   }
 };
