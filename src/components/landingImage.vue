@@ -31,6 +31,10 @@ export default {
   },
   mounted() {
     /* this.renderMap() */
+  },
+  created: function(){
+    this.$store.state.currentPath = window.location.pathname
+    alert(this.$store.state.currentPath)
   }
 };
 </script>
