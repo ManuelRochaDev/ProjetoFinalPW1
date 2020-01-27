@@ -13,43 +13,33 @@
     >
       <span class="navbar-toggler-icon"></span>
     </button>
-
+    
     <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+      <!-- mostrar página atual a vermelho -->
       <ul class="navbar-nav mr-auto">
         <!-- INÍCIO -->
         <li class="nav-item active" v-if="this.$store.state.currentPath === '/'">
-          <a class="nav-link">
-            <router-link to="/">INÍCIO</router-link>
-          </a>
+          <router-link to="/" class="nav-link">INÍCIO</router-link>
         </li>
         <li class="nav-item" v-else>
-          <a class="nav-link">
-            <router-link to="/">INÍCIO</router-link>
-          </a>
+          <router-link to="/" class="nav-link">INÍCIO</router-link>
         </li>
         <!-- PERCURSOS -->
         <li class="nav-item active" v-if="this.$store.state.currentPath === '/percursos'">
-          <a class="nav-link">
-            <router-link to="/percursos">PERCURSOS</router-link>
-          </a>
+          <router-link to="/percursos" class="nav-link">PERCURSOS</router-link>
         </li>
         <li class="nav-item" v-else>
-          <a class="nav-link">
-            <router-link to="/percursos">PERCURSOS</router-link>
-          </a>
+          <router-link to="/percursos" class="nav-link">PERCURSOS</router-link>
         </li>
         <!--SOBRE -->
         <li class="nav-item active" v-if="this.$store.state.currentPath === '/about'">
-          <a class="nav-link">
-            <router-link to="/about">SOBRE</router-link>
-          </a>
+          <router-link to="/about" class="nav-link">SOBRE</router-link>
         </li>
         <li class="nav-item" v-else>
-          <a class="nav-link">
-            <router-link to="/about">SOBRE</router-link>
-          </a>
+          <router-link to="/about" class="nav-link">SOBRE</router-link>
         </li>
       </ul>
+      <!-- fim -->
       <form class="navbar-form navbar-left" action="#">
         <div class="input-group">
           <input type="text" class="form-control" placeholder="Pesquisar" name="search" />
@@ -87,7 +77,7 @@ export default {
         localStorage.getItem("currentUser")
       );
     }
-    this.$store.state.currentPath = window.location.pathname
+    this.$store.state.currentPath = window.location.pathname;
   }
 };
 </script>
