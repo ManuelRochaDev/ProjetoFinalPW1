@@ -32,9 +32,12 @@ export default {
       });
       this.map.setMapTypeId(google.maps.MapTypeId.SATELLITE);
     },
-    mounted() {
-      this.renderMap();
-    }
+  },
+  mounted() {
+    this.renderMap()
+  },
+  created: function(){
+    this.$store.state.currentPath = window.location.pathname
   }
 };
 </script>

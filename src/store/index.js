@@ -38,7 +38,8 @@ export default new Vuex.Store({
     spotsOfInterest: [],
     currentUser: [], //Se o valor for -1, não está nenhum utilizador logado
     currentRoute: 0,
-    credCorrect: false
+    credCorrect: false,
+    currentPath: window.location.pathname
 
   },
   mutations: {
