@@ -45,6 +45,7 @@
             <i class="fa fa-user-circle fa-2x"></i>
           </a>
         </li>
+        <button v-if="this.$store.state.currentUser[0].userType == 0">ADMIN</button> 
       </ul>
     </div>
   </nav>
