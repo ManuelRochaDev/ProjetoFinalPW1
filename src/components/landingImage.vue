@@ -1,15 +1,19 @@
 <template>
-  <!-- <div>
-    <h1>MAPS WITH VUE</h1>
-    <div class="google-map" id="myMap"></div>
-  </div>-->
-  <div id="img" class="row">
-    <div class="col-sm-4">
-      <h1>WINEROUTE</h1>
-      <h6>A APRECIAÇÃO DO VINHO NACIONAL</h6>
+  <div>
+    <div>
+      <h1>MAPS WITH VUE</h1>
+      <button @click="renderMap()">RENDER MAP</button>
+      <br><br>
+      <div class="google-map" id="myMap"></div>
     </div>
-    <div class="col-sm-8">
-      <img class="img-fluid" src="../assets/uvas.png" alt="Uvas" width="600" height="600" />
+    <div id="img" class="row">
+      <div class="col-sm-4">
+        <h1>WINEROUTE</h1>
+        <h6>A APRECIAÇÃO DO VINHO NACIONAL</h6>
+      </div>
+      <div class="col-sm-8">
+        <img class="img-fluid" src="../assets/uvas.png" alt="Uvas" width="600" height="600" />
+      </div>
     </div>
   </div>
 </template>
@@ -21,21 +25,19 @@ export default {
     msg: String
   },
   methods: {
-    /* renderMap() {
+    renderMap() {
       this.map = new google.maps.Map(document.querySelector("#myMap"), {
-        center: { lat: 41.366177, lng: -8.739455 },
-        zoom: 18
+        center: { lat: -34.397, lng: 150.644 },
+        zoom: 8
       });
       this.map.setMapTypeId(google.maps.MapTypeId.SATELLITE);
-    }, */
-  },
-  mounted() {
-    /* this.renderMap() */
+    },
+    mounted() {
+      this.renderMap();
+    }
   }
 };
 </script>
-
-
 
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
