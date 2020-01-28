@@ -56,10 +56,10 @@
 
     <div id="routeDiv">
       <h2 class="card-title">Adicionar Percursos</h2>Título:
-      <input type="text" name="title" id="routeTitle" v-model="newRoute.title" />
+      <input type="text" name="title" id="routeTitle" v-model="title" />
       <br />
       <br />Cidade:
-      <input type="text" name="city" id="routeCity" v-model="newRoute.city" />
+      <input type="text" name="city" id="routeCity" v-model="city" />
 
       <br />
       <br />Pontos de interesse:
@@ -74,16 +74,17 @@
       <br />
       <p v-for="(poi, index) in pois" :key="poi.id">
         <input type="text" v-model="poi.name" />
-        <input type="button" v-model="poi.remove" @click="removeTextbox(index)" />
+        <input type="button" @click="removeTextbox(index)" value="X" />
         <input type="file" />Escolher audio
       </p>
       <pre>
       {{this.newRoute}}
     </pre>
 
-    
-      <input type="button" id="btnGeocode" value="Geocode" />
-      <br><br>
+<input type="button" value="Delete" @click="deleteMarkers()" />
+      <input type="button" id="btnGeocode" value="Gerar pontos no mapa" />
+      <br />
+      <br />
 
       <a
         name="addText"
@@ -98,13 +99,11 @@
 
       <div>
         <h1>MAPS WITH VUE</h1>
-        <button @click="renderMap()">RENDER MAP</button>
+        <!-- <button @click="renderMap()">RENDER MAP</button> -->
         <br />
         <br />
         <div class="google-map" id="myMap"></div>
       </div>
-
-      <!--<input id="btnGeocode" type="button" value="Geocode" />-->
     </div>
   </div>
 </template>
@@ -114,40 +113,69 @@ export default {
   name: "createRoute",
 
   data: () => ({
+    id: "",
+    title: "",
+    city: "",
     idTextbox: 0,
     users: [{}],
     newRoute: [{}],
-    pois: []
+    pois: [],
+    latt: [],
+    idRoute: 0,
+    name: "",
+    coord: [],
+    marker: []
   }),
 
   created: function() {
     //load users when page is opened
+
     if (localStorage.getItem("users")) {
       this.$store.state.users = JSON.parse(localStorage.getItem("users"));
     }
   },
-
+  mounted: function() {
+    this.renderMap();
+  },
   methods: {
     //send the new route to the store
     addRoute() {
       this.$store.commit("ADD_ROUTE", {
-        id: Number(this.$store.getters.getLastRouteId) + 1,
-        title: this.newRoute.title,
-        city: this.newRoute.city,
+        id: Number(this.getLastRouteId()) + 1,
+        title: this.title,
+        city: this.city,
         //map: this.map
 
-        idRoute: this.pois.idRoute,
-        name: this.pois.name,
-        lat: this.pois.lat,
-        lng: this.pois.lng
+        idRoute: this.idRoute,
+        name: this.name,
+        coord: this.coord
       });
+      //renderMap();
     },
-    //storeRoute() {},
+
+    renderMap() {
+      this.map = new google.maps.Map(document.querySelector("#myMap"), {
+        center: { lat: -34.397, lng: 150.644 },
+        zoom: 8
+      });
+
+      const geocoder = new google.maps.Geocoder();
+
+      document
+        .querySelector("#btnGeocode")
+        .addEventListener("click", () =>
+          this.geocodeAddress(geocoder, this.map)
+        );
+    },
 
     //Insert a new textbox for the user to insert an interestPoint
     addTextbox() {
       this.idTextbox++;
-      this.pois.push({ id: this.idTextbox, name: "", remove: "X" });
+      this.pois.push({ id: this.idTextbox, name: "", coord: "" });
+    },
+
+    getLastRouteId() {
+      return this.$store.getters.getLastRouteId;
     },
 
     //remove the Box
@@ -174,56 +202,41 @@ export default {
 
     //blockUser(){}
 
+    deleteMarkers() {
+        //Loop through all the markers and remove
+        for (var i = 0; i < this.marker.length; i++) {
+            this.marker[i].setMap(null);
+        }
+        this.marker = [];
+    },
+
+
     geocodeAddress(geocoder, resultsMap) {
-      alert("yuifyuofuyof")
-      let addresses = []
+      let markerr = []
+      let address = [];
       for (let i = 0; i < this.pois.length; i++) {
-        addresses[i] = this.pois[i].name
-      }
-      geocoder.geocode({ addresses: addresses }, (results, status) => {
-        for (let i = 0; i < addresses.length; i++) {
+        address[i] = this.pois[i].name;
+
+        geocoder.geocode({ address: address[i] }, (results, status) => {
           if (status === "OK") {
             resultsMap.setCenter(results[0].geometry.location);
 
-            alert("ibv8ygvygv")
-            this.pois.push({
-              idRoute: 0,
-              lat: results[0].geometry.location.lat,
-              lng: results[0].geometry.location.lng
-            });
-
-            const marker = new google.maps.Marker({
+            markerr = new google.maps.Marker({
               map: resultsMap,
               position: results[0].geometry.location
             });
-            marker.setMap(resultsMap);
+            markerr.setMap(resultsMap);
+            this.pois[i].coord = markerr
+            this.marker = markerr
           } else {
             alert(
               "Geocode was not successful for the following reason: " + status
             );
           }
-        }
-      });
-    },
-
-    //insert the map on the page
-    renderMap() {
-      this.map = new google.maps.Map(document.querySelector("#myMap"), {
-        center: { lat: -34.397, lng: 150.644 },
-        zoom: 8
-      });
-
-      this.map.setMapTypeId(google.maps.MapTypeId.SATELLITE);
-      const geocoder = new google.maps.Geocoder();
-
-    document.querySelector("#btnGeocode").addEventListener("click", () =>
-          this.geocodeAddress(geocoder, this.map),
-    )
-    },
-
-    mounted() {
-      this.renderMap();
+        });
+      }
     }
+    //insert the map on the page
   }
 };
 </script>

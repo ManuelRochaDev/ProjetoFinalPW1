@@ -39,8 +39,7 @@ export default new Vuex.Store({
     currentUser: [], //Se o valor for -1, não está nenhum utilizador logado
     currentRoute: 0,
     credCorrect: false,
-    currentPath: window.location.pathname
-
+    currentPath: "/percursos"
   },
   mutations: {
     REGISTER_USER(state, payload) {
@@ -117,8 +116,7 @@ export default new Vuex.Store({
         state.pois.push({
           idRoute: payload.idRoute,
           name: payload.name,
-          lat: payload.lat,
-          lng: payload.lng
+          coord: payload.coord
         })
         localStorage.setItem("pois", JSON.stringify(this.state.pois))
 

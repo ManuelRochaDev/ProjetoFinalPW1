@@ -68,7 +68,7 @@ export default {
     msg: String
   },
   data: () => ({
-    path: this.$store.state.currentPath
+
   }),
   created: function() {
     //qd abres esta pagina vai acontecer isto
