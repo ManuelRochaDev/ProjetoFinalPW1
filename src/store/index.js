@@ -26,7 +26,13 @@ export default new Vuex.Store({
       audio: "", //aqui seria um link para o áudio
       img: "https://b.zmtcdn.com/data/pictures/8/18859338/2ef0c452a621c193425c98ef7db94ed5_featured_v2.jpg"
     }],
-    comments: [],
+    comments: [{
+        id: 0,
+        content: "",
+        currentUser: 0,
+        userName: "",
+        date: ""
+    }],
     spotsOfInterest: [],
     currentUser: [], //Se o valor for -1, não está nenhum utilizador logado
     currentRoute: 0,
@@ -136,8 +142,17 @@ export default new Vuex.Store({
         state.users[payload.id].userType = 0
       }
       localStorage.setItem("user", JSON.stringify(this.state.users))
-    }
+    },
 
+    ADD_COMMENT(state, payload){
+      state.comments.push({
+        id: payload.id,
+        content: payload.content,
+        currentUser: payload.currentUser,
+        userName: payload.userName
+      })
+      localStorage.setItem("comments", JSON.stringify(this.state.comments))
+    }
 
 
   },
@@ -178,5 +193,17 @@ export default new Vuex.Store({
       }
 
     },
+    getLastCommentId(state){
+      if(state.comments.length){
+        return state.comments[state.comments.length - 1].id
+      } else {
+        return 0
+      }
+    },
+    getComments(state){
+      if(state.comments.length){
+        return state.comments
+      }
+    }
   }
 });
