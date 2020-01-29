@@ -20,19 +20,11 @@ export default new Vuex.Store({
     }],
     pois: [{
       idRoute: 1,
-      lat: 0,
-      lng: 0,
+      lat: 41.352549,
+      lng: -8.741763,
       name: "Bacchus Wine Bar",
       audio: "", //aqui seria um link para o áudio
       img: "https://b.zmtcdn.com/data/pictures/8/18859338/2ef0c452a621c193425c98ef7db94ed5_featured_v2.jpg"
-    },
-    {
-      idRoute: 2,
-      lat: 0,
-      lng: 0,
-      name: "Antonio's shop",
-      audio: "",
-      img: "https://rohanclinnick.files.wordpress.com/2013/11/shop-interior-photographer-london.jpg"
     }],
     comments: [],
     spotsOfInterest: [],
@@ -116,7 +108,9 @@ export default new Vuex.Store({
         state.pois.push({
           idRoute: payload.idRoute,
           name: payload.name,
-          coord: payload.coord
+          lat: payload.lat,
+          lng: payload.lng
+          
         })
         localStorage.setItem("pois", JSON.stringify(this.state.pois))
 

@@ -77,11 +77,8 @@
         <input type="button" @click="removeTextbox(index)" value="X" />
         <input type="file" />Escolher audio
       </p>
-      <pre>
-      {{this.newRoute}}
-    </pre>
 
-<input type="button" value="Delete" @click="deleteMarkers()" />
+      <input type="button" value="Delete" @click="deleteMarkers()" />
       <input type="button" id="btnGeocode" value="Gerar pontos no mapa" />
       <br />
       <br />
@@ -120,11 +117,16 @@ export default {
     users: [{}],
     newRoute: [{}],
     pois: [],
-    latt: [],
     idRoute: 0,
     name: "",
     coord: [],
-    marker: []
+    marker: [],
+    lat: 0,
+    lng: 0,
+    myPos: null,
+    mapPois: [],
+    esmad: [],
+    mapPoisTest: []
   }),
 
   created: function() {
@@ -133,6 +135,30 @@ export default {
     if (localStorage.getItem("users")) {
       this.$store.state.users = JSON.parse(localStorage.getItem("users"));
     }
+
+    if (localStorage.getItem("pois")) {
+      this.$store.state.pois = JSON.parse(localStorage.getItem("pois"));
+    }
+
+    if (localStorage.getItem("appRoutes")) {
+      this.$store.state.appRoutes = JSON.parse(
+        localStorage.getItem("appRoutes")
+      );
+    }
+    //ESTAVA AQUI!!!!!!!!!!!!!!!!!!!!!!!!!!
+    /* 
+    for (let i = 0; i < this.$store.state.pois; i++) {
+      this.mapPois[i] = {
+        lat: this.$store.state.pois[i].lat,
+        lng: this.$store.state.pois[i].lng
+      };
+    } */
+    /* mapPois((contact) => {
+   this.mapPois.push({
+        lat: this.$store.state.pois[i].lat,
+        lng: this.$store.state.pois[i].lng
+      }); 
+});*/
   },
   mounted: function() {
     this.renderMap();
@@ -140,24 +166,81 @@ export default {
   methods: {
     //send the new route to the store
     addRoute() {
+      const directionsService = new google.maps.DirectionsService();
+      const directionsRenderer = new google.maps.DirectionsRenderer();
+      directionsRenderer.setMap(this.map);
+      this.calcRoute(directionsService, directionsRenderer);
       this.$store.commit("ADD_ROUTE", {
         id: Number(this.getLastRouteId()) + 1,
         title: this.title,
         city: this.city,
-        //map: this.map
 
-        idRoute: this.idRoute,
+        idRoute: Number(this.getLastRouteId()) + 1,
         name: this.name,
-        coord: this.coord
+        lat: this.lat,
+        lng: this.lng
       });
       //renderMap();
     },
 
     renderMap() {
+      
+
       this.map = new google.maps.Map(document.querySelector("#myMap"), {
         center: { lat: -34.397, lng: 150.644 },
         zoom: 8
       });
+
+      var contentString =
+        '<div id="content">' +
+        '<div id="siteNotice">' +
+        "</div>" +
+        '<h1 id="firstHeading" class="firstHeading">Uluru</h1>' +
+        '<div id="bodyContent">' +
+        "<p><b>Uluru</b>, also referred to as <b>Ayers Rock</b>, is a large " +
+        "sandstone rock formation in the southern part of the " +
+        "Northern Territory, central Australia. It lies 335&#160;km (208&#160;mi) " +
+        "south west of the nearest large town, Alice Springs; 450&#160;km " +
+        "(280&#160;mi) by road. Kata Tjuta and Uluru are the two major " +
+        "features of the Uluru - Kata Tjuta National Park. Uluru is " +
+        "sacred to the Pitjantjatjara and Yankunytjatjara, the " +
+        "Aboriginal people of the area. It has many springs, waterholes, " +
+        "rock caves and ancient paintings. Uluru is listed as a World " +
+        "Heritage Site.</p>" +
+        '<p>Attribution: Uluru, <a href="https://en.wikipedia.org/w/index.php?title=Uluru&oldid=297882194">' +
+        "https://en.wikipedia.org/w/index.php?title=Uluru</a> " +
+        "(last visited June 22, 2009).</p>" +
+        "</div>" +
+        "</div>";
+
+      let infoWindow = new google.maps.InfoWindow({
+        content: contentString
+      });
+
+      
+
+      // Try to get HTML5 geolocation
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          position => {
+            this.myPos = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            };
+
+            infoWindow.setPosition(this.myPos);
+            infoWindow.setContent("You are here");
+            infoWindow.open(this.map);
+
+            this.map.setCenter(this.myPos);
+            
+          },
+          () => this.handleLocationError(true, infoWindow, this.map.getCenter())
+        );
+      } else {
+        // Browser doesn't support Geolocation
+        this.handleLocationError(false, this.infoWindow, this.map.getCenter());
+      }
 
       const geocoder = new google.maps.Geocoder();
 
@@ -171,7 +254,7 @@ export default {
     //Insert a new textbox for the user to insert an interestPoint
     addTextbox() {
       this.idTextbox++;
-      this.pois.push({ id: this.idTextbox, name: "", coord: "" });
+      this.pois.push({ id: this.idTextbox, name: "", lat: "", lng: "" });
     },
 
     getLastRouteId() {
@@ -200,19 +283,84 @@ export default {
       }
     },
 
-    //blockUser(){}
-
-    deleteMarkers() {
-        //Loop through all the markers and remove
-        for (var i = 0; i < this.marker.length; i++) {
-            this.marker[i].setMap(null);
-        }
-        this.marker = [];
+    handleLocationError(browserHasGeolocation, infoWindow, pos) {
+      infoWindow.setPosition(pos);
+      infoWindow.setContent(
+        browserHasGeolocation
+          ? "Error: The Geolocation service failed."
+          : "Error: Your browser doesn't support geolocation."
+      );
+      infoWindow.open(this.map);
     },
 
+    calcRoute: function(directionsService, directionsRenderer) {
+      //alert(this.$store.state.pois[10].lng);
+      this.esmad = { lat: 41.366949, lng: -8.738722 };
+      let mapPois2 = [];
+      this.$store.state.pois.forEach(function(poi) {
+        mapPois2.push({
+          location: new google.maps.LatLng(poi.lat, poi.lng),
+          stopover: true
+        });
+      });
+      this.mapPois = mapPois2;
+
+      // Creation of a DirectionsRequest object
+      const request = {
+        origin: this.myPos,
+        destination: this.mapPois[this.mapPois.length - 1].location,
+        waypoints: this.mapPois,
+        travelMode: google.maps.DirectionsTravelMode.WALKING,
+        optimizeWaypoints: true
+      };
+
+      directionsService.route(request, (result, status) => {
+        if (status == "OK") {
+          directionsRenderer.setDirections(result);
+          const directionsData = result.routes[0].legs[0]; // Get data about the mapped route
+          if (directionsData) {
+            /* alert(
+              "Driving distance is" +
+                directionsData.distance.text +
+                directionsData.duration.text
+            ); */
+          } else {
+            alert("Directions request failed");
+          }
+        } else {
+          alert(status);
+        }
+      });
+    },
+    //blockUser(){}
+
+    convertArrayToObject(array, key) {
+      const initialValue = {};
+      return array.reduce((obj, item) => {
+        return {
+          ...obj,
+          [item[key]]: item
+        };
+      }, initialValue);
+    },
+    arrayToObject(arr) {
+      var obj = {};
+      for (var i = 0; i < arr.length; ++i) {
+        obj[i] = arr[i];
+      }
+      return obj;
+    },
+
+    deleteMarkers() {
+      //Loop through all the markers and remove
+      for (var i = 0; i < this.marker.length; i++) {
+        this.marker[i].setMap(null);
+      }
+      this.marker = [];
+    },
 
     geocodeAddress(geocoder, resultsMap) {
-      let markerr = []
+      let markerr = [];
       let address = [];
       for (let i = 0; i < this.pois.length; i++) {
         address[i] = this.pois[i].name;
@@ -226,8 +374,10 @@ export default {
               position: results[0].geometry.location
             });
             markerr.setMap(resultsMap);
-            this.pois[i].coord = markerr
-            this.marker = markerr
+            this.coord = markerr;
+            this.marker = markerr;
+            this.lat = markerr.getPosition().lat();
+            this.lng = markerr.getPosition().lng();
           } else {
             alert(
               "Geocode was not successful for the following reason: " + status
