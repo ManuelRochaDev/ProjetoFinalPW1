@@ -104,7 +104,9 @@ export default {
         name: this.name,
         lastName: this.lastName,
         password: this.password,
-        userType: 1
+        userType: 1,
+        isBlocked: 0
+        //img: ""
       });
     },
     saveStorage() {

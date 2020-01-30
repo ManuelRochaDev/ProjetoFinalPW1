@@ -1,10 +1,6 @@
 <template>
   <div>
     <div>
-      <h1>MAPS WITH VUE</h1>
-      <button @click="renderMap()">RENDER MAP</button>
-      <br><br>
-      <div class="google-map" id="myMap"></div>
     </div>
     <div id="img" class="row">
       <div class="col-sm-4">

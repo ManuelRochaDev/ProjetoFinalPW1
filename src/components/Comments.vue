@@ -1,9 +1,14 @@
 <template>
   <div class="row">
     <div class="container" id="showComments">
-      <h4>{{comment.userName}}</h4>
-      <h4>{{comment.content}}</h4>
-      <p id="date">{{comment.date}}</p>
+      <div class="col-sm-5">
+        <h4>{{comment.userName}}</h4>
+        <h4>{{comment.content}}</h4>
+      </div>
+      <div class="col-sm-3"></div>
+      <div class="col-sm-10">
+        <p id="date">{{comment.date}}</p>
+      </div>
     </div>
   </div>
 </template>
@@ -16,11 +21,12 @@ export default {
       required: true
     }
   },
+
 };
 </script>
 
 <style scoped>
-/*#date{
-
-}*/
+#date{
+text-align: right 
+}
 </style>

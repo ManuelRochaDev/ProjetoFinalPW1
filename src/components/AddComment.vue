@@ -17,11 +17,21 @@ export default {
   name: "addComment",
 
   data: () => ({
-    newComment: [{}],
+    newComment: [{
+
+    }],
     comments: [],
-    today: new Date(),
-    date: ""
+    currentDate: new Date(),
+    formattedDate: ""
   }),
+
+  created: function() {
+    //gets the date, month and year and insert them in a variable
+    let date = this.currentDate.getDate();
+    let month = this.currentDate.getMonth() + 1;
+    let year = this.currentDate.getFullYear();
+    this.formattedDate = date + "/" + month + "/" + year;
+  },
 
   methods: {
     getLastId() {
@@ -32,16 +42,6 @@ export default {
       return this.$store.getters.getLastCommentId;
     },
 
-    setDate() {
-       this.today = new Date();
-        this.date =
-        this.today.getFullYear() +
-        "/" +
-        (this.today.getMonth() + 1) +
-        "/" +
-        this.today.getDate();
-    },
-
     addComment() {
       if (this.newComment.content != "") {
         this.$store.commit("ADD_COMMENT", {
@@ -49,7 +49,8 @@ export default {
           content: this.newComment.content,
           currentUser: Number(this.getLastId()) + 1,
           userName: this.$store.getters.lastName,
-          date: this.setDate()
+          date: this.formattedDate
+          //img:
           //avatar: this.avatar
         });
       }
