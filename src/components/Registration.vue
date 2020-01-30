@@ -108,7 +108,7 @@ export default {
       });
     },
     saveStorage() {
-      localStorage.setItem("users", JSON.stringify(this.$store.state.users));
+      //localStorage.setItem("users", JSON.stringify(this.$store.state.users));
       localStorage.setItem(
         "currentUser",
         JSON.stringify(this.$store.state.currentUser)
@@ -120,30 +120,5 @@ export default {
 
 
 <style scoped>
-/* .input {
-        padding: 5px;
-    }
 
-    #link {
-        color: white;
-    }
-
-    #redTitle {
-        font-family: "bookMan";
-        font-size: 45px;
-        color: #B91C3B;
-    }
-
-    label {
-        float: left;
-        margin-bottom: .5rem;
-    }
-
-    .back-line {
-        background-color: #0A2463;
-        margin-top: -10px;
-        width: 600px;
-
-
-    } */
 </style>

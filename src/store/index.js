@@ -17,6 +17,9 @@ export default new Vuex.Store({
       id: "",
       title: "",
       city: "",
+      dif: "",
+      distance: "",
+      time: ""
     }],
     pois: [{
       idRoute: 1,
@@ -34,8 +37,8 @@ export default new Vuex.Store({
         date: ""
     }],
     spotsOfInterest: [],
-    currentUser: [], //Se o valor for -1, não está nenhum utilizador logado
-    currentRoute: 0,
+    currentUser: [], //Se estiver vazio ninguem está logado
+    currentRoute: [],
     credCorrect: false,
     currentPath: "/percursos"
   },
@@ -93,7 +96,7 @@ export default new Vuex.Store({
     },
 
     LOGOUT(state) {
-      state.currentUser.pop();
+      state.currentUser = []
       localStorage.removeItem("currentUser", JSON.stringify(this.state.currentUser));
       //window.location.href = ".."
 
@@ -107,7 +110,10 @@ export default new Vuex.Store({
         state.appRoutes.push({
           id: payload.id,
           title: payload.title,
-          city: payload.city
+          city: payload.city,
+          dif: payload.dif,
+          time: payload.time,
+          distance: payload.distance
         })
         localStorage.setItem("appRoutes", JSON.stringify(this.state.appRoutes))
 

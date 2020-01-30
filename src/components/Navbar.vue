@@ -40,7 +40,7 @@
         </li>
       </ul>
       <!-- fim -->
-      <form class="navbar-form navbar-left" action="#">
+      <form class="navbar-form navbar-left" action="#" v-if="this.$store.state.currentPath == '/percursos'">
         <div class="input-group">
           <input type="text" class="form-control" placeholder="Pesquisar" name="search" />
           <div class="input-group-btn">
@@ -52,7 +52,7 @@
       </form>
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link" href="#">
+          <a class="nav-link" href="/perfil">
             <i class="fa fa-user-circle fa-2x"></i>
           </a>
         </li>

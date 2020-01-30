@@ -8,6 +8,7 @@ import DetalhesPercurso from "../views/DetalhesPercurso.vue";
 import Registar from "../views/Registar.vue";
 import Login from "../views/Login.vue";
 import Perfil from "../views/Perfil.vue";
+//import store from "../store/index.js";
 
 Vue.use(VueRouter);
 
@@ -23,8 +24,8 @@ const routes = [
     component: Login,
   },
   {
-    path: '/registar', 
-    name: "registar", 
+    path: '/registar',
+    name: "registar",
     component: Registar,
   },
   {
@@ -33,9 +34,22 @@ const routes = [
     component: About
   },
   {
+
     path: "/admin",
     name: "admin",
-    component: Admin
+    component: Admin,
+    //admin check
+    beforeEnter(to, from, next) {
+      let loggedUsers = JSON.parse(localStorage.getItem('currentUser'))
+      if (loggedUsers == []) {
+        if (loggedUsers[0].userType == 1) {
+          next("/");
+        } else {
+          next();
+        }
+        next("/")
+      }
+    }
   },
   {
     path: "/percursos",
@@ -51,12 +65,21 @@ const routes = [
   {
     path: "/",
     name: "",
-    component: Admin
+    component: Home
   },
   {
     path: "/perfil",
     name: "",
-    component: Perfil
+    component: Perfil,
+    //check if logged
+    beforeEnter(to, from, next) {
+      let loggedUsers = JSON.parse(localStorage.getItem('currentUser'))
+      if (loggedUsers == [] || loggedUsers == null) {
+        next("/");
+      } else {
+        next();
+      }
+    }
   }
 ];
 
