@@ -124,7 +124,7 @@ export default {
     },
 
     saveStorage() {
-      localStorage.setItem("users", JSON.stringify(this.$store.state.users));
+      //localStorage.setItem("users", JSON.stringify(this.$store.state.users));
       localStorage.setItem(
         "currentUser",
         JSON.stringify(this.$store.state.currentUser)

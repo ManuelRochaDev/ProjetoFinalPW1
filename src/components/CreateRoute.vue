@@ -185,6 +185,9 @@ export default {
     id: "",
     title: "",
     city: "",
+    dif: "",
+    time: "ahy",
+    distance: "",
     idTextbox: 0,
     users: [{}],
     appRoutes: [],
@@ -239,29 +242,34 @@ export default {
   methods: {
     //send the new route to the store
     addRoute() {
+      alert("addroute() " + this.time);
       const directionsService = new google.maps.DirectionsService();
       const directionsRenderer = new google.maps.DirectionsRenderer();
       directionsRenderer.setMap(this.map);
+
       this.calcRoute(directionsService, directionsRenderer);
+      
       this.$store.commit("ADD_ROUTE", {
         id: Number(this.getLastRouteId()) + 1,
         title: this.title,
         city: this.city,
+        dif: this.dif,
+        distance: this.distance,
+        time: this.time,
 
         idRoute: Number(this.getLastRouteId()) + 1,
         name: this.name,
         lat: this.lat,
         lng: this.lng
       });
-      //renderMap();
     },
 
+    //insert the map on the page
     renderMap() {
       this.map = new google.maps.Map(document.querySelector("#myMap"), {
         center: { lat: -34.397, lng: 150.644 },
         zoom: 8
       });
-
       var contentString =
         '<div id="content">' +
         '<div id="siteNotice">' +
@@ -393,6 +401,8 @@ export default {
       //alert(this.$store.state.pois[10].lng);
       this.esmad = { lat: 41.366949, lng: -8.738722 };
       let mapPois2 = [];
+      let timee = "";
+      let distancee = "";
       this.$store.state.pois.forEach(function(poi) {
         mapPois2.push({
           location: new google.maps.LatLng(poi.lat, poi.lng),
@@ -415,36 +425,19 @@ export default {
           directionsRenderer.setDirections(result);
           const directionsData = result.routes[0].legs[0]; // Get data about the mapped route
           if (directionsData) {
-            /* alert(
-              "Driving distance is" +
-                directionsData.distance.text +
-                directionsData.duration.text
-            ); */
+            distancee = directionsData.distance.text;
+            timee = directionsData.duration.text;
           } else {
             alert("Directions request failed");
           }
         } else {
           alert(status);
         }
+        //alert(timee);
+        this.time = timee;
+        alert(this.time)
+        this.distance = distancee;
       });
-    },
-    //blockUser(){}
-
-    convertArrayToObject(array, key) {
-      const initialValue = {};
-      return array.reduce((obj, item) => {
-        return {
-          ...obj,
-          [item[key]]: item
-        };
-      }, initialValue);
-    },
-    arrayToObject(arr) {
-      var obj = {};
-      for (var i = 0; i < arr.length; ++i) {
-        obj[i] = arr[i];
-      }
-      return obj;
     },
 
     deleteMarkers() {
@@ -482,7 +475,6 @@ export default {
         });
       }
     }
-    //insert the map on the page
   }
 };
 </script>

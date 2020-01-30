@@ -33,8 +33,9 @@ export default {
   props: {
     msg: String
   },
-  created: function() {
-    this.$store.state.currentPath = window.location.pathname;
+
+  created: function(){
+    this.$store.state.currentPath = window.location.pathname
   }
 };
 </script>
@@ -42,11 +43,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.google-map {
-  width: 800px;
-  height: 600px;
-  margin: 0 auto;
-}
 
 #img h1 {
   color: #671919;

@@ -1,10 +1,77 @@
 <template>
   <div id="cards" class="row">
+<<<<<<< HEAD
     <h1 id="titu">Lista de percursos</h1>
     <div class="container"></div>
     <div class="col-sm-1">
     </div>
     <div class="col-sm-5">
+=======
+    <div class="col-sm-1"></div>
+    <div class="col-sm-5" v-for="appRoute in this.$store.state.appRoutes" :key="appRoute.id">
+>>>>>>> 1a6ba7629b3c6a6dff05d28018d8dccb9bf53758
+      <div class="card border-0">
+        <div class="card-body">
+          <table class="table table-sm">
+            <thead>
+              <tr id="cardTitle">
+                <th scope="col">{{appRoute.title}}</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">
+                  <i class="fas fa-walking"></i>
+                </th>
+                <td>{{appRoute.distance}}</td>
+                <td></td>
+              </tr>
+
+              <tr>
+                <th scope="row">
+                  <i class="far fa-clock"></i>
+                </th>
+                <td>{{appRoute.time}}</td>
+                <td></td>
+              </tr>
+              <tr>
+                <th scope="row">
+                  <i class="fas fa-signal"></i>
+                </th>
+                <td v-if="appRoute.dif == 'easy'">Fácil</td>
+                <td v-if="appRoute.dif == 'medium'">Médio</td>
+                <td v-if="appRoute.dif == 'hard'">Difícil</td>
+                <td></td>
+              </tr>
+              <tr>
+                <th scope="row">
+                  <i class="fas fa-comment"></i>
+                </th>
+                <td>5</td>
+                <td></td>
+              </tr>
+              <tr>
+                <td scope="row"></td>
+                <td></td>
+                <td>
+                  <a
+                    href="/percursos/detalhes"
+                    class="btn"
+                    @click="setCurrentRoute(appRoute.id)"
+                    style="background-color: #ffffff;"
+                  >
+                    <i class="fas fa-plus-circle fa-2x"></i>
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="col-sm-5">
       <div class="card border-0">
         <div class="card-body">
           <table class="table table-sm">
@@ -17,37 +84,37 @@
             </thead>
             <tbody>
               <tr>
-                <th scope="row">
+                <td scope="row">
                   <i class="fas fa-walking"></i>
-                </th>
+                </td>
                 <td>7 Km</td>
                 <td></td>
               </tr>
               <tr>
-                <th scope="row">
+                <td scope="row">
                   <i class="fas fa-map-marker-alt"></i>
-                </th>
+                </td>
                 <td>Igreja Matriz, Mosteiro Santa Clara</td>
                 <td></td>
               </tr>
               <tr>
-                <th scope="row">
+                <td scope="row">
                   <i class="far fa-clock"></i>
-                </th>
+                </td>
                 <td>2h30</td>
                 <td></td>
               </tr>
               <tr>
-                <th scope="row">
+                <td scope="row">
                   <i class="fas fa-signal"></i>
-                </th>
+                </td>
                 <td>Dificil</td>
                 <td></td>
               </tr>
               <tr>
-                <th scope="row">
+                <td scope="row">
                   <i class="fas fa-star-half-alt"></i>
-                </th>
+                </td>
                 <td>4.2/5</td>
                 <td></td>
               </tr>
@@ -64,68 +131,7 @@
           </table>
         </div>
       </div>
-    </div>
-    <div class="col-sm-5">
-      <div class="card border-0">
-        <div class="card-body">
-          <table class="table table-sm">
-            <thead>
-              <tr id="cardTitle">
-                <th scope="col">Vila do Conde</th>
-                <th scope="col"></th>
-                <th scope="col"></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td scope="row">
-                  <i class="fas fa-walking"></i>
-                </td>
-                <td>7 Km</td>
-                <td></td>
-              </tr>
-              <tr>
-                <td scope="row">
-                  <i class="fas fa-map-marker-alt"></i>
-                </td>
-                <td>Igreja Matriz, Mosteiro Santa Clara</td>
-                <td></td>
-              </tr>
-              <tr>
-                <td scope="row">
-                  <i class="far fa-clock"></i>
-                </td>
-                <td>2h30</td>
-                <td></td>
-              </tr>
-              <tr>
-                <td scope="row">
-                  <i class="fas fa-signal"></i>
-                </td>
-                <td>Dificil</td>
-                <td></td>
-              </tr>
-              <tr>
-                <td scope="row">
-                  <i class="fas fa-star-half-alt"></i>
-                </td>
-                <td>4.2/5</td>
-                <td></td>
-              </tr>
-              <tr>
-                <td scope="row"></td>
-                <td></td>
-                <td>
-                  <a href="#" class="btn" style="background-color: #ffffff;">
-                    <i class="fas fa-plus-circle fa-2x"></i>
-                  </a>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
+    </div>-->
   </div>
 </template>
 
@@ -135,13 +141,24 @@ export default {
   props: {
     msg: String
   },
+  data: () => ({
+    //curRoute: []
+  }),
   methods: {
-    
+    setCurrentRoute(id) {
+      this.$store.state.currentRoute = id;
+      //alert(this.$store.state.currentRoute);
+    }
   },
-  created: function(){
+  created: function() {
     //Get path
-    this.$store.state.currentPath = window.location.pathname
-    
+    this.$store.state.currentPath = window.location.pathname;
+
+    if (localStorage.getItem("appRoutes")) {
+      this.$store.state.appRoutes = JSON.parse(
+        localStorage.getItem("appRoutes")
+      );
+    }
   }
 };
 </script>
