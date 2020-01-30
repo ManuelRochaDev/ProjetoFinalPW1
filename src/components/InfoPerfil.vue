@@ -1,9 +1,11 @@
 <template>
   <!--Navbar-->
-  <div>
-    <h2 v-if="this.$store.state.currentUser.length != 0">Nome: {{getName()}} {{getLastName()}}</h2>
-    <h2 v-if="this.$store.state.currentUser.length != 0">Email: {{getEmail()}}</h2>
-    <h2 v-if="this.$store.state.currentUser.length != 0">Tipo de utilizador: {{getUsertype()}}</h2>
+  <div class="row">
+    <div class="container">
+      <h4 v-if="this.$store.state.currentUser.length != 0">Nome: {{getName()}} {{getLastName()}}</h4>
+      <h4 v-if="this.$store.state.currentUser.length != 0">Email: {{getEmail()}}</h4>
+      <h4 v-if="this.$store.state.currentUser.length != 0">Tipo de user: {{getUsertype()}}</h4>
+    </div>
   </div>
 </template>
 
@@ -35,8 +37,7 @@ export default {
       } else {
         return "Normal";
       }
-    },
-
+    }
   }
 };
 </script>

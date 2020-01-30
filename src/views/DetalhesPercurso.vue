@@ -1,10 +1,10 @@
 <template>
-  <div class="row">
+  <div id = "main" class="row">
     <div class="container">
       <div>
         <div id="titulo1" class="row">
           <div class="col-sm-12">
-            <h2>{{this.$store.state.currentRoute.title}}</h2>
+            <h2 class="display-4">{{this.$store.state.currentRoute.title}}</h2>
             <br />
           </div>
         </div>
@@ -12,6 +12,7 @@
           <div class="col-sm-2"></div>
           <div class="col-sm-8 text-left">
             <h4>Detalhes</h4>
+            <h4>{{this.$store.state.currentRoute.desc}}</h4>
             <div class="card border-0">
               <div class="card-body">
                 <table class="table table-sm">
@@ -59,6 +60,9 @@
           </div>
         </div>
       </div>
+      <br />
+      <br />
+=======
 
       <!-- Sharingbutton Facebook -->
       <a
@@ -83,6 +87,7 @@
           </div>Share on Facebook
         </div>
       </a>
+
 
       <AddComment></AddComment>
       <Comments
@@ -288,11 +293,19 @@ table th {
   padding-left: 60px;
 }
 
+
 .google-map {
   width: 800px;
   height: 600px;
   margin: 0 auto;
 }
+
+
+
+#main{
+  margin-right: 15%
+}
+
 
 /* BOTOES DE PARTILHA */
 
@@ -467,4 +480,5 @@ table th {
   background-color: #5e5e5e;
   border-color: #5e5e5e;
 }
+
 </style>

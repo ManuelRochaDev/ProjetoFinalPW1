@@ -1,8 +1,8 @@
 <template>
   <div>
       <div class="row">
-        <div class="col-lg-12">
-          <h1>Admin page</h1>
+        <div class="col-lg-12" id="h1">
+          <h1 id ="admin" class="display-3">Admin page</h1>
           <br />
           <br />
           <CreateRoute></CreateRoute>
@@ -20,3 +20,10 @@ export default {
   }
 };
 </script>
+
+
+<style scoped>
+#admin{
+  padding-right: 10%
+}
+</style>

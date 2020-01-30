@@ -2,71 +2,83 @@
   <div id="registration">
     <br />
     <br />
-    <h1 id="redTitle">REGISTO</h1>
-    <hr class="back-line" />
-    <div class="container col-sm-6">
-      <form v-on:submit.prevent="addUser()">
-        <div class="container">
-          <div class="row">
-            <div class="col-sm-6">
-              <form class="input">
-                <label for="input-2">Nome Próprio:</label>
-                <input id="input-2" v-model="name" required placeholder="Introduzir nome" />
-              </form>
+    <div id="formLogin" class="row">
+      <div class="col-sm-4"></div>
+      <div class="col-sm-4">
+        <!-- Default form register -->
+        <form
+          class="text-center border border-light p-5"
+          action="#!"
+          v-on:submit.prevent="addUser()"
+        >
+          <h1>Registar</h1>
+
+          <div class="form-row mb-4">
+            <div class="col">
+              <!-- First name -->
+              <input
+                type="text"
+                v-model="name"
+                required
+                id="defaultRegisterFormFirstName"
+                class="form-control"
+                placeholder="Primeiro nome"
+              />
             </div>
-            <div class="col-sm-6">
-              <form class="input" id="input-group-6">
-                <label for="input-6">Apelido:</label>
-                <input id="input-6" v-model="lastName" required placeholder="Introduzir apelido" />
-              </form>
-            </div>
-          </div>
-        </div>
-        <div class="container">
-          <div class="row">
-            <div class="col-sm-6">
-              <form class="input" id="input-group-1">
-                <label for="input-1">Email:</label>
-                <input
-                  id="input-1"
-                  v-model="email"
-                  type="email"
-                  required
-                  placeholder="Introduzir email"
-                />
-              </form>
-            </div>
-          </div>
-        </div>
-        <div class="container">
-          <div class="row">
-            <div class="col-sm-6">
-              <form class="input" id="input-group-4">
-                <label for="input-4">Password:</label>
-                <input
-                  id="input-4"
-                  v-model="password"
-                  type="password"
-                  required
-                  placeholder="Introduzir password"
-                />
-              </form>
+            <div class="col">
+              <!-- Last name -->
+              <input
+                type="text"
+                v-model="lastName"
+                required
+                id="defaultRegisterFormLastName"
+                class="form-control"
+                placeholder="Último nome"
+              />
             </div>
           </div>
-        </div>
-        <div class="container">
-          <div class="row">
-            <div class="col-sm-6">
-              <button id="show-btn" squared>
-                <router-link id="link" to="/login">Login</router-link>
-              </button>
-            </div>
-            <div class="col-sm-6">
-              <button type="submit" id="show-btn" squared>Confirmar</button>
-            </div>
-          </div>
-        </div>
-      </form>
+
+          <!-- E-mail -->
+          <input
+            type="email"
+            v-model="email"
+            id="defaultRegisterFormEmail"
+            class="form-control mb-4"
+            placeholder="E-mail"
+          />
+
+          <!-- Password -->
+          <input
+            type="password"
+            v-model="password"
+            id="defaultRegisterFormPassword"
+            class="form-control"
+            placeholder="Password"
+            minlength="6"
+            required
+            aria-describedby="defaultRegisterFormPasswordHelpBlock"
+          />
+          <small
+            id="defaultRegisterFormPasswordHelpBlock"
+            class="form-text text-muted mb-4"
+          >8 Caracteres e 1 número</small>
+
+          <!-- Sign up button -->
+          <button
+            class="btn my-4 btn-block"
+            style="background-color: #671919; color: #ffffff"
+            type="submit"
+          >Registar</button>
+
+          <!-- Access log-in page-->
+          <button class="btn my-4 btn-block" style="background-color: #671919; color: #ffffff">
+            <router-link id="link" to="/login">Login</router-link>
+          </button>
+
+          <hr />
+        </form>
+      </div>
+      <div class="col-sm-4"></div>
     </div>
   </div>
 </template>
@@ -80,7 +92,8 @@ export default {
     name: "",
     lastName: "",
     password: "",
-    userType: "" //0 = admin, 1 = user normal
+    userType: "", //0 = admin, 1 = user normal
+    img: ""
   }),
   created: function() {
     window.addEventListener("unload", this.saveStorage);
@@ -105,9 +118,11 @@ export default {
         lastName: this.lastName,
         password: this.password,
         userType: 1,
-        isBlocked: 0
+        isBlocked: 0,
+        img: "../assets/avatar.png"
       });
     },
+
     saveStorage() {
       localStorage.setItem(
         "currentUser",
@@ -118,7 +133,12 @@ export default {
 };
 </script>
 
-
 <style scoped>
+#link{
+  color:white;
+}
 
+h1{
+  margin-right:50px
+}
 </style>

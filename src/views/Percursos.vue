@@ -96,6 +96,8 @@ export default {
 <style>
 #cards i {
   color: #671919;
+  align-items: center;
+  margin:inherit
 }
 
 table td {
@@ -112,5 +114,20 @@ table th {
   border-top: none !important;
   background-color: #671919 !important;
   color: #fff !important;
+}
+
+.container{
+  position: relative;
+  align-items: center;
+  margin-left: 20%; 
+}
+
+
+h1{
+  text-align: center;
+  align-items: center;
+  align-self: center;
+  align-content: center;
+  margin-left: 13%
 }
 </style>

@@ -39,19 +39,33 @@
         </li>
       </ul>
       <!-- fim -->
-      <form
-        class="navbar-form navbar-left"
-        action="#"
-        v-if="this.$store.state.currentPath == '/percursos'"
-      ></form>
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a
-            class="nav-link"
-            href="/perfil"
-            v-if="this.$store.state.currentUser[0] !== null || this.$store.state.currentUser[0] !== [] || this.$store.state.currentUser[0] !== ''"
-          >
-            <i class="fa fa-user-circle fa-2x"></i>
+          <form v-on:submit.prevent="logout()">
+            <div class="col-sm-6" v-if="this.$store.state.currentUser != ''">
+              <button class="btn btn-lg" type="submit" id="logout-btn" squared>Logout</button>
+            </div>
+            <div class="col-sm-6" v-else>
+              <button class="btn btn-lg" type="submit" id="logout-btn"  hidden squared>Logout</button>
+            </div>
+          </form>
+        </li>
+      </ul>
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <form>
+            <div class="col-sm-6" v-if="this.$store.state.currentUser.userType === 0">
+              
+              <router-link to="/admin" class="btn btn-lg" type="submit" id="admin-btn" squared>Admin</router-link>
+              
+            </div>
+          </form>
+        </li>
+      </ul>
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="#">
+            <i class="fa fa-user-circle fa-3x"></i>
           </a>
         </li>
       </ul>
@@ -70,12 +84,18 @@ export default {
     if (localStorage.getItem("currentUser")) {
       this.$store.state.currentUser = JSON.parse(
         localStorage.getItem("currentUser")
-      );
+      )[0];
     }
     this.$store.state.currentPath = window.location.pathname;
-    /* alert(this.$store.state.currentUser[0].userType); */
   },
-  computed: {}
+
+  methods: {
+    logout() {
+      this.$store.commit("LOGOUT", {
+        email: this.emailLogin
+      });
+    }
+  }
 };
 </script>
 
@@ -88,8 +108,13 @@ export default {
 #nav a {
   font-weight: bold;
   color: #671919;
-  padding-left: 30px;
-  padding-right: 30px;
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+#navbarTogglerDemo02 {
+  margin-right: 8%;
+  margin-left: 8%;
 }
 
 #nav a:hover {
@@ -100,4 +125,17 @@ export default {
   background-color: #671919;
   color: #fff;
 }
+
+#logout-btn{
+background-color:#671919;
+color: white
+}
+
+#admin-btn{
+background-color:white;
+color: white;
+text-align: center;
+border: 2px solid #671919
+}
+
 </style>

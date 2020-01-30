@@ -36,4 +36,8 @@ export default {
   background-color: #671919;
   color: #fff;
 }
+p{
+  text-align: center;
+  padding-right: 200px;
+}
 </style>
