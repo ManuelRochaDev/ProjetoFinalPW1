@@ -64,7 +64,6 @@ export default {
     show: true
   }),
   created: function() {
-    //qd abres esta pagina vai acontecer isto
     if (localStorage.getItem("users")) {
       this.$store.state.users = JSON.parse(localStorage.getItem("users"));
     }
@@ -76,7 +75,7 @@ export default {
   },
   methods: {
     login() {
-      if (this.$store.state.users.isBlocked === 0) {
+      if (this.$store.state.users.isBlocked !== 1) {
         this.$store.commit("LOGIN", {
           email: this.emailLogin,
           password: this.passwordLogin

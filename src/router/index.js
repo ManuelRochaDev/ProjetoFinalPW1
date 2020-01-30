@@ -41,13 +41,13 @@ const routes = [
     //admin check
     beforeEnter(to, from, next) {
       let loggedUsers = JSON.parse(localStorage.getItem('currentUser'))
-      if (loggedUsers == []) {
-        if (loggedUsers[0].userType == 1) {
+      //alert(loggedUsers[0].userType)
+      if (loggedUsers != [] || loggedUsers != null) {
+        if (loggedUsers[0].userType != 0) {
           next("/");
         } else {
           next();
         }
-        next("/")
       }
     }
   },

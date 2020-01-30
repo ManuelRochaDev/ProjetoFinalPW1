@@ -1,7 +1,6 @@
 <template>
   <!--Navbar-->
   <nav class="navbar navbar-light navbar-expand-lg">
-    <!--<a class="navbar-brand" href="#">WINEROUTE</a>-->
     <button
       class="navbar-toggler"
       type="button"
@@ -13,7 +12,7 @@
     >
       <span class="navbar-toggler-icon"></span>
     </button>
-    
+
     <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
       <!-- mostrar página atual a vermelho -->
       <ul class="navbar-nav mr-auto">
@@ -40,19 +39,18 @@
         </li>
       </ul>
       <!-- fim -->
-      <form class="navbar-form navbar-left" action="#" v-if="this.$store.state.currentPath == '/percursos'">
-        <div class="input-group">
-          <input type="text" class="form-control" placeholder="Pesquisar" name="search" />
-          <div class="input-group-btn">
-            <button class="btn btn-default" type="submit" style="background-color: #ffffff;">
-              <i class="fa fa-search"></i>
-            </button>
-          </div>
-        </div>
-      </form>
+      <form
+        class="navbar-form navbar-left"
+        action="#"
+        v-if="this.$store.state.currentPath == '/percursos'"
+      ></form>
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link" href="/perfil">
+          <a
+            class="nav-link"
+            href="/perfil"
+            v-if="this.$store.state.currentUser[0] !== null || this.$store.state.currentUser[0] !== [] || this.$store.state.currentUser[0] !== ''"
+          >
             <i class="fa fa-user-circle fa-2x"></i>
           </a>
         </li>
@@ -67,23 +65,21 @@ export default {
   props: {
     msg: String
   },
-  data: () => ({
-
-  }),
+  data: () => ({}),
   created: function() {
-    //qd abres esta pagina vai acontecer isto
     if (localStorage.getItem("currentUser")) {
       this.$store.state.currentUser = JSON.parse(
         localStorage.getItem("currentUser")
       );
     }
     this.$store.state.currentPath = window.location.pathname;
-  }
+    /* alert(this.$store.state.currentUser[0].userType); */
+  },
+  computed: {}
 };
 </script>
 
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 #nav {
   padding-bottom: 20px;

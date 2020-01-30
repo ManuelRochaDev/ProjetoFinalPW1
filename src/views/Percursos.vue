@@ -63,67 +63,6 @@
         </div>
       </div>
     </div>
-    <!-- <div class="col-sm-5">
-      <div class="card border-0">
-        <div class="card-body">
-          <table class="table table-sm">
-            <thead>
-              <tr id="cardTitle">
-                <th scope="col">Vila do Conde</th>
-                <th scope="col"></th>
-                <th scope="col"></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td scope="row">
-                  <i class="fas fa-walking"></i>
-                </td>
-                <td>7 Km</td>
-                <td></td>
-              </tr>
-              <tr>
-                <td scope="row">
-                  <i class="fas fa-map-marker-alt"></i>
-                </td>
-                <td>Igreja Matriz, Mosteiro Santa Clara</td>
-                <td></td>
-              </tr>
-              <tr>
-                <td scope="row">
-                  <i class="far fa-clock"></i>
-                </td>
-                <td>2h30</td>
-                <td></td>
-              </tr>
-              <tr>
-                <td scope="row">
-                  <i class="fas fa-signal"></i>
-                </td>
-                <td>Dificil</td>
-                <td></td>
-              </tr>
-              <tr>
-                <td scope="row">
-                  <i class="fas fa-star-half-alt"></i>
-                </td>
-                <td>4.2/5</td>
-                <td></td>
-              </tr>
-              <tr>
-                <td scope="row"></td>
-                <td></td>
-                <td>
-                  <a href="#" class="btn" style="background-color: #ffffff;">
-                    <i class="fas fa-plus-circle fa-2x"></i>
-                  </a>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>-->
   </div>
 </template>
 
@@ -138,8 +77,7 @@ export default {
   }),
   methods: {
     setCurrentRoute(id) {
-      this.$store.state.currentRoute = id;
-      //alert(this.$store.state.currentRoute);
+      localStorage.setItem("currentRoute", JSON.stringify(this.$store.state.appRoutes[id]))
     }
   },
   created: function() {

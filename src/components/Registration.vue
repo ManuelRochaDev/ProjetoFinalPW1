@@ -106,11 +106,9 @@ export default {
         password: this.password,
         userType: 1,
         isBlocked: 0
-        //img: ""
       });
     },
     saveStorage() {
-      //localStorage.setItem("users", JSON.stringify(this.$store.state.users));
       localStorage.setItem(
         "currentUser",
         JSON.stringify(this.$store.state.currentUser)

@@ -14,15 +14,6 @@ export default {
     landingImage
   },
   created: function() {
-    /* window.addEventListener("unload", this.saveStorage);
-    if (localStorage.getItem("users")) {
-      this.$store.state.users = JSON.parse(localStorage.getItem("users"));
-    }
-    if (localStorage.getItem("currentUser")) {
-      this.$store.state.currentUser = JSON.parse(
-        localStorage.getItem("currentUser")
-      );
-    } */
     this.$store.state.path = window.location.pathname
   },
   methods: {

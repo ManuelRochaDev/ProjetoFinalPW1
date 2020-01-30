@@ -45,9 +45,6 @@
                 </button>
               </td>
             </tr>
-            <!--<tr>
-              <th>No existing users</th>
-            </tr>-->
           </tbody>
         </table>
       </div>
@@ -85,9 +82,6 @@
                 </button>
               </td>
             </tr>
-            <!--<tr>
-              <th>No existing users</th>
-            </tr>-->
           </tbody>
         </table>
       </div>
@@ -123,11 +117,9 @@
       <p v-for="(poi, index) in pois" :key="poi.id">
         <input type="text" v-model="poi.name" />
         <input type="button" @click="removeTextbox(index)" value="X" />
-        <input type="file"/>Escolher audio
+        <input type="file" />Escolher audio
       </p>
 
-      <input type="button" value="Delete" @click="deleteMarkers()" />
-      <input type="button" id="btnGeocode" value="Gerar pontos no mapa" />
       <br />
       <br />
 
@@ -143,8 +135,6 @@
       <br />
 
       <div>
-        <h1>MAPS WITH VUE</h1>
-        <!-- <button @click="renderMap()">RENDER MAP</button> -->
         <br />
         <br />
         <div class="google-map" id="myMap"></div>
@@ -162,8 +152,6 @@ export default {
     title: "",
     city: "",
     dif: "",
-    time: "ahy",
-    distance: "",
     idTextbox: 0,
     users: [{}],
     appRoutes: [],
@@ -173,11 +161,10 @@ export default {
     name: "",
     coord: [],
     marker: [],
-    lat: 0,
-    lng: 0,
+    lat: [],
+    lng: "",
     myPos: null,
     mapPois: [],
-    esmad: [],
     mapPoisTest: []
   }),
 
@@ -197,48 +184,12 @@ export default {
         localStorage.getItem("appRoutes")
       );
     }
-    //ESTAVA AQUI!!!!!!!!!!!!!!!!!!!!!!!!!!
-    /* 
-    for (let i = 0; i < this.$store.state.pois; i++) {
-      this.mapPois[i] = {
-        lat: this.$store.state.pois[i].lat,
-        lng: this.$store.state.pois[i].lng
-      };
-    } */
-    /* mapPois((contact) => {
-   this.mapPois.push({
-        lat: this.$store.state.pois[i].lat,
-        lng: this.$store.state.pois[i].lng
-      }); 
-});*/
   },
   mounted: function() {
     this.renderMap();
   },
   methods: {
     //send the new route to the store
-    addRoute() {
-      alert("addroute() " + this.time);
-      const directionsService = new google.maps.DirectionsService();
-      const directionsRenderer = new google.maps.DirectionsRenderer();
-      directionsRenderer.setMap(this.map);
-
-      this.calcRoute(directionsService, directionsRenderer);
-      
-      this.$store.commit("ADD_ROUTE", {
-        id: Number(this.getLastRouteId()) + 1,
-        title: this.title,
-        city: this.city,
-        dif: this.dif,
-        distance: this.distance,
-        time: this.time,
-
-        idRoute: Number(this.getLastRouteId()) + 1,
-        name: this.name,
-        lat: this.lat,
-        lng: this.lng
-      });
-    },
 
     //insert the map on the page
     renderMap() {
@@ -293,17 +244,9 @@ export default {
         // Browser doesn't support Geolocation
         this.handleLocationError(false, this.infoWindow, this.map.getCenter());
       }
-
-      const geocoder = new google.maps.Geocoder();
-
-      document
-        .querySelector("#btnGeocode")
-        .addEventListener("click", () =>
-          this.geocodeAddress(geocoder, this.map)
-        );
     },
 
-    //Insert a new textbox for the user to insert an interestPoint
+    //inserir textbox para pontos de interesse
     addTextbox() {
       this.idTextbox++;
       this.pois.push({ id: this.idTextbox, name: "", lat: "", lng: "" });
@@ -313,12 +256,12 @@ export default {
       return this.$store.getters.getLastRouteId;
     },
 
-    //remove the Box
+    //remover
     removeTextbox(index) {
       this.pois.splice(index, 1);
     },
 
-    //Upgrade or downgrade user
+    //Upgrade ou downgrade user
     changeUsertype(userId) {
       if (confirm("Tem a certeza que quer promover/despromover utilizador?")) {
         this.$store.commit("CHANGE_USER_TYPE", {
@@ -362,8 +305,6 @@ export default {
     },
 
     calcRoute: function(directionsService, directionsRenderer) {
-      //alert(this.$store.state.pois[10].lng);
-      this.esmad = { lat: 41.366949, lng: -8.738722 };
       let mapPois2 = [];
       let timee = "";
       let distancee = "";
@@ -379,7 +320,7 @@ export default {
       const request = {
         origin: this.myPos,
         destination: this.mapPois[this.mapPois.length - 1].location,
-        waypoints: this.mapPois,
+        waypoints: this.mapPois.slice(0, -1),
         travelMode: google.maps.DirectionsTravelMode.WALKING,
         optimizeWaypoints: true
       };
@@ -397,19 +338,19 @@ export default {
         } else {
           alert(status);
         }
-        //alert(timee);
         this.time = timee;
-        alert(this.time)
+        alert(this.time);
         this.distance = distancee;
       });
     },
 
-    deleteMarkers() {
-      //Loop through all the markers and remove
-      for (var i = 0; i < this.marker.length; i++) {
-        this.marker[i].setMap(null);
-      }
-      this.marker = [];
+    addRoute() {
+      const directionsService = new google.maps.DirectionsService();
+      const directionsRenderer = new google.maps.DirectionsRenderer();
+      directionsRenderer.setMap(this.map);
+      const geocoder = new google.maps.Geocoder();
+      this.geocodeAddress(geocoder, this.map);
+      this.calcRoute(directionsService, directionsRenderer);
     },
 
     geocodeAddress(geocoder, resultsMap) {
@@ -429,15 +370,31 @@ export default {
             markerr.setMap(resultsMap);
             this.coord = markerr;
             this.marker = markerr;
-            this.lat = markerr.getPosition().lat();
-            this.lng = markerr.getPosition().lng();
+            
           } else {
             alert(
               "Geocode was not successful for the following reason: " + status
             );
           }
+          this.$store.state.lat = markerr.getPosition().lat();
+            this.$store.state.lng = markerr.getPosition().lng();
+            this.$store.commit("ADD_ROUTE", {
+              id: Number(this.getLastRouteId()) + 1,
+              title: this.title,
+              city: this.city,
+              dif: this.dif,
+              distance: this.$store.state.distance,
+              time: this.$store.state.time,
+
+              idRoute: Number(this.getLastRouteId()) + 1,
+              name: this.name,
+              lat: this.$store.state.lat,
+              lng: this.$store.state.lng
+            });
         });
       }
+
+      //return
     }
   }
 };

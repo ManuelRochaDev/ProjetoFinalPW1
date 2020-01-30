@@ -17,33 +17,53 @@ export default new Vuex.Store({
     }],
     appRoutes: [{
       dif: "",
-      distance: "",
-      time: "",
+      distance: "450m",
+      time: "6 min",
       id: 0,
-      title: "Vinhos pelo Douro",
-      city: "Porto",
+      title: "Percurso em Vila do Conde",
+      city: "Vila do Conde",
     }],
     pois: [{
-      idRoute: 1,
+      idRoute: 0,
       lat: 41.352549,
       lng: -8.741763,
       name: "Bacchus Wine Bar",
       audio: "", //aqui seria um link para o áudio
       img: "https://b.zmtcdn.com/data/pictures/8/18859338/2ef0c452a621c193425c98ef7db94ed5_featured_v2.jpg"
-    }],
+    },
+    {
+      idRoute: 0,
+      lat: 41.352044,
+      lng: -8.741484,
+      name: "Encanas Bar",
+      audio: "", //aqui seria um link para o áudio
+      img: ""
+    },
+    {
+      idRoute: 0,
+      lat: 41.353645,
+      lng: -8.742915,
+      name: "Barcearia 1º Piso",
+      audio: "", //aqui seria um link para o áudio
+      img: ""
+    },
+    ],
     comments: [{
       id: 0,
       content: "",
       currentUser: 0,
       userName: "",
-      date: "",
-      //img: ""
+      date: ""
     }],
     spotsOfInterest: [],
     currentUser: [], //Se estiver vazio ninguem está logado
     currentRoute: [],
     credCorrect: false,
-    currentPath: "/percursos"
+    currentPath: "/percursos",
+    lat: 0,
+    lng: 0,
+    time: "",
+    distance: ""
   },
   mutations: {
     REGISTER_USER(state, payload) {
@@ -60,7 +80,7 @@ export default new Vuex.Store({
         })
         localStorage.setItem("users", JSON.stringify(this.state.users))
         alert("register ok");
-        //window.history.back();
+        window.history.back();
 
       } else {
         alert("existing email");
@@ -71,14 +91,14 @@ export default new Vuex.Store({
       for (const user of state.users) {
         if (user.email === payload.email && user.password === payload.password) {
           state.currentUser.push({
-              id: user.id,
-              name: user.name,
-              lastName: user.lastName,
-              email: payload.email,
-              password: payload.password,
-              userType: user.userType
+            id: user.id,
+            name: user.name,
+            lastName: user.lastName,
+            email: payload.email,
+            password: payload.password,
+            userType: user.userType
 
-            }),
+          }),
             alert("login ok")
           localStorage.setItem("currentUser", JSON.stringify(this.state.currentUser))
 
@@ -101,7 +121,7 @@ export default new Vuex.Store({
     LOGOUT(state) {
       state.currentUser = []
       localStorage.removeItem("currentUser", JSON.stringify(this.state.currentUser));
-      //window.location.href = ".."
+      window.location.href = ".."
     },
 
     /**
@@ -131,8 +151,7 @@ export default new Vuex.Store({
 
         alert("new route");
         //window.history.back();
-      } else {
-        alert("Route already exists");
+
       }
     },
 
@@ -156,6 +175,23 @@ export default new Vuex.Store({
         state.users[payload.id].userType = 0
       }
       localStorage.setItem("user", JSON.stringify(this.state.users))
+    },
+
+    CHANGE_USER(state, payload) {
+      let usersUpd = {}
+      for (let i = 0; i < state.users.length; i++) {
+        
+        if (state.users[i].id == state.users[payload.id].id) {
+          usersUpd[i].name = payload.newFirstName
+          usersUpd[i].lastName = payload.newLastName
+          usersUpd[i].email = payload.newEmail
+          usersUpd[i].password = payload.newPassword
+
+        } else {
+          usersUpd[i] = state.users[i]
+        }
+        localStorage.setItem("users", JSON.stringify(usersUpd))
+      }
     },
 
     ADD_COMMENT(state, payload) {

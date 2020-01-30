@@ -26,7 +26,7 @@ export default {
   }),
 
   created: function() {
-    //gets the date, month and year and insert them in a variable
+    //buscar data
     let date = this.currentDate.getDate();
     let month = this.currentDate.getMonth() + 1;
     let year = this.currentDate.getFullYear();
@@ -50,8 +50,6 @@ export default {
           currentUser: Number(this.getLastId()) + 1,
           userName: this.$store.getters.lastName,
           date: this.formattedDate
-          //img:
-          //avatar: this.avatar
         });
       }
     }
