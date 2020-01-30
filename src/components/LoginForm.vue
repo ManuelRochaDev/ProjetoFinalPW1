@@ -1,61 +1,59 @@
 <template>
-  <div id="loginform">
-    <br />
-    <br />
+  <div id="app">
+    <div id="formLogin" class="row">
+      <div class="col-sm-4"></div>
+      <div class="col-sm-4">
+        <!-- Default form login -->
+        <form class="text-center border border-light p-5" action="#!" v-on:submit.prevent="login()">
+          <h1>Login</h1>
 
-    <h1 id="redTitle">LOGIN</h1>
-    <hr class="back-line" />
-
-    <br />
-
-    <div class="container col-sm-4">
-      <form v-on:submit.prevent="login()" v-if="show">
-        <form id="input-group-1">
-          <label for="input-1">Email:</label>
+          <!-- Email -->
           <input
-            id="input-1"
-            v-model="emailLogin"
             type="email"
+            v-model="emailLogin"
             required
-            placeholder="Introduzir email"
+            id="defaultLoginFormEmail"
+            class="form-control mb-4"
+            placeholder="E-mail"
           />
-        </form>
 
-        <form id="input-group-4">
-          <label for="input-4">Password:</label>
+          <!-- Password -->
           <input
-            id="input-4"
-            v-model="passwordLogin"
             type="password"
+            v-model="passwordLogin"
             required
-            placeholder="Introduzir password"
+            id="defaultLoginFormPassword"
+            class="form-control mb-4"
+            placeholder="Password"
           />
-        </form>
 
-        <div class="container">
-          <div class="row">
-            <div class="col-sm-6">
-              <button id="show-btn" squared>
-                <router-link id="link" to="/registar">Registar</router-link>
-              </button>
-            </div>
-            <div class="col-sm-6">
-              <button type="submit" id="show-btn" squared>Confirmar</button>
+          <div class="d-flex justify-content-around">
+            <div>
+              <!-- Remember me -->
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="defaultLoginFormRemember" />
+                <label class="custom-control-label" for="defaultLoginFormRemember">Lembrar</label>
+              </div>
             </div>
           </div>
-        </div>
-      </form>
 
-      <form v-on:submit.prevent="logout()" v-if="show">
-        <div class="col-sm-6">
-          <button type="submit" id="logout-btn" squared>Logout</button>
-        </div>
-      </form>
+          <!-- Sign in button -->
+          <button id="logIn" class="btn btn-block my-4" style="background-color: #671919;" type="submit">Entrar</button>
+
+          <!-- Register -->
+          <button  class="btn btn-block my-4" style="background-color: #671919;" squared>
+            <router-link id="link" to="/registar">Registar</router-link>
+          </button>
+        </form>
+        <!-- Default form login -->
+      </div>
+      <div class="col-sm-4"></div>
     </div>
   </div>
 </template>
 
 <script>
+import swal from "sweetalert";
 export default {
   name: "LoginForm",
   data: () => ({
@@ -76,13 +74,13 @@ export default {
   },
   methods: {
     login() {
-      if (this.$store.state.users.isBlocked === 0) {
+      if (this.$store.state.users.isBlocked !== 1) {
         this.$store.commit("LOGIN", {
           email: this.emailLogin,
           password: this.passwordLogin
         });
-      } else {
-        alert("Está blockeado de entrar no website");
+      } else{
+        swal("Está blockeado de entrar no website")
       }
     },
 
@@ -96,4 +94,14 @@ export default {
 </script>
 
 <style scoped>
+h1{
+  padding-right:50px
+}
+
+#link{
+  color:white;
+}
+#logIn{
+  color:white;
+}
 </style>

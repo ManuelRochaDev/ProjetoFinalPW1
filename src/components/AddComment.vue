@@ -1,14 +1,21 @@
 <template>
   <div id="myComment">
     <div class="comments">
-      <h2>Comentários</h2>
+      <h2 class="display-4">Comentários</h2>
     </div>
-    <br />
-    <br />
-    <textarea rows="6" cols="100" v-model="newComment.content"></textarea>
-    <br />
-    <br />
-    <input type="submit" value="Submit" @click.prevent="addComment()" />
+      <div>
+        <br />
+        <br />
+        <textarea rows="5" v-model="newComment.content" id="textarea"></textarea>
+        <br />
+        <br />
+        <input
+          type="submit"
+          value="Submit"
+          class="btn btn-primary btn-lg"
+          @click.prevent="addComment() "
+        />
+      </div>
   </div>
 </template>
 
@@ -17,9 +24,7 @@ export default {
   name: "addComment",
 
   data: () => ({
-    newComment: [{
-
-    }],
+    newComment: [{}],
     comments: [],
     currentDate: new Date(),
     formattedDate: ""
@@ -48,10 +53,8 @@ export default {
           id: Number(this.getLastCommentId()) + 1,
           content: this.newComment.content,
           currentUser: Number(this.getLastId()) + 1,
-          userName: this.$store.getters.lastName,
-          date: this.formattedDate
-          //img:
-          //avatar: this.avatar
+          userName: this.$store.getters.name,
+          date: this.formattedDate,
         });
       }
     }
@@ -61,4 +64,8 @@ export default {
 
 
 <style scoped>
+#textarea{
+width: 82%;
+margin-bottom: 10px;
+}
 </style>

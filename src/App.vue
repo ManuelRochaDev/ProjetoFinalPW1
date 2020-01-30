@@ -22,17 +22,12 @@ export default {
     Navbar,
     Footer
   },
-  methods: {
-    /* register(){
-      this.$store.commit("REGISTER_USER", payload)
-    } */
-  }
 };
 </script>
 
 <style>
 #app {
-  font-family: "Montserrat";
+  font-family: "Raleway", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;

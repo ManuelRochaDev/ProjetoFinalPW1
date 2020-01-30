@@ -1,95 +1,108 @@
 <template>
   <div id="mainDiv">
-    <div class="panel panel-primary table-responsive">
-      <div class="panel-heading">
-        <h2 class="card-title">Utilizadores</h2>
-      </div>
-      <div class="panel-body">
-        <table class="table">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Email</th>
-              <th scope="col">Nome</th>
-              <th scope="col">Apelido</th>
-              <th scope="col">Tipo de utilizador</th>
-              <th scope="col">Estado</th>
-            </tr>
-          </thead>
+    <div class="panel-group" id="userTable">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h2 class="card-title">Utilizadores</h2>
+          <br />
+        </div>
+        <div id = "tabelUser" class="container">
+          <div class="panel-body">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Email</th>
+                  <th scope="col">Nome</th>
+                  <th scope="col">Apelido</th>
+                  <th scope="col">Tipo de utilizador</th>
+                  <th scope="col">Estado</th>
+                  <th scope="col"></th>
+                  <th scope="col"></th>
+                  <th scope="col"></th>
+                </tr>
+              </thead>
 
-          <tbody id="tableValues">
-            <tr v-for="user in this.$store.state.users" :key="user.id">
-              <td>{{user.id}}</td>
-              <td>{{user.email}}</td>
-              <td>{{user.name}}</td>
-              <td>{{user.lastName}}</td>
-              <td>{{user.userType}}</td>
-              <td>{{user.isBlocked}}</td>
-              <td>
-                <button type="button" class="btn btn-danger btn-lg" @click="removeUser(user.id)">
-                  <span class="glyphicon glyphicon-remove"></span>
-                </button>
-              </td>
-              <td>
-                <button
-                  type="button"
-                  class="btn btn-primary btn-lg"
-                  @click="changeUsertype(user.id)"
-                >
-                  <span class="glyphicon glyphicon-resize-vertical"></span>
-                </button>
-              </td>
-              <td>
-                <button type="button" class="btn btn-secondary btn-lg">
-                  <span class="glyphicon glyphicon-lock"></span>
-                </button>
-              </td>
-            </tr>
-            <!--<tr>
+              <tbody id="tableValues">
+                <tr v-for="user in this.$store.state.users" :key="user.id">
+                  <td>{{user.id}}</td>
+                  <td>{{user.email}}</td>
+                  <td>{{user.name}}</td>
+                  <td>{{user.lastName}}</td>
+                  <td>{{user.userType}}</td>
+                  <td>{{user.isBlocked}}</td>
+                  <td>
+                    <button
+                      type="button"
+                      class="btn btn-danger btn-lg"
+                      @click="removeUser(user.id)"
+                    >
+                      <span class="glyphicon glyphicon-remove"></span>
+                    </button>
+                  </td>
+                  <td>
+                    <button
+                      type="button"
+                      class="btn btn-primary btn-lg"
+                      @click="changeUsertype(user.id)"
+                    >
+                      <span class="glyphicon glyphicon-resize-vertical"></span>
+                    </button>
+                  </td>
+                  <td>
+                    <button type="button" class="btn btn-secondary btn-lg">
+                      <span class="glyphicon glyphicon-lock"></span>
+                    </button>
+                  </td>
+                </tr>
+                <!--<tr>
               <th>No existing users</th>
-            </tr>-->
-          </tbody>
-        </table>
+                </tr>-->
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     </div>
 
-    <br />
-    <br />
+    <div class="panel-group" id="routeTable">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h2 class="card-title">Routes</h2>
+        </div>
+        <div class="container">
+          <div class="panel-body">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Título</th>
+                  <th scope="col">Cidade</th>
+                  <th scope="col"></th>
+                </tr>
+              </thead>
 
-    <div class="panel panel-primary table-responsive">
-      <div class="panel-heading">
-        <h2 class="card-title">Routes</h2>
-      </div>
-      <div class="panel-body">
-        <table class="table">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Título</th>
-              <th scope="col">Cidade</th>
-            </tr>
-          </thead>
+              <tbody id="tableValues">
+                <tr v-for="appRoute in this.$store.state.appRoutes" :key="appRoute.id">
+                  <td>{{appRoute.id}}</td>
+                  <td>{{appRoute.title}}</td>
+                  <td>{{appRoute.city}}</td>
+                  <td>
+                    <button
+                      v-if="appRoute.id !== 0"
+                      type="button"
+                      class="btn btn-danger btn-lg"
+                      @click="removeRoute(appRoute.id)"
+                    >
+                      <span class="glyphicon glyphicon-remove"></span>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
 
-          <tbody id="tableValues">
-            <tr v-for="appRoute in this.$store.state.appRoutes" :key="appRoute.id">
-              <td>{{appRoute.id}}</td>
-              <td>{{appRoute.title}}</td>
-              <td>{{appRoute.city}}</td>
-              <td>
-                <button
-                  type="button"
-                  class="btn btn-danger btn-lg"
-                  @click="removeRoute(appRoute.id)"
-                >
-                  <span class="glyphicon glyphicon-remove"></span>
-                </button>
-              </td>
-            </tr>
-            <!--<tr>
-              <th>No existing users</th>
-            </tr>-->
-          </tbody>
-        </table>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -97,49 +110,65 @@
     <br />
 
     <div id="routeDiv">
-      <h2 class="card-title">Adicionar Percursos</h2>Título:
-      <input type="text" name="title" id="routeTitle" v-model="title" />
-      <br />
-      <br />Cidade:
-      <input type="text" name="city" id="routeCity" v-model="city" />
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <h2 class="card-title">Adicionar Percursos</h2>
+          <br />
+          <label for="idRouteTitle">Título:</label>
+          <input type="text" name="title" id="routeTitle" v-model="title" />
+          <br />
+          <br />
+          <label for="idRouteTitle">Cidade:</label>
+          <input type="text" name="city" id="routeCity" v-model="city" />
 
-      <br />
-      <br />Pontos de interesse:
-      <button
-        name="addText"
-        id="addText"
-        class="btn btn-primary"
-        href="#"
-        role="button"
-        @click="addTextbox()"
-      >Adicionar novo</button>
-      <br />
-      <p v-for="(poi, index) in pois" :key="poi.id">
-        <input type="text" v-model="poi.name" />
-        <input type="button" @click="removeTextbox(index)" value="X" />
-        <input type="file" />Escolher audio
-      </p>
+          <br />
+          <br />Pontos de interesse:
+          <button
+            name="addText"
+            id="addText"
+            class="btn btn-dark btn-lg"
+            href="#"
+            role="button"
+            @click="addTextbox()"
+          >Adicionar novo</button>
+          <br />
+          <p v-for="(poi, index) in pois" :key="poi.id">
+            <input type="text" v-model="poi.name" />
+            <input type="button" @click="removeTextbox(index)" value="X" />
+          </p>
 
-      <input type="button" value="Delete" @click="deleteMarkers()" />
-      <input type="button" id="btnGeocode" value="Gerar pontos no mapa" />
-      <br />
-      <br />
+          <br />
+          <input
+            type="button"
+            class="btn btn-danger btn-lg"
+            value="Delete"
+            @click="deleteMarkers()"
+          />
+          <input
+            type="button"
+            class="btn btn-dark btn-lg"
+            id="btnGeocode"
+            value="Gerar pontos no mapa"
+          />
+          <br />
+          <br />
 
-      <a
-        name="addText"
-        id="addText"
-        class="btn btn-primary"
-        href="#"
-        role="button"
-        @click="addRoute()"
-      >Add Route</a>
-      <br />
-      <br />
+          <a
+            name="addText"
+            id="addText"
+            class="btn btn-success btn-lg"
+            href="#"
+            role="button"
+            @click="addRoute()"
+          >Add Route</a>
+          <br />
+          <br />
+        </div>
+      </div>
 
-      <div>
-        <h1>MAPS WITH VUE</h1>
+      <div id="mapDiv">
+        <h2>MAPA</h2>
         <!-- <button @click="renderMap()">RENDER MAP</button> -->
-        <br />
         <br />
         <div class="google-map" id="myMap"></div>
       </div>
@@ -148,6 +177,7 @@
 </template>
 
 <script>
+import swal from "sweetalert";
 export default {
   name: "createRoute",
 
@@ -307,6 +337,9 @@ export default {
     //Upgrade or downgrade user
     changeUsertype(userId) {
       if (confirm("Tem a certeza que quer promover/despromover utilizador?")) {
+        swal("Utilizador alterado com successo", {
+          icon: "success"
+        });
         this.$store.commit("CHANGE_USER_TYPE", {
           id: userId
         });
@@ -315,6 +348,9 @@ export default {
 
     removeUser(userId) {
       if (confirm("Tem a certeza que pretende apagar o utilizador?")) {
+        swal("Utilizador removido com successo", {
+          icon: "success"
+        });
         this.$store.commit("REMOVE_USER", {
           id: userId
         });
@@ -322,7 +358,10 @@ export default {
     },
 
     removeRoute(routeId) {
-      if (confirm("Tem a certeza que pretende apagar a rota?")) {
+      if (confirm("Tem a certeza que quer remover esta rota?")) {
+        swal("Ficheiro removido com successo", {
+          icon: "success"
+        });
         this.$store.commit("REMOVE_ROUTE", {
           id: routeId
         });
@@ -331,6 +370,9 @@ export default {
 
     blockUser(userId) {
       if (confirm("Tem a certeza que quer blockear/desbloquear utilizador?")) {
+        swal("Utilizador alterado com successo", {
+          icon: "success"
+        });
         this.$store.commit("BLOCK_USER", {
           id: userId
         });
@@ -462,4 +504,16 @@ img {
   -webkit-transform: scaleX(-1);
   transform: scaleX(-1);
 }
+
+#routeTable {
+  padding-top: 8%;
+}
+#mapDiv {
+  padding-top: 4%;
+}
+
+.container{
+  padding-right: 10%
+}
+
 </style>

@@ -1,6 +1,9 @@
 <template>
   <div id="cards" class="row">
-    <div class="col-sm-1"></div>
+    <h1 id="titu">Lista de percursos</h1>
+    <div class="container"></div>
+    <div class="col-sm-1">
+    </div>
     <div class="col-sm-5">
       <div class="card border-0">
         <div class="card-body">
@@ -146,6 +149,8 @@ export default {
 <style>
 #cards i {
   color: #671919;
+  align-items: center;
+  margin:inherit
 }
 
 table td {
@@ -162,5 +167,20 @@ table th {
   border-top: none !important;
   background-color: #671919 !important;
   color: #fff !important;
+}
+
+.container{
+  position: relative;
+  align-items: center;
+  margin-left: 20%; 
+}
+
+
+h1{
+  text-align: center;
+  align-items: center;
+  align-self: center;
+  align-content: center;
+  margin-left: 13%
 }
 </style>

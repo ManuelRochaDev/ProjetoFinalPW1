@@ -1,17 +1,17 @@
 <template>
-  <div class="row">
+  <div id = "main" class="row">
     <div class="container">
       <div id="app">
         <div id="titulo1" class="row">
           <div class="col-sm-12">
-            <h2>Vila do Conde</h2>
+            <h2 class="display-4">Vila do Conde</h2>
             <br />
           </div>
         </div>
         <div id="details" class="row">
-          <div class="col-sm-2"></div>
-          <div class="col-sm-8 text-left">
-            <h4>Sobre</h4>
+          <div class="col-sm-1"></div>
+          <div class="col-sm-10 text-left">
+            <h2>Sobre</h2>
             <br />
             <p>
               Vila do Conde é uma freguesia portuguesa do concelho de Vila do Conde, com 6,78 km² de área, 28 636
@@ -19,7 +19,7 @@
               relevantes da história portuguesa, como Afonso Sanches, Manuel de Sá, Gaspar Manuel...
             </p>
             <br />
-            <h4>Detalhes</h4>
+            <h2>Detalhes</h2>
             <div class="card border-0">
               <div class="card-body">
                 <table class="table table-sm">
@@ -65,12 +65,19 @@
             </div>
 
             <br />
-            <h4>Pontos de Interesse</h4>
+            <h2>Pontos de Interesse</h2>
             <img class="img-fluid" src="../assets/mapa.jpg" alt="Mapa" width="600" height="800" />
+            <br />
+            <br />
+            <h2>Audio Guia</h2>
+            <audio controls="controls">
+              <source src="../assets/music.mp3" type="audio/mp3" />seu navegador não suporta HTML5
+            </audio>
           </div>
         </div>
       </div>
-      <br><br>
+      <br />
+      <br />
       <AddComment></AddComment>
       <Comments
         v-for="comment in this.$store.state.comments"
@@ -143,5 +150,9 @@ table th {
 
 #titulo {
   padding-left: 60px;
+}
+
+#main{
+  margin-right: 15%
 }
 </style>

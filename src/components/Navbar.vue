@@ -13,7 +13,7 @@
     >
       <span class="navbar-toggler-icon"></span>
     </button>
-    
+
     <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
       <!-- mostrar página atual a vermelho -->
       <ul class="navbar-nav mr-auto">
@@ -40,20 +40,31 @@
         </li>
       </ul>
       <!-- fim -->
-      <form class="navbar-form navbar-left" action="#">
-        <div class="input-group">
-          <input type="text" class="form-control" placeholder="Pesquisar" name="search" />
-          <div class="input-group-btn">
-            <button class="btn btn-default" type="submit" style="background-color: #ffffff;">
-              <i class="fa fa-search"></i>
-            </button>
-          </div>
-        </div>
-      </form>
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <form v-on:submit.prevent="logout()">
+            <div class="col-sm-6" v-if="this.$store.state.currentUser != ''">
+              <button class="btn btn-lg" type="submit" id="logout-btn" squared>Logout</button>
+            </div>
+            <div class="col-sm-6" v-else>
+              <button class="btn btn-lg" type="submit" id="logout-btn"  hidden squared>Logout</button>
+            </div>
+          </form>
+        </li>
+      </ul>
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <form>
+            <div class="col-sm-6" v-if="this.$store.state.currentUser.userType === 0">
+              <button class="btn btn-lg" type="submit" id="admin-btn" squared>Admin</button>
+            </div>
+          </form>
+        </li>
+      </ul>
       <ul class="navbar-nav">
         <li class="nav-item">
           <a class="nav-link" href="#">
-            <i class="fa fa-user-circle fa-2x"></i>
+            <i class="fa fa-user-circle fa-3x"></i>
           </a>
         </li>
       </ul>
@@ -67,17 +78,23 @@ export default {
   props: {
     msg: String
   },
-  data: () => ({
-
-  }),
+  data: () => ({}),
   created: function() {
     //qd abres esta pagina vai acontecer isto
     if (localStorage.getItem("currentUser")) {
       this.$store.state.currentUser = JSON.parse(
-        localStorage.getItem("currentUser")
+        localStorage.getItem("currentUser")[0]
       );
     }
     this.$store.state.currentPath = window.location.pathname;
+  },
+
+  methods: {
+    logout() {
+      this.$store.commit("LOGOUT", {
+        email: this.emailLogin
+      });
+    }
   }
 };
 </script>
@@ -92,8 +109,13 @@ export default {
 #nav a {
   font-weight: bold;
   color: #671919;
-  padding-left: 30px;
-  padding-right: 30px;
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+#navbarTogglerDemo02 {
+  margin-right: 8%;
+  margin-left: 8%;
 }
 
 #nav a:hover {
@@ -104,4 +126,15 @@ export default {
   background-color: #671919;
   color: #fff;
 }
+
+#logout-btn{
+background-color:#671919;
+color: white
+}
+
+#admin-btn{
+background-color:#671919;
+color: white
+}
+
 </style>
