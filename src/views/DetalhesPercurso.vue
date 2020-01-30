@@ -66,7 +66,7 @@
 
             <br />
             <h4>Pontos de Interesse</h4>
-            <img class="img-fluid" src="mapa.jpg" alt="Mapa" width="600" height="800" />
+            <img class="img-fluid" src="../assets/mapa.jpg" alt="Mapa" width="600" height="800" />
           </div>
         </div>
       </div>

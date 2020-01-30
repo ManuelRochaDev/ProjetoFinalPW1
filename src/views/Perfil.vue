@@ -1,25 +1,27 @@
 <template>
   <div>
     <div id="titulo" class="row">
-      <h1>Perfil</h1>
+      <div class="container">
+        <h1>Perfil</h1>
+      </div>
     </div>
     <div id="formImage" class="row">
       <div class="col-sm-2"></div>
       <div class="col-sm-8">
-        <img src="avatar.png" alt="Avatar" width="200" height="200" />
+        <img src="../assets/avatar.png" alt="Avatar" width="200" height="200" />
         <br />
         <br />
-        <div class="file btn" style="background-color: #671919; color: #ffffff;">
-          Nova Imagem
-          <input type="file" name="file" />
-        </div>
       </div>
     </div>
+    <br />
+    <br />
+    <InfoPerfil />
     <div id="formLogin" class="row">
       <div class="col-sm-2"></div>
       <div class="col-sm-8">
         <!-- Default form register -->
 
+        <h1>Alterar dados</h1>
         <form class="text-center border border-light p-5" action="#!">
           <div class="form-row mb-4">
             <div class="col">
@@ -75,13 +77,12 @@
           <hr />
           <button
             class="btn my-4 btn-block"
-            style="background-color: #671919;"
+            style="background-color: #671919; color : #ffffff"
             type="submit"
           >Guardar</button>
         </form>
       </div>
       <div class="col-sm-2"></div>
-      <InfoPerfil />
     </div>
   </div>
 </template>
@@ -92,12 +93,12 @@ export default {
   name: "Perfil",
   components: {
     InfoPerfil
-  }
+  },
 };
 </script>
 
 <style scoped>
 #titulo {
-  padding-left: 60px;
+  text-align: center;
 }
 </style>

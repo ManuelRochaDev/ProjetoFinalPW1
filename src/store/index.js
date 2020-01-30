@@ -11,15 +11,17 @@ export default new Vuex.Store({
       name: "Manuel",
       lastName: "Rocha",
       password: "123",
-      userType: 0
+      userType: 0,
+      picture: "",
+      isBlocked: 0
     }],
     appRoutes: [{
-      id: "",
-      title: "",
-      city: "",
       dif: "",
       distance: "",
-      time: ""
+      time: "",
+      id: 0,
+      title: "Vinhos pelo Douro",
+      city: "Porto",
     }],
     pois: [{
       idRoute: 1,
@@ -30,11 +32,12 @@ export default new Vuex.Store({
       img: "https://b.zmtcdn.com/data/pictures/8/18859338/2ef0c452a621c193425c98ef7db94ed5_featured_v2.jpg"
     }],
     comments: [{
-        id: 0,
-        content: "",
-        currentUser: 0,
-        userName: "",
-        date: ""
+      id: 0,
+      content: "",
+      currentUser: 0,
+      userName: "",
+      date: "",
+      //img: ""
     }],
     spotsOfInterest: [],
     currentUser: [], //Se estiver vazio ninguem está logado
@@ -99,7 +102,6 @@ export default new Vuex.Store({
       state.currentUser = []
       localStorage.removeItem("currentUser", JSON.stringify(this.state.currentUser));
       //window.location.href = ".."
-
     },
 
     /**
@@ -122,7 +124,7 @@ export default new Vuex.Store({
           name: payload.name,
           lat: payload.lat,
           lng: payload.lng
-          
+
         })
         localStorage.setItem("pois", JSON.stringify(this.state.pois))
 
@@ -137,7 +139,13 @@ export default new Vuex.Store({
     //remove user
     REMOVE_USER(state, payload) {
       state.users = state.users.filter(user => user.id !== payload.id);
-      localStorage.setItem("user", JSON.stringify(this.state.users))
+      localStorage.setItem("users", JSON.stringify(this.state.users))
+    },
+
+    //remove route
+    REMOVE_ROUTE(state, payload) {
+      state.appRoutes = state.appRoutes.filter(appRoute => appRoute.id !== payload.id);
+      localStorage.setItem("appRoutes", JSON.stringify(this.state.appRoutes))
     },
 
     //promote or demote user
@@ -150,16 +158,25 @@ export default new Vuex.Store({
       localStorage.setItem("user", JSON.stringify(this.state.users))
     },
 
-    ADD_COMMENT(state, payload){
+    ADD_COMMENT(state, payload) {
       state.comments.push({
         id: payload.id,
         content: payload.content,
         currentUser: payload.currentUser,
-        userName: payload.userName
+        userName: payload.userName,
+        date: payload.date
       })
       localStorage.setItem("comments", JSON.stringify(this.state.comments))
-    }
+    },
 
+    BLOCK_USER(state, payload) {
+      if (state.users[payload.id].isBlocked === 0) {
+        state.users[payload.id].isBlocked = 1
+      } else {
+        state.users[payload.id].isBlocked = 0
+      }
+      localStorage.setItem("user", JSON.stringify(this.state.users))
+    },
 
   },
   getters: {
@@ -199,15 +216,15 @@ export default new Vuex.Store({
       }
 
     },
-    getLastCommentId(state){
-      if(state.comments.length){
+    getLastCommentId(state) {
+      if (state.comments.length) {
         return state.comments[state.comments.length - 1].id
       } else {
         return 0
       }
     },
-    getComments(state){
-      if(state.comments.length){
+    getComments(state) {
+      if (state.comments.length) {
         return state.comments
       }
     }

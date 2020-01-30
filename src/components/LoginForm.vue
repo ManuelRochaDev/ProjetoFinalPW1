@@ -76,10 +76,14 @@ export default {
   },
   methods: {
     login() {
-      this.$store.commit("LOGIN", {
-        email: this.emailLogin,
-        password: this.passwordLogin
-      });
+      if (this.$store.state.users.isBlocked === 0) {
+        this.$store.commit("LOGIN", {
+          email: this.emailLogin,
+          password: this.passwordLogin
+        });
+      } else {
+        alert("Está blockeado de entrar no website");
+      }
     },
 
     logout() {

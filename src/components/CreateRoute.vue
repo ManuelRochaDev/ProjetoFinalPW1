@@ -13,6 +13,7 @@
               <th scope="col">Nome</th>
               <th scope="col">Apelido</th>
               <th scope="col">Tipo de utilizador</th>
+              <th scope="col">Estado</th>
             </tr>
           </thead>
 
@@ -23,6 +24,7 @@
               <td>{{user.name}}</td>
               <td>{{user.lastName}}</td>
               <td>{{user.userType}}</td>
+              <td>{{user.isBlocked}}</td>
               <td>
                 <button type="button" class="btn btn-danger btn-lg" @click="removeUser(user.id)">
                   <span class="glyphicon glyphicon-remove"></span>
@@ -40,6 +42,46 @@
               <td>
                 <button type="button" class="btn btn-secondary btn-lg">
                   <span class="glyphicon glyphicon-lock"></span>
+                </button>
+              </td>
+            </tr>
+            <!--<tr>
+              <th>No existing users</th>
+            </tr>-->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <br />
+    <br />
+
+    <div class="panel panel-primary table-responsive">
+      <div class="panel-heading">
+        <h2 class="card-title">Routes</h2>
+      </div>
+      <div class="panel-body">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Título</th>
+              <th scope="col">Cidade</th>
+            </tr>
+          </thead>
+
+          <tbody id="tableValues">
+            <tr v-for="appRoute in this.$store.state.appRoutes" :key="appRoute.id">
+              <td>{{appRoute.id}}</td>
+              <td>{{appRoute.title}}</td>
+              <td>{{appRoute.city}}</td>
+              <td>
+                <button
+                  type="button"
+                  class="btn btn-danger btn-lg"
+                  @click="removeRoute(appRoute.id)"
+                >
+                  <span class="glyphicon glyphicon-remove"></span>
                 </button>
               </td>
             </tr>
@@ -124,6 +166,7 @@ export default {
     distance: "",
     idTextbox: 0,
     users: [{}],
+    appRoutes: [],
     newRoute: [{}],
     pois: [],
     idRoute: 0,
@@ -284,10 +327,26 @@ export default {
       }
     },
 
-    removeUser(bruh) {
+    removeUser(userId) {
       if (confirm("Tem a certeza que pretende apagar o utilizador?")) {
         this.$store.commit("REMOVE_USER", {
-          id: bruh
+          id: userId
+        });
+      }
+    },
+
+    removeRoute(routeId) {
+      if (confirm("Tem a certeza que pretende apagar a rota?")) {
+        this.$store.commit("REMOVE_ROUTE", {
+          id: routeId
+        });
+      }
+    },
+
+    blockUser(userId) {
+      if (confirm("Tem a certeza que quer blockear/desbloquear utilizador?")) {
+        this.$store.commit("BLOCK_USER", {
+          id: userId
         });
       }
     },
