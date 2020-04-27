@@ -6,7 +6,7 @@
           <h2 class="card-title">Utilizadores</h2>
           <br />
         </div>
-        <div id = "tabelUser" class="container">
+        <div id="tabelUser" class="container">
           <div class="panel-body">
             <table class="table">
               <thead>
@@ -100,7 +100,6 @@
                 </tr>
               </tbody>
             </table>
-
           </div>
         </div>
       </div>
@@ -186,7 +185,8 @@ export default {
     myPos: null,
     mapPois: [],
     mapPoisTest: [],
-    desc: ""
+    desc: "",
+    map: ""
   }),
 
   created: function() {
@@ -218,6 +218,7 @@ export default {
         center: { lat: -34.397, lng: 150.644 },
         zoom: 8
       });
+      /* 
       var contentString =
         '<div id="content">' +
         '<div id="siteNotice">' +
@@ -238,14 +239,14 @@ export default {
         "https://en.wikipedia.org/w/index.php?title=Uluru</a> " +
         "(last visited June 22, 2009).</p>" +
         "</div>" +
-        "</div>";
+        "</div>"; 
 
       let infoWindow = new google.maps.InfoWindow({
         content: contentString
-      });
+      }); */
 
       // Try to get HTML5 geolocation
-      if (navigator.geolocation) {
+      /* if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
           position => {
             this.myPos = {
@@ -264,7 +265,7 @@ export default {
       } else {
         // Browser doesn't support Geolocation
         this.handleLocationError(false, this.infoWindow, this.map.getCenter());
-      }
+      } */
     },
 
     //inserir textbox para pontos de interesse
@@ -327,7 +328,7 @@ export default {
       }
     },
 
-    handleLocationError(browserHasGeolocation, infoWindow, pos) {
+    /* handleLocationError(browserHasGeolocation, infoWindow, pos) {
       infoWindow.setPosition(pos);
       infoWindow.setContent(
         browserHasGeolocation
@@ -335,9 +336,9 @@ export default {
           : "Error: Your browser doesn't support geolocation."
       );
       infoWindow.open(this.map);
-    },
+    }, */
 
-    calcRoute: function(directionsService, directionsRenderer) {
+    /* calcRoute: function(directionsService, directionsRenderer) {
       let mapPois2 = [];
       let timee = "";
       let distancee = "";
@@ -347,18 +348,18 @@ export default {
           stopover: true
         });
       });
-      this.mapPois = mapPois2;
+      this.mapPois = mapPois2; */
 
-      // Creation of a DirectionsRequest object
-      const request = {
+    // Creation of a DirectionsRequest object
+    /* const request = {
         origin: this.myPos,
         destination: this.mapPois[this.mapPois.length - 1].location,
         waypoints: this.mapPois.slice(0, -1),
         travelMode: google.maps.DirectionsTravelMode.WALKING,
         optimizeWaypoints: true
-      };
+      }; */
 
-      directionsService.route(request, (result, status) => {
+    /* directionsService.route(request, (result, status) => {
         if (status == "OK") {
           directionsRenderer.setDirections(result);
           const directionsData = result.routes[0].legs[0]; // Get data about the mapped route
@@ -373,19 +374,19 @@ export default {
         }
         this.time = timee;
         this.distance = distancee;
-      });
-    },
+      }); 
+    },*/
 
     addRoute() {
-      const directionsService = new google.maps.DirectionsService();
+      /* const directionsService = new google.maps.DirectionsService();
       const directionsRenderer = new google.maps.DirectionsRenderer();
-      directionsRenderer.setMap(this.map);
+      directionsRenderer.setMap(this.map); */
       const geocoder = new google.maps.Geocoder();
       this.geocodeAddress(geocoder, this.map);
-      this.calcRoute(directionsService, directionsRenderer);
+      /* this.calcRoute(directionsService, directionsRenderer); */
     },
 
-    geocodeAddress(geocoder, resultsMap) {
+    geocodeAddress(geocoder) {
       let markerr = [];
       let address = [];
       for (let i = 0; i < this.pois.length; i++) {
@@ -393,37 +394,38 @@ export default {
 
         geocoder.geocode({ address: address[i] }, (results, status) => {
           if (status === "OK") {
-            resultsMap.setCenter(results[0].geometry.location);
+            this.map.setCenter(results[0].geometry.location);
 
             markerr = new google.maps.Marker({
-              map: resultsMap,
+              map: this.map,
               position: results[0].geometry.location
             });
-            markerr.setMap(resultsMap);
+
+            markerr.setMap(this.map);
             this.coord = markerr;
-            this.marker = markerr;
-            
-          } else {
-            alert(
-              "Geocode was not successful for the following reason: " + status
-            );
-          }
-          this.$store.state.lat = markerr.getPosition().lat();
-            this.$store.state.lng = markerr.getPosition().lng();
+            /* this.marker = markerr; */
+
+            /* this.$store.state.lat = markerr.getPosition().lat();
+            this.$store.state.lng = markerr.getPosition().lng(); */
             this.$store.commit("ADD_ROUTE", {
               id: Number(this.getLastRouteId()) + 1,
               title: this.title,
               city: this.city,
               dif: this.dif,
-              distance: this.$store.state.distance,
-              time: this.$store.state.time,
+              /* distance: this.$store.state.distance,
+            time: this.$store.state.time, */
               desc: this.desc,
 
               idRoute: Number(this.getLastRouteId()) + 1,
-              name: this.name,
-              lat: this.$store.state.lat,
-              lng: this.$store.state.lng
+              name: address[i],
+              lat: this.coord.getPosition().lat(),
+              lng: this.coord.getPosition().lng()
             });
+          } else {
+            alert(
+              "Geocode was not successful for the following reason: " + status
+            );
+          }
         });
       }
 
@@ -458,8 +460,7 @@ img {
   padding-top: 4%;
 }
 
-.container{
-  padding-right: 10%
+.container {
+  padding-right: 10%;
 }
-
 </style>

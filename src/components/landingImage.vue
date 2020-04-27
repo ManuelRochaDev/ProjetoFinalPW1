@@ -1,6 +1,21 @@
 <template>
   <div>
     <div></div>
+    <GmapMap
+      :center="{ lat: 10, lng: 10 }"
+      :zoom="7"
+      map-type-id="terrain"
+      style="width: 500px; height: 300px"
+    >
+      <GmapMarker
+        :key="index"
+        v-for="(m, index) in markers"
+        :position="m.position"
+        :clickable="true"
+        :draggable="true"
+        @click="center = m.position"
+      />
+    </GmapMap>
     <div id="img" class="row">
       <div class="col-sm-4">
         <h1>WINEROUTE</h1>
@@ -19,7 +34,7 @@
           <br />
           <br />
           <button class="btn btn-dark btn-lg" value="Ir" id="ir">
-             <router-link id="link" to="/percursos">Entre agora</router-link>
+            <router-link id="link" to="/percursos">Entre agora</router-link>
           </button>
         </h1>
       </div>
@@ -34,8 +49,8 @@ export default {
     msg: String
   },
 
-  created: function(){
-    this.$store.state.currentPath = window.location.pathname
+  created: function() {
+    this.$store.state.currentPath = window.location.pathname;
   }
 };
 </script>
@@ -43,7 +58,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
 #img h1 {
   color: #671919;
   margin-right: 50px;
@@ -89,12 +103,12 @@ html {
   margin-right: 20px;
 }
 
-.text-block{
-  color:white;
-  background-color: black
+.text-block {
+  color: white;
+  background-color: black;
 }
 
-#link{
-  color:white
+#link {
+  color: white;
 }
 </style>

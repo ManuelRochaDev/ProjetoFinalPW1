@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import swal from 'sweetalert';
+import swal from "sweetalert";
 
 Vue.use(Vuex);
 
@@ -60,7 +60,7 @@ export default new Vuex.Store({
     lat: 0,
     lng: 0,
     time: "",
-    distance: "", 
+    distance: "",
     desc: ""
   },
   mutations: {
@@ -78,9 +78,9 @@ export default new Vuex.Store({
         })
         localStorage.setItem("users", JSON.stringify(this.state.users))
         //window.history.back();
-        swal("Registo","Foste registado com sucesso","success")
+        swal("Registo", "Foste registado com sucesso", "success")
       } else {
-        swal("Erro","O utilizador já existe","error");
+        swal("Erro", "O utilizador já existe", "error");
       }
     },
 
@@ -88,23 +88,23 @@ export default new Vuex.Store({
       for (const user of state.users) {
         if (user.email === payload.email && user.password === payload.password) {
           state.currentUser.push({
-              id: user.id,
-              name: user.name,
-              lastName: user.lastName,
-              email: payload.email,
-              password: payload.password,
-              userType: user.userType
+            id: user.id,
+            name: user.name,
+            lastName: user.lastName,
+            email: payload.email,
+            password: payload.password,
+            userType: user.userType
 
-            }),
-            swal("Log-in","Utilizador logado","success")
+          }),
+            swal("Log-in", "Utilizador logado", "success")
           localStorage.setItem("currentUser", JSON.stringify(this.state.currentUser))
 
           state.credCorrect = true
-           if (user.userType === 0) {
+          if (user.userType === 0) {
             window.location.href = "../admin"
           } else if (user.userType === 1) {
             window.location.href = "../"
-          } 
+          }
         }
 
         if (state.userExists === false) {
@@ -123,14 +123,14 @@ export default new Vuex.Store({
     },
 
     ADD_ROUTE(state, payload) {
-      if (!state.appRoutes.some(appRoute => appRoute.title === payload.title)) {
+      /* if (!state.appRoutes.some(appRoute => appRoute.title === payload.title)) { */
         state.appRoutes.push({
           id: payload.id,
           title: payload.title,
           city: payload.city,
           dif: payload.dif,
-          time: payload.time,
-          distance: payload.distance,
+          /* time: payload.time,
+          distance: payload.distance, */
           desc: payload.desc
         })
         localStorage.setItem("appRoutes", JSON.stringify(this.state.appRoutes))
@@ -143,39 +143,39 @@ export default new Vuex.Store({
 
         })
         localStorage.setItem("pois", JSON.stringify(this.state.pois))
-        swal("Nova Rota","Rota registada com sucesso","success")
+        swal("Nova Rota", "Rota registada com sucesso", "success")
 
-      } else {
-        swal("Erro","Rota já existe","error");
-      }
+      /* } else {
+        swal("Erro", "Rota já existe", "error");
+      } */
     },
 
     //remove user
     REMOVE_USER(state, payload) {
       state.users = state.users.filter(user => user.id !== payload.id);
       localStorage.setItem("users", JSON.stringify(this.state.users))
-      swal("Deseja proceder?","Depois de remover o ficheiro não pode recuperar o utilizador","warning","true")
-      .then((willDelete) => {
-        if (willDelete) {
-          swal("Ficheiro removido com successo", {
-            icon: "success",
-          });
-        }
-      });
+      swal("Deseja proceder?", "Depois de remover o ficheiro não pode recuperar o utilizador", "warning", "true")
+        .then((willDelete) => {
+          if (willDelete) {
+            swal("Ficheiro removido com successo", {
+              icon: "success",
+            });
+          }
+        });
     },
 
     //remove route
     REMOVE_ROUTE(state, payload) {
       state.appRoutes = state.appRoutes.filter(appRoute => appRoute.id !== payload.id);
       localStorage.setItem("appRoutes", JSON.stringify(this.state.appRoutes))
-      swal("Deseja proceder?","Depois de remover o ficheiro não pode recuperar a rota","warning","true")
-      .then((willDelete) => {
-        if (willDelete) {
-          swal("Ficheiro removido com successo", {
-            icon: "success",
-          });
-        }
-      });
+      swal("Deseja proceder?", "Depois de remover o ficheiro não pode recuperar a rota", "warning", "true")
+        .then((willDelete) => {
+          if (willDelete) {
+            swal("Ficheiro removido com successo", {
+              icon: "success",
+            });
+          }
+        });
     },
 
     //promote or demote user
@@ -191,7 +191,7 @@ export default new Vuex.Store({
     CHANGE_USER(state, payload) {
       let usersUpd = {}
       for (let i = 0; i < state.users.length; i++) {
-        
+
         if (state.users[i].id == state.users[payload.id].id) {
           usersUpd[i].name = payload.newFirstName
           usersUpd[i].lastName = payload.newLastName
