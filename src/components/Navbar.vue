@@ -1,76 +1,46 @@
 <template>
   <!--Navbar-->
-  <nav class="navbar navbar-light navbar-expand-lg">
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-toggle="collapse"
-      data-target="#navbarTogglerDemo02"
-      aria-controls="navbarTogglerDemo02"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
-      <span class="navbar-toggler-icon"></span>
-    </button>
+  <header>
+    <div class="container-fluid">
+      <nav id="navbar" class="navbar navbar-expand-lg">
+        <a class="navbar-brand" href="#">
+          Wine
+          <span>Route</span>
+        </a>
+        <button
+          class="navbar-toggler navbar-dark"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarTogglerDemo02"
+          aria-controls="navbarTogglerDemo02"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
 
-    <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-      <!-- mostrar página atual a vermelho -->
-      <ul class="navbar-nav mr-auto">
-        <!-- INÍCIO -->
-        <li class="nav-item active" v-if="this.$store.state.currentPath === '/'">
-          <router-link to="/" class="nav-link">INÍCIO</router-link>
-        </li>
-        <li class="nav-item" v-else>
-          <router-link to="/" class="nav-link">INÍCIO</router-link>
-        </li>
-        <!-- PERCURSOS -->
-        <li class="nav-item active" v-if="this.$store.state.currentPath === '/percursos'">
-          <router-link to="/percursos" class="nav-link">PERCURSOS</router-link>
-        </li>
-        <li class="nav-item" v-else>
-          <router-link to="/percursos" class="nav-link">PERCURSOS</router-link>
-        </li>
-        <!--SOBRE -->
-        <li class="nav-item active" v-if="this.$store.state.currentPath === '/about'">
-          <router-link to="/about" class="nav-link">SOBRE</router-link>
-        </li>
-        <li class="nav-item" v-else>
-          <router-link to="/about" class="nav-link">SOBRE</router-link>
-        </li>
-      </ul>
-      <!-- fim -->
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <form v-on:submit.prevent="logout()">
-            <div class="col-sm-6" v-if="this.$store.state.currentUser != ''">
-              <button class="btn btn-lg" type="submit" id="logout-btn" squared>Logout</button>
-            </div>
-            <div class="col-sm-6" v-else>
-              <button class="btn btn-lg" type="submit" id="logout-btn"  hidden squared>Logout</button>
-            </div>
-          </form>
-        </li>
-      </ul>
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <form>
-            <div class="col-sm-6" v-if="this.$store.state.currentUser.userType === 0">
-              
-              <router-link to="/admin" class="btn btn-lg" type="submit" id="admin-btn" squared>Admin</router-link>
-              
-            </div>
-          </form>
-        </li>
-      </ul>
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link" href="#">
-            <i class="fa fa-user-circle fa-3x"></i>
-          </a>
-        </li>
-      </ul>
+        <div class="collapse navbar-collapse navbar-toggleable-sm" id="navbarTogglerDemo02">
+          <!-- mostrar página atual a vermelho -->
+          <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+            <!-- INÍCIO -->
+            <li class="nav-item">
+              <router-link to="/" class="nav-link">Home</router-link>
+            </li>
+            <!-- PERCURSOS -->
+            <li class="nav-item" id="percursos">
+              <router-link to="/percursos" class="nav-link">Percursos</router-link>
+            </li>
+            <li class="nav-item">
+              <router-link id="logg" to="/login" class="nav-link">Login</router-link>
+            </li>
+            <li class="nav-item">
+              <router-link id="reg" to="/registar" class="nav-link">Registar</router-link>
+            </li>
+          </ul>
+        </div>
+      </nav>
     </div>
-  </nav>
+  </header>
 </template>
 
 <script>
@@ -94,6 +64,9 @@ export default {
       this.$store.commit("LOGOUT", {
         email: this.emailLogin
       });
+    },
+    callScroll() {
+      window.onscroll = this.scrollFunction();
     }
   }
 };
@@ -101,41 +74,99 @@ export default {
 
 
 <style scoped>
-#nav {
-  padding-bottom: 20px;
+header {
+  width: 80%;
+  position: absolute;
+  top: 4%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
-#nav a {
-  font-weight: bold;
-  color: #671919;
-  padding-left: 40px;
-  padding-right: 40px;
+nav {
+  margin: 0 auto;
+  top: 25px;
+  left: 5%;
+  width: 90%;
+  position: absolute;
+  background-color: #221d23;
+  box-shadow: 0px 8px 12px 0px rgba(0, 0, 0, 0.5);
+  padding: 10px 0px 10px 0px;
 }
 
-#navbarTogglerDemo02 {
-  margin-right: 8%;
-  margin-left: 8%;
+nav ul li a {
+  padding: 0px 20px 0px 20px;
+  font-family: "Catamaran", sans-serif;
+  font-size: 16px;
+  color: white;
+  margin-right: 30px;
 }
 
-#nav a:hover {
-  color: rgb(105, 105, 105);
+.navbar-toggler {
+  margin-right: 40px;
 }
 
-#nav .navbar-nav li.active > a {
-  background-color: #671919;
-  color: #fff;
+.navbar-brand {
+  font-family: "EB Garamond", serif;
+  font-size: 24px;
+  font-weight: lighter;
+  margin-left: 50px;
+  color: white;
 }
 
-#logout-btn{
-background-color:#671919;
-color: white
+.navbar-brand:hover {
+  color: rgb(255, 192, 109);
 }
 
-#admin-btn{
-background-color:white;
-color: white;
-text-align: center;
-border: 2px solid #671919
+a {
+  text-decoration: none;
+  color: white;
+  font-family: "Catamaran", sans-serif;
+  font-weight: 200;
 }
 
+a:hover {
+  color: rgb(255, 192, 109);
+  transition: 0.2s linear;
+}
+
+span {
+  color: rgb(255, 192, 109);
+  font-weight: 500;
+}
+
+span:hover {
+  color: rgb(182, 11, 125);
+  transition: 0.2s linear;
+}
+
+ul {
+  list-style-type: none;
+}
+
+#logo {
+  width: 40px;
+  height: 40px;
+}
+
+.container-fluid {
+  width: 100%;
+  max-width: 100rem;
+  margin: 0 auto;
+}
+
+#reg {
+  color: rgb(255, 192, 109);
+}
+
+#reg:hover {
+  color: rgb(182, 11, 125);
+}
+
+#logg {
+  color: rgb(255, 192, 109);
+}
+
+#logg:hover {
+  color: rgb(182, 11, 125);
+}
 </style>

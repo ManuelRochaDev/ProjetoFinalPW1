@@ -18,8 +18,8 @@ export default new Vuex.Store({
     }],
     appRoutes: [{
       dif: "",
-      distance: "450m",
-      time: "6 min",
+      distance: "",
+      time: "",
       id: 0,
       title: "Percurso em Vila do Conde",
       city: "Vila do Conde",
@@ -61,7 +61,9 @@ export default new Vuex.Store({
     lng: 0,
     time: "",
     distance: "",
-    desc: ""
+    desc: "",
+    categories: [],
+    routeCategory: ""
   },
   mutations: {
     REGISTER_USER(state, payload) {
@@ -105,12 +107,9 @@ export default new Vuex.Store({
           } else if (user.userType === 1) {
             window.location.href = "../"
           }
-        }
-
-        if (state.userExists === false) {
-          alert("Credenciais Inválidas");
         } else {
           state.credCorrect = false;
+          swal("Erro", "Credenciais incorretas", "warning")
         }
       }
     },
@@ -123,31 +122,66 @@ export default new Vuex.Store({
     },
 
     ADD_ROUTE(state, payload) {
-      /* if (!state.appRoutes.some(appRoute => appRoute.title === payload.title)) { */
-        state.appRoutes.push({
-          id: payload.id,
-          title: payload.title,
-          city: payload.city,
-          dif: payload.dif,
-          /* time: payload.time,
-          distance: payload.distance, */
-          desc: payload.desc
-        })
-        localStorage.setItem("appRoutes", JSON.stringify(this.state.appRoutes))
+      state.appRoutes.push({
+        id: payload.id,
+        title: payload.title,
+        city: payload.city,
+        dif: payload.dif,
+        category: payload.routeCategory,
+        /* time: payload.time,
+        distance: payload.distance, */
+        routePois: payload.routePois,
+        desc: payload.desc,
+        audiolink: payload.audiolink
+      })
+      localStorage.setItem("appRoutes", JSON.stringify(this.state.appRoutes))
 
-        state.pois.push({
-          idRoute: payload.idRoute,
-          name: payload.name,
-          lat: payload.lat,
-          lng: payload.lng
-
-        })
-        localStorage.setItem("pois", JSON.stringify(this.state.pois))
-        swal("Nova Rota", "Rota registada com sucesso", "success")
+      swal("Nova Rota", "Rota registada com sucesso", "success")
 
       /* } else {
         swal("Erro", "Rota já existe", "error");
       } */
+    },
+
+    EDIT_ROUTE(state, payload) {
+      let routeUpd = {}
+      for (let i = 0; i < state.appRoutes.length; i++) {
+        if (state.appRoutes[i].id == state.appRoutes[payload.id].id) {
+          routeUpd[i].title = payload.newTitle
+          routeUpd[i].city = payload.newCity
+          routeUpd[i].dif = payload.newDif
+          routeUpd[i].routePois = payload.newRoutePois
+          routeUpd[i].routeCategory = payload.newRouteCategory
+          routeUpd[i].desc = payload.newDesc
+        } else {
+          routeUpd[i] = state.appRoutes[i]
+        }
+        localStorage.setItem("appRoutes", JSON.stringify(routeUpd))
+      }
+
+      swal("Edição", "Rota editada com sucesso", "success")
+    },
+
+    ADD_POI(state, payload) {
+
+      state.pois.push({
+        idRoute: payload.idRoute,
+        name: payload.name,
+        lat: payload.lat,
+        lng: payload.lng
+
+      })
+      localStorage.setItem("pois", JSON.stringify(this.state.pois))
+    },
+
+    ADD_CATEGORY(state, payload) {
+
+      state.categories.push({
+        name: payload.name
+      })
+      localStorage.setItem("categories", JSON.stringify(this.state.categories))
+
+      swal("Nova Categoria", "Categoria adicionada", "success")
     },
 
     //remove user
@@ -211,7 +245,8 @@ export default new Vuex.Store({
         content: payload.content,
         currentUser: payload.currentUser,
         userName: payload.userName,
-        date: payload.date
+        date: payload.date,
+        id_route: payload.id_route
       })
       localStorage.setItem("comments", JSON.stringify(this.state.comments))
     },
@@ -270,6 +305,16 @@ export default new Vuex.Store({
         return 0
       }
     },
+
+    getLastCategoryId(state) {
+      if (state.categories.length) {
+        return state.categories[state.categories.length - 1].id
+      } else {
+        return 0
+      }
+
+    },
+
     getComments(state) {
       if (state.comments.length) {
         return state.comments

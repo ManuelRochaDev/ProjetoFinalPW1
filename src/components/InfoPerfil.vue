@@ -1,10 +1,18 @@
 <template>
   <!--Navbar-->
-  <div class="row">
-    <div class="container">
-      <h4 v-if="this.$store.state.currentUser.length != 0">Nome: {{getName()}} {{getLastName()}}</h4>
-      <h4 v-if="this.$store.state.currentUser.length != 0">Email: {{getEmail()}}</h4>
-      <h4 v-if="this.$store.state.currentUser.length != 0">Tipo de user: {{getUsertype()}}</h4>
+  <div class="container" id="contain">
+    <div class="row justify-content-center">
+      <div class="col-md-12 col-lg-12">
+        <h2
+          id="name"
+          v-if="this.$store.state.currentUser.length != 0"
+        >{{getName()}} {{getLastName()}}</h2>
+        <h2 id="email" v-if="this.$store.state.currentUser.length != 0">Email: {{getEmail()}}</h2>
+        <h2
+          id="type"
+          v-if="this.$store.state.currentUser.length != 0"
+        >Tipo de utilizador: {{getUsertype()}}</h2>
+      </div>
     </div>
   </div>
 </template>
@@ -41,3 +49,19 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+#name {
+  font-size: 32px;
+  padding-bottom: 2%;
+  padding-top: 4%;
+  font-family: "EB Garamond", serif;
+}
+
+#email,
+#type {
+  font-size: 16px;
+  font-family: "Catamaran", sans-serif;
+}
+
+</style>

@@ -27,28 +27,33 @@ export default {
 
 <style>
 #app {
-  font-family: 'Assistant', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
 }
 
-#nav {
-  padding: 30px;
+#nav{
+  margin: 0 auto;
+  justify-content: center;
 }
 
-#nav a {
-  font-weight: bold;
-  color: #ffffff;
+body {
+  font-size: 16px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0;
 }
 
-#nav a:hover {
-  color: rgb(105, 105, 105);
+
+p,
+h4, td, th {
+  font-family: "Catamaran", sans-serif;
 }
 
-#nav .navbar-nav li.active > a {
-  background-color: #671919;
-  color: #fff;
+h1,
+h2 {
+  font-family: "EB Garamond", serif;
 }
+
 </style>

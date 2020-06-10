@@ -24,6 +24,9 @@ export default {
 
 <style scoped>
 #admin{
-  padding-right: 10%
-}
+  margin:auto;
+  margin-top:40px;
+  margin-bottom:20px;
+  text-align:center;
+  }
 </style>

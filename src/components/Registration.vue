@@ -4,23 +4,21 @@
     <br />
     <div id="formLogin" class="row">
       <div class="col-sm-4"></div>
-      <div class="col-sm-4">
-        <!-- Default form register -->
-        <form
-          class="text-center border border-light p-5"
-          action="#!"
-          v-on:submit.prevent="addUser()"
-        >
-          <h1>Registar</h1>
+      <div class="col-sm-4" id="formReg">
+        <div id="title">
+          <h1 id="h1">Registar</h1>
+        </div>
 
+        <!-- Default form register -->
+        <form id="form" action="#!" v-on:submit.prevent="addUser()">
           <div class="form-row mb-4">
             <div class="col">
               <!-- First name -->
               <input
+                id="name"
                 type="text"
                 v-model="name"
                 required
-                id="defaultRegisterFormFirstName"
                 class="form-control"
                 placeholder="Primeiro nome"
               />
@@ -31,7 +29,7 @@
                 type="text"
                 v-model="lastName"
                 required
-                id="defaultRegisterFormLastName"
+                id="lastName"
                 class="form-control"
                 placeholder="Último nome"
               />
@@ -64,18 +62,12 @@
           >8 Caracteres e 1 número</small>
 
           <!-- Sign up button -->
-          <button
-            class="btn my-4 btn-block"
-            style="background-color: #671919; color: #ffffff"
-            type="submit"
-          >Registar</button>
+          <button id="sign-up" class="btn my-4 btn-block" type="submit">Registar</button>
 
           <!-- Access log-in page-->
-          <button class="btn my-4 btn-block" style="background-color: #671919; color: #ffffff">
+          <button class="btn my-4 btn-block" id="login">
             <router-link id="link" to="/login">Login</router-link>
           </button>
-
-          <hr />
         </form>
       </div>
       <div class="col-sm-4"></div>
@@ -83,62 +75,114 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: "Registration",
-  data: () => ({
-    id: "",
-    email: "",
-    name: "",
-    lastName: "",
-    password: "",
-    userType: "", //0 = admin, 1 = user normal
-    img: ""
-  }),
-  created: function() {
-    window.addEventListener("unload", this.saveStorage);
-    if (localStorage.getItem("users")) {
-      this.$store.state.users = JSON.parse(localStorage.getItem("users"));
-    }
-    if (localStorage.getItem("currentUser")) {
-      this.$store.state.currentUser = JSON.parse(
-        localStorage.getItem("currentUser")
-      );
-    }
-  },
-  methods: {
-    getLastId() {
-      return this.$store.getters.lastId;
-    },
-    addUser() {
-      this.$store.commit("REGISTER_USER", {
-        id: this.getLastId() + 1,
-        email: this.email,
-        name: this.name,
-        lastName: this.lastName,
-        password: this.password,
-        userType: 1,
-        isBlocked: 0,
-        img: "../assets/avatar.png"
-      });
-    },
-
-    saveStorage() {
-      localStorage.setItem(
-        "currentUser",
-        JSON.stringify(this.$store.state.currentUser)
-      );
-    }
-  }
-};
-</script>
-
 <style scoped>
-#link{
-  color:white;
+#title {
+  text-align: center !important;
+  margin: 0 auto;
+  position: relative;
+  background-color: white;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  width: 100%;
+  margin-bottom: 5%;
+  font-family: "EB Garamond", serif;
 }
 
-h1{
-  margin-right:50px
+#h1 {
+  margin: 0 auto;
+  position: relative;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  text-align: center;
+  padding-right: 0;
+  width: 100%;
+  font-size: 48px;
+  font-family: "EB Garamond", serif;
+  color: black;
+}
+
+#form {
+  background: none;
+  border: none;
+  margin-bottom: 10%;
+}
+
+#formLogin {
+  margin: 0 auto;
+  vertical-align: center;
+}
+
+#formReg {
+  margin: 0 auto;
+  vertical-align: center;
+  margin-top: 15%;
+  margin-bottom: 12%;
+  font-size: 14px;
+  background-color: white;
+  padding: 0%;
+  box-shadow: 1px 10px 10px 0px rgba(92, 92, 92, 0.7);
+}
+
+#name {
+  margin-right: -2px;
+}
+
+#lastName {
+  margin-left: -2px;
+}
+
+#link {
+  color: white;
+}
+
+h1 {
+  margin-right: 50px;
+}
+
+#sign-up {
+  margin-top: 5%;
+  margin: 0 auto;
+  background-color: black;
+  color: #ffffff;
+  height: 40px;
+  font-size: 14px;
+  width: 60%;
+}
+
+#sign-up:hover {
+  background-color: rgba(216, 152, 68, 1);
+}
+
+#login {
+  margin: 0 auto;
+  margin-top: 5%;
+  background-color: black;
+  color: #ffffff;
+  height: 40px;
+  font-size: 14px;
+  width: 60%;
+}
+
+#login:hover {
+  background-color: rgba(216, 152, 68, 1);
+}
+
+input {
+  margin: 0 auto;
+  height: 40px;
+  font-size: 14px;
+  width: 60%;
+}
+
+#form {
+  border: none;
+}
+
+#registration {
+  background: linear-gradient(
+    180deg,
+    rgba(134, 26, 98, 0.8) 0%,
+    rgba(216, 152, 68, 1) 100%
+  );
 }
 </style>
