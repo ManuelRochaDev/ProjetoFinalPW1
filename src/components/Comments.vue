@@ -1,14 +1,14 @@
 <template>
   <div class="row" id="main">
     <div id="comments" class="col-xs-12 col-sm-12 col-md-12">
-      <div class="row" id="row" v-for="comment in renderComments" :key="comment.id">
+      <div class="row" id="row" v-for="comment in renderComments" :key="comment.id_comment">
         <div class="col-xs-2 col-sm-2 col-md-2">
           <img src="../assets/manuel.jpg" id="profPic" />
           <h4 id="user">{{comment.userName}}</h4>
         </div>
 
         <div id="cont" class="col-xs-8 col-sm-8 col-md-8">
-          <h4 id="msg">{{comment.content}}</h4>
+          <h4 id="msg">{{comment.text}}</h4>
         </div>
         <div class="col-xs-2 col-sm-2 col-md-2">
           <p id="date" class="text-muted">{{comment.date}}</p>
@@ -28,26 +28,30 @@ export default {
   data: () => ({
     routeComments: []
   }),
-  /* mounted: function() {
-    this.renderComments;
-  }, */
+  mounted: function() {
+    this.$store.dispatch("getComments");
+    if (this.$store.state.APIComments != []) {
+      this.renderComments;
+    }
+  },
   created: function() {
     //load evertyhing on local storage when page is opened
-
-    if (localStorage.getItem("comments")) {
+    /* if (localStorage.getItem("comments")) {
       this.$store.state.comments = JSON.parse(localStorage.getItem("comments"));
-    }
+    } */
   },
   computed: {
     renderComments() {
       //get comments from this route only
       let routeComments = [];
-      for (let i = 0; i < this.$store.state.comments.length; i++) {
+      for (const comment of this.$store.state.APIComments) {
+        /* alert(comment.id_route)
+        alert(this.$store.state.currentRoute[0].id_route) */
         if (
-          this.$store.state.comments[i].id_route ==
-          this.$store.state.currentRoute.id
+          comment.id_route ==
+          this.$store.state.currentRoute[0].id_route
         ) {
-          routeComments.push(this.$store.state.comments[i]);
+          routeComments.push(comment);
         }
       }
       return routeComments;
@@ -90,7 +94,7 @@ h4 {
 #msg {
   text-align: left;
   margin-top: 10px;
-  margin-left: calc(20px + 2%) 
+  margin-left: calc(20px + 2%);
 }
 
 img {
@@ -109,7 +113,6 @@ img {
   width: 50%;
   height: auto;
 }
-
 
 @media only screen and (max-width: 576px) {
   img {

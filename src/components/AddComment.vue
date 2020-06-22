@@ -7,7 +7,7 @@
           <textarea
             placeholder=" Faça um comentário"
             rows="5"
-            v-model="newComment.content"
+            v-model="text"
             id="textarea"
           ></textarea>
         </div>
@@ -26,6 +26,8 @@
 </template>
 
 <script>
+import swal from "sweetalert2";
+import axios from "axios";
 export default {
   name: "addComment",
 
@@ -33,15 +35,12 @@ export default {
     newComment: [{}],
     comments: [],
     currentDate: new Date(),
-    formattedDate: ""
+    formattedDate: "",
+    rating: ""
   }),
 
   created: function() {
-    //buscar data
-    let date = this.currentDate.getDate();
-    let month = this.currentDate.getMonth() + 1;
-    let year = this.currentDate.getFullYear();
-    this.formattedDate = date + "/" + month + "/" + year;
+    
   },
 
   methods: {
@@ -58,7 +57,36 @@ export default {
     },
 
     addComment() {
-      if (this.newComment.content != "") {
+      //buscar data
+    let date = this.currentDate.getDate();
+    let month = this.currentDate.getMonth() + 1;
+    let year = this.currentDate.getFullYear();
+    this.formattedDate = date + "/" + month + "/" + year;
+      axios
+        .post("http://" + this.$store.state.API_ADDRESS + "/comments/", {
+          text: this.text,
+          id_route: this.$store.state.currentRoute[0].id_route,
+          id_user: this.$store.state.currentUser[0].id_user,
+          rating: 3,
+          date: this.formattedDate,
+          headers: {
+            "Content-Type": "application/json"
+          }
+        })
+        .then(response => {
+          this.APILoginData = response;
+          if (response.data == "success") {
+            swal.fire("Sucesso", "Comentário inserido", "info");
+          } else {
+            swal.fire("Erro", "Por favor tente mais tarde", "warning");
+          }
+        })
+        .catch(function(error) {
+          alert("erro: " + error);
+        })
+        .finally(() => (this.loading = false));
+
+      /* if (this.newComment.content != "") {
         this.$store.commit("ADD_COMMENT", {
           id: Number(this.getLastCommentId()) + 1,
           content: this.newComment.content,
@@ -70,7 +98,7 @@ export default {
           date: this.formattedDate,
           id_route: this.$store.state.currentRoute.id
         });
-      }
+      } */
     }
   }
 };

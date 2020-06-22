@@ -85,6 +85,7 @@ export default new Vuex.Store({
     APIAppRoutes: [],
     APILoginData: [],
     APIPois: [],
+    APIComments: [],
     API_ADDRESS: "127.0.0.1:3000"
   },
   mutations: {
@@ -330,7 +331,7 @@ export default new Vuex.Store({
         date: payload.date,
         id_route: payload.id_route
       })
-      localStorage.setItem("comments", JSON.stringify(this.state.comments))
+      /* localStorage.setItem("comments", JSON.stringify(this.state.comments)) */
     },
 
     BLOCK_USER(state, payload) {
@@ -353,6 +354,9 @@ export default new Vuex.Store({
     },
     SET_POIS(state, payload) {
       state.APIPois = payload
+    },
+    SET_COMMENTS(state, payload) {
+      state.APIComments = payload
     },
 
 
@@ -491,6 +495,22 @@ export default new Vuex.Store({
         .then(response => {
           let pois = response.data;
           commit('SET_POIS', pois)
+        })
+        .catch(function (error) {
+          alert(error)
+        })
+        .finally(() => this.loading = false)
+    },
+    getComments({ commit, state }) {
+      axios
+        .get('http://' + state.API_ADDRESS + '/comments/', {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+        .then(response => {
+          let comments = response.data;
+          commit('SET_COMMENTS', comments)
         })
         .catch(function (error) {
           alert(error)
