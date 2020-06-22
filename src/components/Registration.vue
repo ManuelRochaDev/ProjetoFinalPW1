@@ -2,9 +2,10 @@
   <div id="registration">
     <br />
     <br />
+    <div id="hidden"></div>
     <div id="formLogin" class="row">
-      <div class="col-sm-4"></div>
-      <div class="col-sm-4" id="formReg">
+      <div class="col-md-3 col-sm-3 col-xs-2"></div>
+      <div class="col-md-6 col-sm-6 col-xs-8" id="formReg">
         <div id="title">
           <h1 id="h1">Registar</h1>
         </div>
@@ -59,22 +60,115 @@
           <small
             id="defaultRegisterFormPasswordHelpBlock"
             class="form-text text-muted mb-4"
-          >8 Caracteres e 1 número</small>
+          >Mínimo de 6 Caracteres</small>
 
           <!-- Sign up button -->
           <button id="sign-up" class="btn my-4 btn-block" type="submit">Registar</button>
 
           <!-- Access log-in page-->
-          <button class="btn my-4 btn-block" id="login">
-            <router-link id="link" to="/login">Login</router-link>
-          </button>
+          <button
+            class="btn my-4 btn-block"
+            value="Login"
+            id="login"
+            @click="$router.push('login')"
+          >Login</button>
         </form>
       </div>
-      <div class="col-sm-4"></div>
+      <div class="col-md-3 col-sm-3 col-xs-2"></div>
     </div>
   </div>
 </template>
+<script>
+import axios from "axios";
+import swal from "sweetalert2";
+export default {
+  name: "Registration",
+  data: () => ({
+    id: "",
+    email: "",
+    name: "",
+    lastName: "",
+    password: "",
+    userType: "", //0 = admin, 1 = user normal
+    img: ""
+  }),
+  created: function() {
+    this.goToAnchor();
+    window.addEventListener("unload", this.saveStorage);
+    /* if (localStorage.getItem("users")) {
+      this.$store.state.users = JSON.parse(localStorage.getItem("users"));
+    }
+    if (localStorage.getItem("currentUser")) {
+      this.$store.state.currentUser = JSON.parse(
+        localStorage.getItem("currentUser")
+      );
+    } */
+  },
+  methods: {
+    goToAnchor() {
+      /* document.body.scrollTop = document.documentElement.scrollTop =
+        document.getElementById("center").offsetTop - window.innerHeight / 2; */
+    },
 
+    getLastId() {
+      return this.$store.getters.lastId;
+    },
+    addUser() {
+      axios
+        .post("http://" + this.$store.state.API_ADDRESS + "/users/", {
+          firstName: this.name,
+          lastName: this.lastName,
+          email: this.email,
+          password: this.password,
+          headers: {
+            "Content-Type": "application/json"
+          }
+        })
+        .then(response => {
+          this.APILoginData = response;
+          if (response.data == "success") {
+            swal.fire("Novo utilizador", "Bem-vindo!", "info");
+
+            this.$store.commit("LOGIN", {
+              email: this.email,
+              password: this.password,
+              firstName: this.name,
+              lastName: this.lastName,
+              userType: 1,
+              isBlocked: 0,
+              avatar: "../assets/avatar.png"
+            });
+
+            this.$router.push("/");
+          } else if (response.data == "email already exists"){
+            swal.fire("Aviso", "Este email já está registado", "warning");
+          }
+        })
+        .catch(function(error) {
+          alert("erro: " + error);
+        })
+        .finally(() => (this.loading = false));
+      /* this.$store.commit("REGISTER_USER", {
+        id: this.getLastId() + 1,
+        email: this.email,
+        name: this.name,
+        lastName: this.lastName,
+        password: this.password,
+        userType: 1,
+        isBlocked: 0,
+        img: "../assets/avatar.png"
+      }); */
+    },
+
+    saveStorage() {
+      /* localStorage.setItem(
+        "currentUser",
+        JSON.stringify(this.$store.state.currentUser)
+      ); */
+    }
+  }
+};
+</script>
 <style scoped>
 #title {
   text-align: center !important;
@@ -115,12 +209,11 @@
 #formReg {
   margin: 0 auto;
   vertical-align: center;
-  margin-top: 15%;
-  margin-bottom: 12%;
+  margin-bottom: 25%;
   font-size: 14px;
   background-color: white;
   padding: 0%;
-  box-shadow: 1px 10px 10px 0px rgba(92, 92, 92, 0.7);
+  box-shadow: 1px 10px 10px 0px rgba(26, 26, 26, 0.7);
 }
 
 #name {
@@ -150,7 +243,7 @@ h1 {
 }
 
 #sign-up:hover {
-  background-color: rgba(216, 152, 68, 1);
+  background-color: rgb(182, 11, 125);
 }
 
 #login {
@@ -164,7 +257,7 @@ h1 {
 }
 
 #login:hover {
-  background-color: rgba(216, 152, 68, 1);
+  background-color: rgb(182, 11, 125);
 }
 
 input {
@@ -184,5 +277,16 @@ input {
     rgba(134, 26, 98, 0.8) 0%,
     rgba(216, 152, 68, 1) 100%
   );
+}
+
+#hidden {
+  margin-bottom: 20%;
+  display: inline-block;
+}
+
+@media only screen and (max-width: 560px) {
+  #hidden {
+    margin-bottom: 40%;
+  }
 }
 </style>

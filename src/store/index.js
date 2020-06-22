@@ -1,10 +1,26 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import swal from "sweetalert";
+import axios from "axios";
+import createPersistedState from "vuex-persistedstate";
+import SecureLS from "secure-ls";
+var ls = new SecureLS({ isCompression: false });
 
 Vue.use(Vuex);
+/* Vue.use(router) */
 
 export default new Vuex.Store({
+
+  plugins: [
+    createPersistedState({
+      storage: {
+        getItem: (key) => ls.get(key),
+        setItem: (key, value) => ls.set(key, value),
+        removeItem: (key) => ls.remove(key),
+      },
+    }),
+  ],
+
   state: {
     users: [{
       id: 0,
@@ -63,20 +79,26 @@ export default new Vuex.Store({
     distance: "",
     desc: "",
     categories: [],
-    routeCategory: ""
+    routeCategory: "",
+    APIUsers: [],
+    APICategories: [],
+    APIAppRoutes: [],
+    APILoginData: [],
+    APIPois: [],
+    API_ADDRESS: "127.0.0.1:3000"
   },
   mutations: {
     REGISTER_USER(state, payload) {
-
       if (!state.users.some(user => user.email === payload.email)) {
-
         state.users.push({
           id: payload.id,
           email: payload.email,
           name: payload.name,
           lastName: payload.lastName,
           password: payload.password,
-          userType: payload.userType
+          userType: payload.userType,
+          isBlocked: payload.isBlocked,
+          img: payload.img
         })
         localStorage.setItem("users", JSON.stringify(this.state.users))
         //window.history.back();
@@ -86,39 +108,94 @@ export default new Vuex.Store({
       }
     },
 
-    LOGIN(state, payload) {
-      for (const user of state.users) {
-        if (user.email === payload.email && user.password === payload.password) {
-          state.currentUser.push({
-            id: user.id,
-            name: user.name,
-            lastName: user.lastName,
-            email: payload.email,
-            password: payload.password,
-            userType: user.userType
-
-          }),
-            swal("Log-in", "Utilizador logado", "success")
-          localStorage.setItem("currentUser", JSON.stringify(this.state.currentUser))
-
-          state.credCorrect = true
-          if (user.userType === 0) {
-            window.location.href = "../admin"
-          } else if (user.userType === 1) {
-            window.location.href = "../"
-          }
-        } else {
-          state.credCorrect = false;
-          swal("Erro", "Credenciais incorretas", "warning")
+    SET_CURRENT_USER(state, payload) {
+      let id = payload.id
+      for (const route of state.APIAppRoutes) {
+        if (route.id_route == id) {
+          state.currentRoute.push({
+            id_route: route.id_route,
+            difficulty: route.difficulty,
+            distance: route.distance,
+            time: route.time,
+            title: route.title,
+            city: route.city,
+            id_category: route.id_category,
+            id_user: route.id_user,
+            description: route.description,
+            routePois: route.routePois,
+            audiolink: route.audiolink
+          });
         }
       }
     },
 
+    LOGIN(state, payload) {
+      /* commit("LOGIN", await users.login()) */
+
+      for (const user of state.APIUsers) {
+        if (user.email === payload.email) {
+          state.currentUser = []
+          state.currentUser.push({
+            id_user: user.id_user,
+            name: user.name,
+            lastName: user.lastName,
+            email: payload.email,
+            userType: user.userType
+          })
+        }
+      }
+      /* alert(state.currentUser[0].userType) */
+
+
+      /* axios
+        .post('http://' + state.API_ADDRESS + '/login/', {
+          email: this.emailLogin,
+          password: this.passwordLogin,
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+        .then(response => { */
+      /* let APILoginData = response; */
+
+      /* alert(response) */
+      /* commit('LOGIN', APILoginData) */
+      /* })
+      .catch(function (error) {
+        alert(error)
+      })
+      .finally(() => this.loading = false) */
+
+
+      /* swal("Login", "Utilizador autenticado", "success") */
+
+      /* if (state.currentUser.userType === 0) {
+        window.location.href = "../admin"
+      } else if (state.currentUser.userType === 1) {
+        window.location.href = "../"
+      } */
+      /* 
+            localStorage.setItem("currentUser", JSON.stringify(this.state.currentUser))
+          swal("Login", "Utilizador autenticado", "success")
+     
+     
+          /* state.credCorrect = true */
+      /* if (state.currentUser.userType === 0) {
+    window.location.href = "../admin"
+    } else if (state.currentUser.userType === 1) {
+    window.location.href = "../"
+    } */
+      /* } else {
+        swal("Erro", "Credenciais incorretas", "warning")
+      } */
+      /*     } */
+    },
+
     LOGOUT(state) {
       state.currentUser = [];
-      localStorage.removeItem("currentUser", JSON.stringify(this.state.currentUser));
-      swal("Utilizador saiu")
-      window.location.href = ".."
+      /* localStorage.removeItem("currentUser", JSON.stringify(this.state.currentUser)); */
+      swal("Sair", "Até à próxima!", "success");
+      /* window.location.href = ".." */
     },
 
     ADD_ROUTE(state, payload) {
@@ -144,21 +221,24 @@ export default new Vuex.Store({
     },
 
     EDIT_ROUTE(state, payload) {
-      let routeUpd = {}
-      for (let i = 0; i < state.appRoutes.length; i++) {
-        if (state.appRoutes[i].id == state.appRoutes[payload.id].id) {
+      let routeUpd = []
+      let newRoute = []
+      for (let i = 0; i < Object.keys(state.appRoutes).length; i++) {
+
+        if (state.appRoutes[i].id == payload.id) {
+          //tanto o id da rota a mudar como o total de rotas são bem lidos
           routeUpd[i].title = payload.newTitle
           routeUpd[i].city = payload.newCity
           routeUpd[i].dif = payload.newDif
           routeUpd[i].routePois = payload.newRoutePois
-          routeUpd[i].routeCategory = payload.newRouteCategory
           routeUpd[i].desc = payload.newDesc
         } else {
           routeUpd[i] = state.appRoutes[i]
         }
-        localStorage.setItem("appRoutes", JSON.stringify(routeUpd))
+        newRoute.push(routeUpd[i])
       }
 
+      localStorage.setItem("appRoutes", JSON.stringify(newRoute))
       swal("Edição", "Rota editada com sucesso", "success")
     },
 
@@ -188,7 +268,7 @@ export default new Vuex.Store({
     REMOVE_USER(state, payload) {
       state.users = state.users.filter(user => user.id !== payload.id);
       localStorage.setItem("users", JSON.stringify(this.state.users))
-      swal("Deseja proceder?", "Depois de remover o ficheiro não pode recuperar o utilizador", "warning", "true")
+      swal("Deseja proceder?", "Depois de confirmar não pode recuperar o utilizador", "warning", "true")
         .then((willDelete) => {
           if (willDelete) {
             swal("Ficheiro removido com successo", {
@@ -214,12 +294,14 @@ export default new Vuex.Store({
 
     //promote or demote user
     CHANGE_USER_TYPE(state, payload) {
+      //deve funcionar com a api
+      alert(payload.id)
       if (state.users[payload.id].userType === 0) {
         state.users[payload.id].userType = 1
       } else {
         state.users[payload.id].userType = 0
       }
-      localStorage.setItem("user", JSON.stringify(this.state.users))
+      localStorage.setItem("users", JSON.stringify(this.state.users))
     },
 
     CHANGE_USER(state, payload) {
@@ -257,8 +339,22 @@ export default new Vuex.Store({
       } else {
         state.users[payload.id].isBlocked = 0
       }
-      localStorage.setItem("user", JSON.stringify(this.state.users))
+      localStorage.setItem("users", JSON.stringify(this.state.users))
     },
+
+    SET_USERS(state, payload) {
+      state.APIUsers = payload
+    },
+    SET_CATEGORIES(state, payload) {
+      state.APICategories = payload
+    },
+    SET_ROUTES(state, payload) {
+      state.APIAppRoutes = payload
+    },
+    SET_POIS(state, payload) {
+      state.APIPois = payload
+    },
+
 
   },
   getters: {
@@ -291,13 +387,21 @@ export default new Vuex.Store({
       }
     },
     getLastRouteId(state) {
+      if (state.APIAppRoutes.length) {
+        return state.APIAppRoutes[state.APIAppRoutes.length - 1].id
+      } else {
+        return 0
+      }
+    },
+    getNumberOfRoutes(state) {
       if (state.appRoutes.length) {
-        return state.appRoutes[state.appRoutes.length - 1].id
+        return state.appRoutes.length
       } else {
         return 0
       }
 
     },
+
     getLastCommentId(state) {
       if (state.comments.length) {
         return state.comments[state.comments.length - 1].id
@@ -320,5 +424,78 @@ export default new Vuex.Store({
         return state.comments
       }
     }
-  }
+  },
+  actions: {
+    getUsers({ commit, state }) {
+      axios
+        .get('http://' + state.API_ADDRESS + '/users/', {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+        .then(response => {
+          //localStorage.setItem("TESTusers", JSON.stringify(response.data))
+          let users = response.data;
+          commit('SET_USERS', users)
+          //alert(users)
+        })
+        .catch(function (error) {
+          /* this.errored = true */
+          /* console.log(error) */
+          alert(error)
+        })
+        .finally(() => this.loading = false)
+
+    },
+    getCategories({ commit, state }) {
+      axios
+        .get('http://' + state.API_ADDRESS + '/categories/', {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+        .then(response => {
+          let categories = response.data;
+          commit('SET_CATEGORIES', categories)
+        })
+        .catch(function (error) {
+          alert(error)
+        })
+        .finally(() => this.loading = false)
+
+    },
+    getAppRoutes({ commit, state }) {
+      axios
+        .get('http://' + state.API_ADDRESS + '/routes/', {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+        .then(response => {
+          let routes = response.data;
+          commit('SET_ROUTES', routes)
+        })
+        .catch(function (error) {
+          alert(error)
+        })
+        .finally(() => this.loading = false)
+
+    },
+    getPois({ commit, state }) {
+      axios
+        .get('http://' + state.API_ADDRESS + '/pois/', {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+        .then(response => {
+          let pois = response.data;
+          commit('SET_POIS', pois)
+        })
+        .catch(function (error) {
+          alert(error)
+        })
+        .finally(() => this.loading = false)
+    },
+  },
 });

@@ -1,13 +1,13 @@
 <template>
   <div id="body">
-    <h1 id="title" class="display-4">Percursos</h1>
     <div id="routeCont" class="container">
       <div class="row">
+        <h1 id="title" class="display-4">Percursos</h1>
         <div id="cards" class="card-deck">
           <div
             id="cardCol"
-            class="col-sm-12 col-md-4"
-            v-for="appRoute in this.$store.state.appRoutes"
+            class="col-x-12 col-sm-12 col-md-6"
+            v-for="appRoute in this.$store.state.APIAppRoutes"
             :key="appRoute.id"
           >
             <div class="card" data-tilt data-tilt-axis="x" data-tilt-max="5" data-tilt-speed="100">
@@ -21,43 +21,27 @@
                   <tbody id="tbody">
                     <tr>
                       <th>
-                        <pre class="tab"><i class="fas fa-walking"></i>  Distância</pre>
+                        <pre class="tab"><i class="fas fa-comment"></i>  Cidade</pre>
                       </th>
-                      <td>{{appRoute.distance}}</td>
-                    </tr>
-
-                    <tr>
-                      <th>
-                        <pre class="tab"><i class="fas fa-clock"></i>  Duração</pre>
-                      </th>
-                      <td>{{appRoute.time}}</td>
+                      <td>{{appRoute.city}}</td>
                     </tr>
                     <tr>
                       <th>
                         <pre class="tab"><i class="fas fa-signal"></i> Dificuldade</pre>
                       </th>
                       <td v-if="appRoute.dif == 'easy'">Fácil</td>
-                      <td v-else-if="appRoute.dif == 'medium'">Médio</td>
-                      <td v-else-if="appRoute.dif == 'hard'">Difícil</td>
-                    </tr>
-                    <tr>
-                      <th>
-                        <pre class="tab"><i class="fas fa-comment"></i>  Comentários</pre>
-                      </th>
-                      <td>5</td>
                     </tr>
                     <tr>
                       <th></th>
                       <td>
                         <span>
                           <a
-                            href="/percursos/detalhes"
                             data-toggle="tooltip"
                             data-placement="left"
                             title="Mais info"
                             class="btn"
                             id="moreInf"
-                            @click="setCurrentRoute(appRoute.id)"
+                            @click="setCurrentRoute(appRoute.id_route)"
                           >
                             <i id="infIcon" class="fas fa-plus-circle fa-3x"></i>
                           </a>
@@ -85,25 +69,28 @@ export default {
     msg: String
   },
   data: () => ({
-
+    //curRoute: []
   }),
   methods: {
     setCurrentRoute(id) {
-      localStorage.setItem(
-        "currentRoute",
-        JSON.stringify(this.$store.state.appRoutes[id])
-      );
-    },
+      this.$store.commit("SET_CURRENT_USER", {
+        id: id
+      });
+
+      this.$router.push("/percursos/detalhes");
+    }
   },
   created: function() {
     //Get path
+    this.$store.state.currentRoute = [];
     this.$store.state.currentPath = window.location.pathname;
-
-    if (localStorage.getItem("appRoutes")) {
+    this.$store.dispatch("getAppRoutes");
+    /* if (localStorage.getItem("appRoutes")) {
       this.$store.state.appRoutes = JSON.parse(
         localStorage.getItem("appRoutes")
       );
-    }
+    } */
+    window.scrollTo(0, 0);
   }
 };
 </script>
@@ -113,7 +100,7 @@ export default {
   margin: 0 auto;
   position: relative;
   justify-content: center;
-  margin-top: 12%;
+  margin-top: 15%;
   font-size: 48px;
   color: rgb(255, 192, 109);
 }
@@ -123,11 +110,11 @@ export default {
 }
 
 body {
-  background: linear-gradient(
-    180deg,
-    rgba(134, 26, 98, 1) 0%,
-    rgba(216, 152, 68, 1) 100%
-  );
+  width: 100%;
+  justify-content: center;
+  margin: 0 auto;
+  background-color: #861a62;
+  overflow-x: hidden;
 }
 
 pre {
@@ -137,7 +124,7 @@ pre {
 }
 
 .fas {
-  color: rgba(134, 26, 98, 0.8);
+  color: rgba(134, 26, 98, 1);
 }
 
 img {
@@ -182,8 +169,9 @@ span {
 }
 
 #cards {
-  position: relative;
   margin: 0 auto;
+  position: relative;
+  justify-content: center;
   margin-top: 2%;
   text-align: left;
 }
@@ -193,6 +181,7 @@ span {
 }
 
 .card {
+  margin: 0 auto;
   height: 95%;
   box-shadow: 0px 8px 12px 0px rgba(10, 10, 0, 0.2);
   overflow: hidden;
@@ -206,7 +195,6 @@ span {
 }
 
 .card-body {
-  overflow-x: auto;
 }
 
 #cardTitle {
@@ -229,7 +217,7 @@ span {
 }
 
 #moreInf:hover {
-  color: rgba(134, 26, 98, 0.8);
+  color: rgba(134, 26, 98, 1);
 }
 
 #infIcon {
@@ -237,7 +225,7 @@ span {
 }
 
 #infIcon:hover {
-  color: rgba(134, 26, 98, 0.8);
+  color: rgba(134, 26, 98, 1);
 }
 
 @media only screen and (max-width: 600px) {
@@ -254,5 +242,16 @@ span {
   font-size: 12px;
   min-height: 20px;
   min-width: 120px; /* the minimum width */
+}
+
+@media only screen and (max-width: 800px) {
+  #title {
+    margin: 0 auto;
+    position: relative;
+    justify-content: center;
+    margin-top: 25%;
+    font-size: 48px;
+    color: rgb(255, 192, 109);
+  }
 }
 </style>

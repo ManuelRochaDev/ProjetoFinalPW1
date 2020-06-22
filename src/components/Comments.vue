@@ -90,9 +90,12 @@ h4 {
 #msg {
   text-align: left;
   margin-top: 10px;
+  margin-left: calc(20px + 2%) 
 }
 
 img {
+  width: 40px !important;
+  height: 40px;
   background-color: black;
 }
 
@@ -107,19 +110,6 @@ img {
   height: auto;
 }
 
-@media only screen and (max-width: 776px) {
-  img {
-    width: 40px !important;
-    height: auto;
-    margin-right: 5%;
-  }
-
-  #msg {
-    text-align: left;
-    margin-top: 10px;
-    margin-left: 30px;
-  }
-}
 
 @media only screen and (max-width: 576px) {
   img {
@@ -137,6 +127,19 @@ img {
   #row {
     margin: 0 auto;
     color: black;
+  }
+
+  #date {
+    margin: 0 auto;
+    text-align: center;
+    margin-top: 5%;
+    font-size: 12px;
+  }
+
+  #profPic {
+    width: 100%;
+    height: auto;
+    margin-right: 0px;
   }
 }
 </style>

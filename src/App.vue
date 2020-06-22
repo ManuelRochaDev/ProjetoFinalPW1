@@ -16,6 +16,7 @@
 import Navbar from "@/components/Navbar.vue";
 import Footer from "@/components/Footer.vue";
 
+
 export default {
   name: "home",
   components: {
@@ -32,6 +33,16 @@ export default {
   text-align: center;
   color: #2c3e50;
 }
+
+.swal2-popup {
+  font-size: 1.6rem !important;
+} 
+
+/* .swal-icon {
+  width: 5em !important;
+  height: 5em !important;
+  border-width: .25em !important;
+} */
 
 #nav{
   margin: 0 auto;

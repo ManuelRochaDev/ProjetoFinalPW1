@@ -8,7 +8,7 @@ import DetalhesPercurso from "../views/DetalhesPercurso.vue";
 import Registar from "../views/Registar.vue";
 import Login from "../views/Login.vue";
 import Perfil from "../views/Perfil.vue";
-//import store from "../store/index.js";
+import store from "../store/index.js";
 
 Vue.use(VueRouter);
 
@@ -40,14 +40,14 @@ const routes = [
     component: Admin,
     //admin check
     beforeEnter(to, from, next) {
-      let loggedUsers = JSON.parse(localStorage.getItem('currentUser'))
-      //alert(loggedUsers[0].userType)
-      if (loggedUsers != [] || loggedUsers != null) {
-        if (loggedUsers[0].userType != 0) {
-          next("/");
+      if (store.state.currentUser.length !== 0) {
+        if (store.state.currentUser[0].userType != 0) {
+          next("/login");
         } else {
           next();
         }
+      } else {
+        next("/login");
       }
     }
   },
@@ -73,11 +73,10 @@ const routes = [
     component: Perfil,
     //check if logged
     beforeEnter(to, from, next) {
-      let loggedUsers = JSON.parse(localStorage.getItem('currentUser'))
-      if (loggedUsers == [] || loggedUsers == null) {
-        next("/");
-      } else {
+      if (store.state.currentUser.length !== 0) {
         next();
+      } else {
+        next("/login");
       }
     }
   }

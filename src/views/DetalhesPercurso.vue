@@ -1,15 +1,15 @@
-<template>
+<template :style="myStyle">
   <div>
+    <div></div>
     <div id="main">
-      <div id="titulo1">
-        <h2 id="title" class="display-3">{{this.$store.state.currentRoute.title}}</h2>
-      </div>
+      <div id="titulo1"></div>
       <div id="details" class="row">
         <div class="col-sm-2"></div>
-        <div class="col-sm-8 text-center">
-          <h2 class="text-center">Detalhes</h2>
-          <h4>{{this.$store.state.currentRoute.desc}}</h4>
+        <div id="centerCol" class="col-sm-8 text-center">
+          <h2 id="title" class="display-3">{{this.$store.state.currentRoute[0].title}}</h2>
+          <h2 id="blackText" class="display-6">{{this.$store.state.currentRoute[0].description}}</h2>
           <div id="info">
+            <h2 id="textCenter" class="text-center">Detalhes</h2>
             <div class="card-body">
               <table id="descTable" class="table table-sm">
                 <thead>
@@ -20,81 +20,101 @@
                     <th classscope="row">
                       <pre class="tab"><i class="fas fa-walking"></i> &nbsp; Distância</pre>
                     </th>
-                    <td class="descData">{{this.curDistance}}</td>
+                    <td class="descData">{{this.$store.state.currentRoute[0].distance}} metros</td>
                   </tr>
                   <tr>
                     <th scope="row">
                       <pre class="tab"><i class="fas fa-clock"></i>  Duração</pre>
                     </th>
-                    <td class="descData">{{this.curTime}}</td>
+                    <td class="descData">{{this.$store.state.currentRoute[0].time}} minutos</td>
                   </tr>
                   <tr>
                     <th scope="row">
                       <pre class="tab"><i class="fas fa-signal"></i>  Dificuldade</pre>
                     </th>
-                    <td class="descData" v-if="this.$store.state.currentRoute.dif == 'easy'">Fácil</td>
-                    <td class="descData" v-if="this.$store.state.currentRoute.dif == 'medium'">Médio</td>
-                    <td class="descData" v-if="this.$store.state.currentRoute.dif == 'hard'">Difícil</td>
+                    <td
+                      class="descData"
+                      v-if="this.$store.state.currentRoute[0].difficulty == 'easy'"
+                    >Fácil</td>
+                    <td
+                      class="descData"
+                      v-if="this.$store.state.currentRoute[0].difficulty == 'medium'"
+                    >Médio</td>
+                    <td
+                      class="descData"
+                      v-if="this.$store.state.currentRoute[0].difficulty == 'hard'"
+                    >Difícil</td>
                   </tr>
                   <tr>
                     <th scope="row">
                       <pre class="tab"><i class="fas fa-comment"></i>  Comentários</pre>
                     </th>
-                    <td class="descData">{{ this.commentsNumber }}</td>
+                    <td class="descData">5</td>
                   </tr>
                 </tbody>
               </table>
             </div>
           </div>
-          <br />
-          <br />
-          <br />
+
           <div class="google-map" id="myMap"></div>
-          <iframe
-            id="soundcloud_widget"
-            :src=" this.curAudio "
-            width="420"
-            height="120"
-            frameborder="no"
-          ></iframe>
-        </div>
-      </div>
+          <div id="audioguia">
+            <iframe
+              id="soundcloud_widget"
+              :src=" this.curAudio "
+              width="420"
+              height="120"
+              frameborder="no"
+            ></iframe>
+          </div>
 
-      <!-- Sharingbutton Facebook -->
-      <a
-        class="resp-sharing-button__link"
-        v-bind:href="'https://www.facebook.com/sharer/sharer.php/?u=' + ''"
-        target="_blank"
-        rel="noopener"
-        aria-label="Share on Facebook"
-      >
-        <div
-          class="resp-sharing-button resp-sharing-button--facebook resp-sharing-button--large"
-          id="share"
-        >
-          <div
-            aria-hidden="true"
-            class="resp-sharing-button__icon resp-sharing-button__icon--circle"
+          <a
+            class="resp-sharing-button__link"
+            v-bind:href="'https://www.facebook.com/sharer/sharer.php/?u=' + ''"
+            target="_blank"
+            rel="noopener"
+            aria-label="Share on Facebook"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -1 20 22">
-              <circle cx="10" cy="11" r="10" />
-              <path
-                d="M15.84 9.5H13.5V8.48c0-.53.35-.65.6-.65h1.4v-2.3h-2.35c-2.3 0-2.65 1.7-2.65 2.8V9.5h-2v2h2v7h3v-7h2.1l.24-2z"
-              />
-            </svg>
-            Share
-          </div>
-        </div>
-      </a>
+            <div
+              class="resp-sharing-button resp-sharing-button--facebook resp-sharing-button--large"
+              id="share"
+            >
+              <div
+                aria-hidden="true"
+                class="resp-sharing-button__icon resp-sharing-button__icon--circle"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -1 20 22">
+                  <circle cx="10" cy="11" r="10" />
+                  <path
+                    d="M15.84 9.5H13.5V8.48c0-.53.35-.65.6-.65h1.4v-2.3h-2.35c-2.3 0-2.65 1.7-2.65 2.8V9.5h-2v2h2v7h3v-7h2.1l.24-2z"
+                  />
+                </svg>
+                Share
+              </div>
+            </div>
+          </a>
 
-      <div id="cont" class="container">
-        <div class="comments">
-          <AddComment></AddComment>
-          <div class="container">
-            <Comments></Comments>
+          <div id="cont" class="container">
+            <div class="row comments">
+              <div class="col-md-8"></div>
+              <AddComment></AddComment>
+              <div class="container">
+                <Comments
+                  v-for="comment in this.$store.state.comments"
+                  :key="comment.id"
+                  v-bind:comment="comment"
+                  id="comments"
+                ></Comments>
+              </div>
+            </div>
           </div>
         </div>
       </div>
+    </div>
+    <div>
+      <br />
+      <br />
+      <br />
+      <br />
     </div>
   </div>
 </template>
@@ -113,10 +133,14 @@ export default {
     comments: [],
     path: window.location.pathname,
     mapPois: [],
+    mapPois2: [],
     curDistance: 0,
     curTime: 0,
     commentsNumber: 0,
-    curAudio: ""
+    curAudio: "",
+    myStyle: {
+      backgroundColor: "#861a62"
+    }
     /* myPos: null */
   }),
 
@@ -206,28 +230,27 @@ export default {
     },
 
     calcRoute: function(directionsService, directionsRenderer) {
-      let mapPois2 = [];
+      /* let mapPois2 = []; */
 
       //Gotta grab points of interest from the selected route
-      this.mapPois = this.$store.state.currentRoute.routePois;
+      this.mapPois = JSON.parse(this.$store.state.currentRoute[0].routePois);
+      /* alert(this.mapPois.lat); */
+      /* this.mapPois.forEach(function(poi) { */
+      for (const poi of this.mapPois) {
+        /* alert(poi.lat) */
 
-      this.mapPois.forEach(function(poi) {
-        mapPois2.push({
-          location: new google.maps.LatLng(poi.lat, poi.lng),
+        this.mapPois2.push({
+          location: new google.maps.LatLng(poi.lat, poi.longitude),
           stopover: true
+          /* }); */
         });
-      });
-      this.mapPois = mapPois2;
-
-      /* this.mapPois = this.mapPois.filter(
-        poi => poi.idRoute === this.$store.state.currentRoute.id
-      ); */
+      }
 
       // Creation of a DirectionsRequest object
       const request = {
-        origin: this.mapPois[0].location,
-        destination: this.mapPois.slice(-1)[0].location,
-        waypoints: this.mapPois.slice(0, -1),
+        origin: this.mapPois2[0].location,
+        destination: this.mapPois2.slice(-1)[0].location,
+        waypoints: this.mapPois2.slice(0, -1),
         travelMode: google.maps.DirectionsTravelMode.WALKING,
         optimizeWaypoints: true
       };
@@ -259,21 +282,21 @@ export default {
   },
 
   created: function() {
-    if (localStorage.getItem("comments")) {
+    /* if (localStorage.getItem("comments")) {
       this.$store.state.comments = JSON.parse(localStorage.getItem("comments"));
-    }
-    if (localStorage.getItem("currentRoute")) {
+    } */
+    /* if (localStorage.getItem("currentRoute")) {
       this.$store.state.currentRoute = JSON.parse(
         localStorage.getItem("currentRoute")
       );
-    }
+    } */
 
     this.curAudio =
       "https://w.soundcloud.com/player/?url=" +
-      this.$store.state.currentRoute.audiolink +
+      this.$store.state.currentRoute[0].audiolink +
       "&show_artwork=false&liking=false&sharing=false&auto_play=false";
 
-    if (localStorage.getItem("appRoutes")) {
+    /* if (localStorage.getItem("appRoutes")) {
       this.$store.state.appRoutes = JSON.parse(
         localStorage.getItem("appRoutes")
       );
@@ -281,17 +304,32 @@ export default {
 
     if (localStorage.getItem("pois")) {
       this.$store.state.pois = JSON.parse(localStorage.getItem("pois"));
-    }
+    } */
   }
 };
 </script>
 
 <style scoped>
+body {
+  background-color: white;
+}
+
+template {
+  background-color: white;
+}
+
 #app {
   font-family: "Arial";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
+  background-color: white;
+}
+
+#centerCol {
+  background-color: white;
+  margin-top: 10%;
+  padding-bottom: 200px;
 }
 
 .tab {
@@ -318,8 +356,18 @@ table th {
   float: left;
 }
 
+h2 {
+  color: white;
+}
+
+.card-body {
+  margin: 0 auto;
+  text-align: center;
+}
+
 #descTable {
   margin: 0 auto;
+  margin-left: 12%;
   text-align: center;
 }
 
@@ -328,20 +376,29 @@ table th {
 }
 
 .text-center {
-  margin-top: 20px;
+  margin-top: 5%;
   margin-bottom: 20px;
+  color: black;
 }
 
 #title {
+  margin-top: 10%;
   padding-top: 20px;
   padding-bottom: 20px;
+  color: #221d23;
+}
+
+#blackText {
+  color: #221d23;
 }
 
 #info {
   margin: 0 auto;
+  margin-bottom: 5%;
   text-align: center;
   padding-right: 20%;
-  padding-left: 30%;
+  padding-left: 20%;
+  background-color: white;
 }
 
 #details {
@@ -350,11 +407,13 @@ table th {
 
 #comments {
   color: grey;
+  margin-bottom: 5%;
 }
 
 #cont {
   margin: 0 auto;
   position: relative;
+  width: 100%;
 }
 
 .google-map {
@@ -364,6 +423,8 @@ table th {
   overflow: hidden;
   margin: auto;
   box-shadow: 5px 10px 12px #888888;
+  width: 80%;
+  height: 15%;
 }
 
 .google-maps iframe {
@@ -389,7 +450,7 @@ table th {
 }
 
 #share {
-  margin-bottom: 40px;
+  margin-top: 40px;
 }
 
 .comments {
@@ -402,9 +463,15 @@ table th {
 
 .fas {
   margin-left: 0;
-  color: rgba(134, 26, 98, 0.8);
+  color: rgba(134, 26, 98, 1);
   text-align: left;
   float: left;
+}
+
+@media only screen and (max-width: 962px) {
+  #centerCol {
+    margin-top: 15%;
+  }
 }
 
 /* BOTOES DE PARTILHA */

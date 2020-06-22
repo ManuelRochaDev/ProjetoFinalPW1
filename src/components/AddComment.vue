@@ -111,7 +111,7 @@ export default {
 }
 
 #submit:hover {
-  background-color: rgba(134, 26, 98, 0.8);
+  background-color: rgba(134, 26, 98, 1);
   color: white;
 }
 

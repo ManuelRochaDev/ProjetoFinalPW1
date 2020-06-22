@@ -2,22 +2,32 @@
   <div class="container">
     <div class="details">
       <div class="row">
-        <div class="col-md-2 col-lg-2"></div>
-        <div class="col-md-3 col-lg-3 col-sm-12">
+        <div class="col-md-2 col-lg-2 col-sm-12"></div>
+        <div class="col-md-3 col-lg-3 col-sm-12" v-if="this.$store.state.currentUser.avatar != null">
           <img
             class="img-responsive image-resize"
             id="img"
-            src="../assets/random_dude.png"
+            :src= "this.$store.state.currentUser.avatar"
             alt="Avatar"
           />
         </div>
+        <div v-else class="col-md-3 col-lg-3 col-sm-12">
+          <img
+            class="img-responsive image-resize"
+            id="img"
+            src= "../assets/avatar.png"
+            alt="Avatar"
+          />
+        </div>
+        <div class="col-md-7 col-lg-7 col-sm-12">
           <InfoPerfil id="info" />
+        </div>
       </div>
     </div>
 
     <div class="row" v-for="user in this.$store.state.currentUser" :key="user.id" id="change">
-      <div class="col-sm-2"></div>
-      <div class="col-sm-8" id="dados">
+      <div class="col-md-2 col-sm-2 col-xs-2"></div>
+      <div class="col-md-8 col-sm-8 col-xs-8" id="dados">
         <!-- Default form register -->
 
         <h2 id="titDados">Alterar dados</h2>
@@ -100,10 +110,10 @@ export default {
     if (localStorage.getItem("currentUser")) {
       this.$store.state.currentUser = JSON.parse(
         localStorage.getItem("currentUser")
-        
       );
     }
     this.$store.state.currentPath = window.location.pathname;
+    window.scrollTo(0, 0);
   },
   components: {
     InfoPerfil
@@ -129,11 +139,21 @@ export default {
   margin: auto;
   text-align: center;
   width: 70%;
-  margin-top: 2%;
+  margin-top: 15%;
   margin-bottom: 5%;
   padding-right: 0%;
   padding-left: 0%;
   box-shadow: 0px 8px 12px 0px rgba(0, 0, 0, 0.1);
+  background: white;
+}
+
+#perfil {
+  margin: 0 auto;
+  position: relative;
+  text-align: center;
+  color: #221d23;
+  padding: 20px 0px 20px 0px;
+  font-size: 48px;
 }
 
 .details {
@@ -154,7 +174,7 @@ export default {
 }*/
 
 #img {
-  margin: auto 0px auto 0px;
+  margin: 0 auto;
   width: 150px;
   max-width: 150px;
   min-width: 75px;
@@ -166,15 +186,15 @@ export default {
 
 #img:hover {
   transform: scale(1.1, 1.1);
-  box-shadow: 0px 0px 4px 2px rgb(105, 200, 105);
   filter: blur();
 }
 
 #info {
-  margin: auto 2% auto 10px;
-
+  margin: 0 auto;
+  margin-top: 4%;
+  margin-right: 35%;
   border: none;
-  width: 45%;
+  width: 60%;
   color: white;
   background-color: #221d23;
   box-shadow: 0px 8px 12px 0px rgba(0, 0, 0, 0.1);
@@ -214,5 +234,42 @@ button {
 
 #guardar:hover {
   background-color: rgb(153, 24, 110);
+}
+
+@media only screen and (max-width: 768px) {
+  .container {
+    margin: auto;
+    text-align: center;
+    width: 70%;
+    margin-top: 30%;
+    margin-bottom: 5%;
+    padding-right: 0%;
+    padding-left: 0%;
+    box-shadow: 0px 8px 12px 0px rgba(0, 0, 0, 0.1);
+    background: white;
+  }
+
+  #img {
+    margin: 0 auto;
+
+    width: 150px;
+    max-width: 150px;
+    min-width: 75px;
+    transition: 0.3s ease;
+    align-content: center;
+    cursor: pointer;
+    display: block;
+  }
+
+  #info {
+    margin: 0 auto;
+    margin-top: 4%;
+    border: none;
+    width: 80%;
+    color: white;
+    background-color: #221d23;
+    box-shadow: 0px 8px 12px 0px rgba(0, 0, 0, 0.1);
+    justify-content: flex-start;
+  }
 }
 </style>

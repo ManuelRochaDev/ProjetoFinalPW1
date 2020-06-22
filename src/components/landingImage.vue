@@ -64,9 +64,7 @@
                 <h4 class="figCaption">Eduardo Madeira Silva</h4>
                 <div class="card-body">
                   <p class="card-text">
-                    Um jovem programador com gosto por desenvolvimento de
-                    interfaces
-                    e design
+                    Prototipagem UI e modelação do sistema
                   </p>
                 </div>
               </div>
@@ -83,7 +81,7 @@
                 />
                 <h4 class="figCaption">Manuel Rocha</h4>
                 <div class="card-body">
-                  <p class="card-text">Programador principal e DJ nos tempos livres</p>
+                  <p class="card-text">Programador principal (middleware, back-end, base de dados)</p>
                 </div>
               </div>
             </div>
@@ -100,7 +98,7 @@
                 />
                 <h4 class="figCaption">Miguel Teixeira</h4>
                 <div class="card-body">
-                  <p class="card-text">Segundo programador e desenvolvedor front end</p>
+                  <p class="card-text">Desenvolvedor do front-end do website</p>
                 </div>
               </div>
             </div>
@@ -159,13 +157,6 @@ main {
 }
 
 @media only screen and (max-width: 600px) {
-  header {
-    width: 80%;
-    position: absolute;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-
   #miniDesc {
     margin-top: 100px;
   }
@@ -223,8 +214,6 @@ a {
 
 a:hover {
   color: rgb(255, 192, 109);
-  display: inline-block;
-  position: relative;
 }
 
 ul {
@@ -246,6 +235,7 @@ hr {
 /*Center Image & description*/
 
 #mainImg {
+  margin: 0 auto;
   position: relative;
   width: 100%;
   height: 100vh;
@@ -256,6 +246,7 @@ hr {
 #catch {
   text-align: left;
   position: absolute;
+  margin-top: 20px;
   font-size: calc(24px + 2vw) !important;
 }
 
@@ -265,10 +256,11 @@ hr {
   position: absolute;
 }
 
+
 #miniDesc {
   margin: 0 auto;
   position: absolute;
-  margin-top: 140px;
+  margin-top: 160px;
   text-align: left;
   color: rgb(216, 152, 68);
   font-family: "Catamaran", sans-serif;
@@ -285,7 +277,7 @@ hr {
 .background {
   position: relative;
   width: 100%;
-  z-index: -2;
+  z-index: -1;
 }
 
 #callToAct {
@@ -337,7 +329,7 @@ hr {
 }
 
 #ir:hover {
-  background-color: rgb(153, 24, 110);
+  background-color: rgb(134, 26, 98);
 }
 
 /*-----Center Image & description-----*/

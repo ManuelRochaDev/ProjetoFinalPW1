@@ -1,96 +1,147 @@
 <template>
   <div id="app">
+    <div id="hidden"></div>
     <div class="row">
-      <div class="col-sm-4"></div>
-      <div class="col-sm-4" id="formLogin">
+      <div class="col-md-3 col-sm-2 col-xs-3"></div>
+      <div class="col-md-6 col-sm-8 col-xs-6" id="formLogin">
         <div id="titleDiv">
           <h1 id="title" class="display-4">Login</h1>
         </div>
 
         <!-- Default form login -->
-        <form class="text-center" action="#!" v-on:submit.prevent="login()">
-          <!-- Email -->
-          <input
-            type="email"
-            v-model="emailLogin"
-            required
-            id="defaultLoginFormEmail"
-            class="form-control mb-4"
-            ref="email"
-            placeholder="E-mail"
-          />
+        <!-- <form class="text-center" action="#!" v-on:submit.prevent="login()"> -->
+        <!-- Email -->
+        <input
+          type="email"
+          v-model="emailLogin"
+          required
+          id="defaultLoginFormEmail"
+          class="form-control mb-4"
+          ref="email"
+          placeholder="E-mail"
+        />
 
-          <!-- Password -->
-          <input
-            type="password"
-            v-model="passwordLogin"
-            required
-            id="defaultLoginFormPassword"
-            class="form-control mb-4"
-            placeholder="Password"
-          />
+        <!-- Password -->
+        <input
+          type="password"
+          v-model="passwordLogin"
+          required
+          id="defaultLoginFormPassword"
+          class="form-control mb-4"
+          placeholder="Password"
+        />
 
-          <div class="d-flex justify-content-around">
-            <div>
-              <!-- Remember me -->
-              <div class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input" id="defaultLoginFormRemember" />
-                <label class="custom-control-label" for="defaultLoginFormRemember">Lembrar</label>
-              </div>
+        <div class="d-flex justify-content-around">
+          <div>
+            <!-- Remember me -->
+            <div class="custom-control custom-checkbox">
+              <input type="checkbox" class="custom-control-input" id="defaultLoginFormRemember" />
+              <label class="custom-control-label" for="defaultLoginFormRemember">Lembrar</label>
             </div>
           </div>
+        </div>
 
-          <!-- Sign in button -->
-          <button id="logIn" class="btn btn-block my-4" type="submit" @click="login()">Entrar</button>
+        <!-- Sign in button -->
+        <button id="logIn" class="btn btn-block my-4" type="submit" @click="login()">Entrar</button>
 
-          <!-- Register -->
-          <button id="reg" class="btn btn-block my-4" squared>
-            <router-link id="link" to="/registar">Registar</router-link>
-          </button>
-        </form>
+        <!-- Register -->
+        <button
+          squared
+          class="btn my-4 btn-block"
+          value="reg"
+          id="reg"
+          @click="$router.push('registar')"
+        >Registar</button>
+        <!-- </form> -->
         <!-- Default form login -->
       </div>
-      <div class="col-sm-4"></div>
+      <div class="col-md-3 col-sm-2 col-xs-3"></div>
     </div>
   </div>
 </template>
 
 
 <script>
-import swal from "sweetalert";
+import axios from "axios";
+import swal from "sweetalert2";
+/* import router from './router'; */
 export default {
   name: "LoginForm",
   data: () => ({
     emailLogin: "",
     passwordLogin: "",
-    show: true
+    test: [],
+    show: true,
+    APILoginData: [] /* ,,
+    input: this.$refs.email */
   }),
   created: function() {
     if (localStorage.getItem("users")) {
       this.$store.state.users = JSON.parse(localStorage.getItem("users"));
     }
-    if (localStorage.getItem("currentUser")) {
+    /* if (localStorage.getItem("currentUser")) {
       this.$store.state.currentUser = JSON.parse(
         localStorage.getItem("currentUser")
       );
-    }
+    } */
+  },
+
+  mounted: function() {
+    this.focusInput();
+    this.$store.dispatch("getUsers");
   },
   methods: {
     login() {
-      if (this.$store.state.users.isBlocked !== 1) {
-        this.$store.commit("LOGIN", {
+      axios
+        .post("http://" + this.$store.state.API_ADDRESS + "/login/", {
           email: this.emailLogin,
-          password: this.passwordLogin
-        });
-      } else {
-        swal("Log-in", "Esta conta está bloqueada. Por favor contacte a administração.", "error")
-      }
+          password: this.passwordLogin,
+          headers: {
+            "Content-Type": "application/json"
+          }
+        })
+        .then(response => {
+          this.APILoginData = response;
+          if (response.data == "login successful") {
+            swal.fire("Login", "Bem-vindo!", "info");
+
+            this.$store.commit("LOGIN", {
+              email: this.emailLogin,
+              password: this.passwordLogin
+            });
+
+            if (this.$store.state.currentUser[0].userType === 0) {
+              this.$router.push("admin");
+            } else if (this.$store.state.currentUser[0].userType === 1) {
+              this.$router.push("/");
+            }
+
+            /* alert(this.$store.state.currentUser[0].userType) */
+          } else if (response.data == "user blocked") {
+            swal.fire(
+              "Erro",
+              "Esta conta está bloqueada. Por favor contacte a administração.",
+              "warning"
+            );
+          } else if (response.data == "wrong password") {
+            swal("Erro", "Credenciais incorretas", "warning");
+          }
+          /* commit("LOGIN", APILoginData); */
+        })
+        .catch(function(error) {
+          alert("erro: " + error);
+        })
+        .finally(() => (this.loading = false));
     },
 
     logout() {
       this.$store.commit("LOGOUT", {
         email: this.emailLogin
       });
+    },
+
+    focusInput() {
+      this.$refs.email.focus();
     }
   }
 };
@@ -104,12 +155,12 @@ export default {
 #formLogin {
   margin: 0 auto;
   vertical-align: center;
-  margin-top: 15%;
-  margin-bottom: 12%;
+  margin-bottom: 25%;
   font-size: 14px;
   background-color: white;
-  box-shadow: 1px 10px 10px 0px rgba(92,92,92,0.7);
+  box-shadow: 1px 10px 10px 0px rgba(92, 92, 92, 0.7);
   padding: 0%;
+  position: relative;
 }
 
 #title {
@@ -149,7 +200,7 @@ h1 {
 }
 
 #reg:hover {
-  background-color: rgb(216, 152, 68);
+  background-color: rgb(182, 11, 125);
 }
 
 #logIn {
@@ -162,7 +213,7 @@ h1 {
 }
 
 #logIn:hover {
-  background-color: #d89844;
+  background-color: rgb(182, 11, 125);
 }
 
 input {
@@ -175,13 +226,26 @@ input {
   background-color: white;
 }
 
-form{
+form {
   margin-bottom: 50px;
 }
 
-#app{
-  background: linear-gradient(180deg, rgba(134,26,98,0.8) 0%,  rgba(216,152,68,1) 100%);
+#app {
+  background: linear-gradient(
+    180deg,
+    rgba(134, 26, 98, 0.8) 0%,
+    rgba(216, 152, 68, 1) 100%
+  );
 }
 
+#hidden {
+  margin-bottom: 20%;
+  display: inline-block;
+}
 
+@media only screen and (max-width: 600px) {
+  #hidden {
+    margin-bottom: 40%;
+  }
+}
 </style>

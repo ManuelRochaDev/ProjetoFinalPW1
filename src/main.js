@@ -3,6 +3,8 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import * as VueGoogleMaps from "vue2-google-maps";
+import axios from "axios";
+import swal from "sweetalert2";
 
 Vue.config.productionTip = false;
 
@@ -16,5 +18,7 @@ Vue.use(VueGoogleMaps, {
 new Vue({
   router,
   store,
+  axios,
+  swal,
   render: h => h(App)
 }).$mount("#app");
