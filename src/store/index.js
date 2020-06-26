@@ -141,7 +141,8 @@ export default new Vuex.Store({
             name: user.name,
             lastName: user.lastName,
             email: payload.email,
-            userType: user.userType
+            userType: user.userType,
+            avatar: user.avatar
           })
         }
       }

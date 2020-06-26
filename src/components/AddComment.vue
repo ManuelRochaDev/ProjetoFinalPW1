@@ -3,7 +3,14 @@
     <div class="container">
       <div class="row" id="commentRow">
         <div class="col-md-12 col-sm-12 col-xs-12">
-          <img id="avatar" src="../assets/manuel.jpg" />
+          <template v-if="this.$store.state.currentUser[0].avatar == null">  
+          <img src="../assets/avatar.png" id="avatar" />
+          </template>
+          <template v-else>  
+            
+          <img :src="this.$store.state.currentUser[0].avatar" id="avatar" />
+          </template>
+          <!-- <img id="avatar" src="../assets/manuel.jpg" /> -->
           <textarea
             placeholder=" Faça um comentário"
             rows="5"
@@ -68,7 +75,7 @@ export default {
           id_route: this.$store.state.currentRoute[0].id_route,
           id_user: this.$store.state.currentUser[0].id_user,
           rating: 3,
-          date: this.formattedDate,
+          commentDate: this.formattedDate,
           headers: {
             "Content-Type": "application/json"
           }
@@ -149,9 +156,9 @@ export default {
 
 #avatar {
   margin-left: 5%;
-  background-color: black;
-  width: 6%;
-  height: auto;
+  background-color: white;
+  width: 40px;
+  height: 40px;
   margin-right: 4%;
 }
 

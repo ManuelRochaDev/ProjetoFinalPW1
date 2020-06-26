@@ -3,21 +3,19 @@
     <div class="details">
       <div class="row">
         <div class="col-md-2 col-lg-2 col-sm-12"></div>
-        <div class="col-md-3 col-lg-3 col-sm-12" v-if="this.$store.state.currentUser.avatar != null">
+        <div
+          class="col-md-3 col-lg-3 col-sm-12"
+          v-if="this.$store.state.currentUser.avatar != null"
+        >
           <img
             class="img-responsive image-resize"
             id="img"
-            :src= "this.$store.state.currentUser.avatar"
+            :src="this.$store.state.currentUser.avatar"
             alt="Avatar"
           />
         </div>
         <div v-else class="col-md-3 col-lg-3 col-sm-12">
-          <img
-            class="img-responsive image-resize"
-            id="img"
-            src= "../assets/avatar.png"
-            alt="Avatar"
-          />
+          <img class="img-responsive image-resize" id="img" src="../assets/avatar.png" alt="Avatar" />
         </div>
         <div class="col-md-7 col-lg-7 col-sm-12">
           <InfoPerfil id="info" />
@@ -35,21 +33,16 @@
           <div id="formDiv" class="form-row mb-4">
             <div class="col">
               <!-- First name -->
-              <input
-                type="text"
-                v-model="user.name"
-                class="form-control"
-                placeholder="Primeiro nome"
-              />
+              <input type="text" v-model="name" class="form-control" :placeholder="user.name" />
             </div>
             <div class="col">
               <!-- Last name -->
               <input
                 type="text"
                 id="defaultRegisterFormLastName"
-                v-model="user.lastName"
+                v-model="lastName"
                 class="form-control"
-                placeholder="Último nome"
+                :placeholder="user.lastName"
               />
             </div>
           </div>
@@ -58,24 +51,10 @@
           <input
             type="email"
             id="defaultRegisterFormEmail"
-            v-model="user.email"
+            v-model="email"
             class="form-control mb-4"
-            placeholder="E-mail"
+            :placeholder="user.email"
           />
-
-          <!-- Password -->
-          <input
-            type="password"
-            id="defaultRegisterFormPassword"
-            class="form-control"
-            v-model="user.password"
-            placeholder="Nova password"
-            aria-describedby="defaultRegisterFormPasswordHelpBlock"
-          />
-          <small
-            id="defaultRegisterFormPasswordHelpBlock"
-            class="form-text text-muted mb-4"
-          >8 Caracteres e 1 número</small>
 
           <!-- Sign up button -->
 
@@ -84,8 +63,45 @@
             id="guardar"
             class="btn my-4 btn-block btn-lg"
             type="submit"
-            @click="newInfo(user.id)"
+            @click="newInfo(user.id_user)"
           >Guardar</button>
+        </form>
+      </div>
+      <div class="col-sm-2"></div>
+    </div>
+
+    <!-- DISTANCIAMENTO SOCIAL -->
+
+    <div class="row" v-for="user in this.$store.state.currentUser" :key="user.id" id="change">
+      <div class="col-md-2 col-sm-2 col-xs-2"></div>
+      <div class="col-md-8 col-sm-8 col-xs-8" id="dados">
+        <!-- Default form register -->
+
+        <h2 id="titDados">Alterar password</h2>
+        <form class="text-center border border-light p-5" action="#!">
+          <!-- Password -->
+          <input
+            type="password"
+            id="defaultRegisterFormPassword"
+            class="form-control"
+            v-model="password"
+            placeholder="Nova password"
+            aria-describedby="defaultRegisterFormPasswordHelpBlock"
+          />
+          <small
+            id="defaultRegisterFormPasswordHelpBlock"
+            class="form-text text-muted mb-4"
+          >Mínimo de 6 Caracteres</small>
+
+          <!-- Sign up button -->
+
+          <hr />
+          <button
+            id="guardar"
+            class="btn my-4 btn-block btn-lg"
+            type="submit"
+            @click="newPassword(user.id_user)"
+          >Alterar</button>
         </form>
       </div>
       <div class="col-sm-2"></div>
@@ -97,6 +113,8 @@
 
 <script>
 import InfoPerfil from "../components/InfoPerfil.vue";
+import axios from "axios";
+import swal from "sweetalert2";
 export default {
   name: "Perfil",
   data: () => ({
@@ -107,11 +125,11 @@ export default {
   }),
   created() {
     //qd abres esta pagina vai acontecer isto
-    if (localStorage.getItem("currentUser")) {
+    /* if (localStorage.getItem("currentUser")) {
       this.$store.state.currentUser = JSON.parse(
         localStorage.getItem("currentUser")
       );
-    }
+    } */
     this.$store.state.currentPath = window.location.pathname;
     window.scrollTo(0, 0);
   },
@@ -120,15 +138,51 @@ export default {
   },
   methods: {
     newInfo(userId) {
-      if (confirm("Tem a certeza que quer mudar os dados?")) {
-        this.$store.commit("CHANGE_USER", {
-          id: userId,
-          newFirstName: this.name,
-          newLastName: this.lastName,
-          newEmail: this.email,
-          newPassword: this.password
+      /* alert(userId); */
+      axios
+        .put("http://" + this.$store.state.API_ADDRESS + "/users/" + userId, {
+          id_user: userId,
+          name: this.name,
+          email: this.email,
+          lastName: this.lastName,
+          headers: {
+            "Content-Type": "application/json"
+          }
+        })
+        .then(response => {
+          this.APILoginData = response;
+          alert("filho: " + this.APILoginData)
+          if (response.data == "success") {
+            swal.fire("Atualização", "Conta atualizada com sucesso", "info");
+          }
+          if (response.data == "empty field") {
+            swal.fire("Erro", "Algum campo está vazio!", "warning");
+          }
+        })
+        .catch(function() {
+          swal.fire("Erro", "erro", "warning");
+        })
+    },
+    newPassword(userId) {
+      alert(userId);
+      axios
+        .put(
+          "http://" +
+            this.$store.state.API_ADDRESS +
+            "/users/updatepassword/" +
+            userId,
+          {
+            id_user: userId,
+            password: this.password,
+            headers: {
+              "Content-Type": "application/json"
+            }
+          }
+        )
+        .then(swal.fire("Sucesso", "Password alterada", "info"))
+        .catch(function() {
+          swal.fire("Erro", "erro", "warning");
         });
-      }
     }
   }
 };

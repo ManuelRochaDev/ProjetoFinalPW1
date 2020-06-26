@@ -124,7 +124,7 @@ export default {
               "warning"
             );
           } else if (response.data == "wrong password") {
-            swal("Erro", "Credenciais incorretas", "warning");
+            swal.fire("Erro", "Credenciais incorretas", "warning");
           }
           /* commit("LOGIN", APILoginData); */
         })

@@ -332,6 +332,35 @@
         </div>
       </div>
 
+      <div id="removePoiDiv">
+        <div id="plane">
+          <div id="upperBar">
+            <h2 id="addR" class="card-title">Remover Ponto de Interesse</h2>
+          </div>
+          <div class="addPoint">
+            <div class="form-group">
+              <label for="title">Nome</label>
+              <select v-model="deletePoi">
+                <option
+                  v-for="poi in this.$store.state.APIPois"
+                  v-bind:key="poi"
+                  v-bind:value="poi"
+                >{{ poi.name }}</option>
+              </select>
+            </div>
+            <br />
+            <button
+              name="addText"
+              id="addText"
+              class="btn btn-secondary btn-lg"
+              href="#"
+              role="button"
+              @click="removePoi(deletePoi.id_pointofinterest)"
+            >Remover</button>
+          </div>
+        </div>
+      </div>
+
       <div id="categoryDiv">
         <div id="plane">
           <div id="upperBar">
@@ -357,6 +386,35 @@
               role="button"
               @click="addCategory()"
             >Adicionar</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="removeCategoryDiv">
+        <div id="plane">
+          <div id="upperBar">
+            <h2 id="addR" class="card-title">Remover Categoria</h2>
+          </div>
+          <div class="addPoint">
+            <div class="form-group">
+              <label for="title">Nome</label>
+              <select v-model="deleteCategory">
+                <option
+                  v-for="category in this.$store.state.APICategories"
+                  v-bind:key="category"
+                  v-bind:value="category"
+                >{{ category.name }}</option>
+              </select>
+            </div>
+            <br />
+            <button
+              name="addText"
+              id="addText"
+              class="btn btn-secondary btn-lg"
+              href="#"
+              role="button"
+              @click="removeCategory(deleteCategory.id_category)"
+            >Remover</button>
           </div>
         </div>
       </div>
@@ -532,7 +590,9 @@ export default {
     newRouteCategory: "",
     newDesc: "",
     newDif: "",
-    oldRoute: []
+    oldRoute: [],
+    deleteCategory: "",
+    deletePoi: ""
   }),
 
   created: function() {
@@ -562,7 +622,6 @@ export default {
     this.$store.dispatch("getPois");
   },
   methods: {
-
     //insert the map on the page
     renderMap() {
       this.map = new google.maps.Map(document.querySelector("#myMap"), {
@@ -699,6 +758,31 @@ export default {
       this.geocodeAddress(geocoder, this.map);
     },
 
+    removePoi(poi_id) {
+      axios
+        .delete("http://" + this.$store.state.API_ADDRESS + "/pois/" + poi_id, {
+          headers: {
+            "Content-Type": "application/json"
+          }
+        })
+        .then(response => {
+          this.APILoginData = response;
+          if (response.data == "success") {
+            swal.fire(
+              "Remoção",
+              "Ponto de interesse apagado com sucesso",
+              "info"
+            );
+          } else {
+            swal.fire("Erro", "Por favor tente mais tarde", "warning");
+          }
+        })
+        .catch(function(error) {
+          alert("erro: " + error);
+        })
+        .finally(() => (this.loading = false));
+    },
+
     addRoute() {
       for (let i = 0; i < this.showPois.length; i++) {
         this.routePois[i] = this.showPois[i].name;
@@ -751,7 +835,7 @@ export default {
       this.routeArray.push(this.selectedRoute);
     },
 
-    editRoute() {
+    editRoute(routeId) {
       //Só comitar se o campo não estiver vazio
       if (this.newTitle == "") {
         this.newTitle = this.routeArray[0].title;
@@ -769,21 +853,96 @@ export default {
         this.newDesc = this.routeArray[0].desc;
       }
 
-      this.$store.commit("EDIT_ROUTE", {
+      axios
+        .put("http://" + this.$store.state.API_ADDRESS + "/routes/" + routeId, {
+          id_route: routeId,
+          /* name: this.name,
+          email: this.email,
+          lastName: this.lastName, */
+          newTitle: this.newTitle,
+          newCity: this.selectedRoute.city,
+          newDif: this.selectedRoute.dif,
+          newRoutePois: this.selectedRoute.routePois,
+          newDesc: this.selectedRoute.desc,
+          headers: {
+            "Content-Type": "application/json"
+          }
+        })
+        .then(response => {
+          this.APILoginData = response;
+          alert("filho: " + this.APILoginData);
+          if (response.data == "success") {
+            swal.fire("Atualização", "Conta atualizada com sucesso", "info");
+          }
+          if (response.data == "empty field") {
+            swal.fire("Erro", "Algum campo está vazio!", "warning");
+          }
+        })
+        .catch(function() {
+          swal.fire("Erro", "erro", "warning");
+        });
+
+      /* this.$store.commit("EDIT_ROUTE", {
         id: this.routeArray[0].id,
         newTitle: this.newTitle,
         newCity: this.selectedRoute.city,
         newDif: this.selectedRoute.dif,
         newRoutePois: this.selectedRoute.routePois,
         newDesc: this.selectedRoute.desc
-      });
+      }); */
     },
 
     addCategory() {
-      this.$store.commit("ADD_CATEGORY", {
+      axios
+        .post("http://" + this.$store.state.API_ADDRESS + "/categories/", {
+          name: this.category,
+          headers: {
+            "Content-Type": "application/json"
+          }
+        })
+        .then(response => {
+          this.APILoginData = response;
+          if (response.data == "success") {
+            swal.fire("Nova categoria", "Categoria criada com sucesso", "info");
+          } else {
+            swal.fire("Erro", "Por favor tente mais tarde", "warning");
+          }
+        })
+        .catch(function(error) {
+          alert("erro: " + error);
+        })
+        .finally(() => (this.loading = false));
+      /* this.$store.commit("ADD_CATEGORY", {
         id: Number(this.getLastCategoryId()) + 1,
         name: this.category
-      });
+      }); */
+    },
+
+    removeCategory(category_id) {
+      axios
+        .delete(
+          "http://" +
+            this.$store.state.API_ADDRESS +
+            "/categories/" +
+            category_id,
+          {
+            headers: {
+              "Content-Type": "application/json"
+            }
+          }
+        )
+        .then(response => {
+          this.APILoginData = response;
+          if (response.data == "success") {
+            swal.fire("Remoção", "Categoria apagada com sucesso", "info");
+          } else {
+            swal.fire("Erro", "Por favor tente mais tarde", "warning");
+          }
+        })
+        .catch(function(error) {
+          alert("erro: " + error);
+        })
+        .finally(() => (this.loading = false));
     },
 
     geocodeAddress(geocoder) {

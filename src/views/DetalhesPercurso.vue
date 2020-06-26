@@ -93,17 +93,14 @@
             </div>
           </a>
 
+          <Rating :grade="3" :maxStars="5" :hasCounter="true" />
+
           <div id="cont" class="container">
             <div class="row comments">
               <div class="col-md-8"></div>
               <AddComment></AddComment>
               <div class="container">
-                <Comments
-                  v-for="comment in this.$store.state.comments"
-                  :key="comment.id"
-                  v-bind:comment="comment"
-                  id="comments"
-                ></Comments>
+                <Comments id="comments"></Comments>
               </div>
             </div>
           </div>
@@ -122,11 +119,14 @@
 <script>
 import AddComment from "@/components/AddComment.vue";
 import Comments from "@/components/Comments.vue";
+import Rating from "@/components/Rating.vue";
+import swal from "sweetalert2";
 export default {
   name: "detalhesPercurso",
   components: {
     AddComment,
-    Comments
+    Comments,
+    Rating
   },
 
   data: () => ({
@@ -265,7 +265,11 @@ export default {
             alert("Directions request failed");
           }
         } else {
-          alert(status);
+          swal.fire(
+            "Erro",
+            "Erro do sistema. Por favor tente novamente mais tarde.",
+            "warning"
+          );
         }
       });
     },
