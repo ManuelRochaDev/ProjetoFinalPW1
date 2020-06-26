@@ -12,12 +12,23 @@
           <h4 id="user">{{comment.userName}}</h4>
         </div>
 
-        <div id="cont" class="col-xs-8 col-sm-8 col-md-8">
+        <div id="cont" class="col-xs-7 col-sm-7 col-md-7">
           <h4 id="msg">{{comment.text}}</h4>
         </div>
         <div class="col-xs-2 col-sm-2 col-md-2">
           <p id="date" class="text-muted">{{comment.commentDate}}</p>
         </div>
+        <template v-if="this.curUsedId == comment.id_user">
+          <div class="col-xs-1 col-sm-1 col-md-1">
+            <button
+              type="button"
+              @click="removeComment(comment.id_comment)"
+              class="btn btn-danger btn-lg"
+            >
+              <span class="glyphicon glyphicon-remove"></span>
+            </button>
+          </div>
+        </template>
       </div>
       <hr />
     </div>
@@ -34,12 +45,13 @@ export default {
   data: () => ({
     routeComments: [],
     commentsUsers: [],
-    userName: ""
+    userName: "",
+    curUserId: 0
   }),
   mounted: function() {},
   created: function() {
     this.$store.dispatch("getComments");
-
+    this.curUserId = this.$store.state.currentUser[0].id_user;
     if (this.$store.state.APIComments != []) {
       this.renderComments;
 
@@ -75,56 +87,57 @@ export default {
         }
       }
       return routeComments;
-    },
-
-    methods: {
-      removeComment(id_comment) {
-        swal
-          .fire({
-            title: "Tem a certeza que pretende remover o comentário?",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Sim"
-          })
-          .then(result => {
-            if (result.value) {
-              axios
-                .delete(
-                  "http://" +
-                    this.$store.state.API_ADDRESS +
-                    "/comments/" +
-                    id_comment,
-                  {
-                    headers: {
-                      "Content-Type": "application/json"
-                    }
+    }
+  },
+  methods: {
+    removeComment(id_comment) {
+      alert(id_comment);
+      swal
+        .fire({
+          title: "Tem a certeza que pretende remover o comentário?",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Sim"
+        })
+        .then(result => {
+          if (result.value) {
+            axios
+              .delete(
+                "http://" +
+                  this.$store.state.API_ADDRESS +
+                  "/comments/" +
+                  id_comment,
+                {
+                  headers: {
+                    "Content-Type": "application/json"
                   }
-                )
-                .then(swal.fire("Sucesso", "Comentário removido", "info"))
-                .catch(function(error) {
-                  swal.fire("Erro", error, "warning");
-                });
-            }
-          });
+                }
+              )
+              .then(swal.fire("Sucesso", "Comentário removido", "info"))
+              .catch(function(error) {
+                swal.fire("Erro", error, "warning");
+              });
+          }
+        });
 
-        /* this.$store.commit("REMOVE_USER", {
+      /* this.$store.commit("REMOVE_USER", {
           id: userId
         }); */
-      }
     }
+  }
 
-    /* getUserName() {
+  /* getUserName() {
       let commentsUsers = [];
       for (const comment of this.renderComments) {
         commentsUsers.push(comment.id_user);
       }
       return commentsUsers;
     } */
-  }
 };
 </script>
+
 
 <style scoped>
 h4 {
@@ -166,7 +179,7 @@ h4 {
 img {
   width: 40px !important;
   height: 40px;
-  background-color: white;
+  background-color: black;
 }
 
 #user {
@@ -178,6 +191,18 @@ img {
 #profPic {
   width: 50%;
   height: auto;
+}
+
+.glyphicon {
+  margin: 0 auto !important;
+  margin-top: 30px;
+}
+
+button.btn-danger {
+  padding: 8px 12px 12px 12px !important;
+  background-color: black;
+  color: white;
+  border: black;
 }
 
 @media only screen and (max-width: 576px) {
