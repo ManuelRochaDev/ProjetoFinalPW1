@@ -19,7 +19,7 @@
 
         <div class="col-md-2 mb-3">
           <h6 class="text-uppercase font-weight-bold">
-            <a href="#!">Perfil</a>
+            <router-link to="/perfil" class="footer-link">Perfil</router-link>
           </h6>
         </div>
       </div>

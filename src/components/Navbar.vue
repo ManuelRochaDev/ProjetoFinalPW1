@@ -3,7 +3,7 @@
 
   <div class="container-fluid">
     <nav id="navbar" class="navbar navbar-expand-lg" :class="{ 'navbar--hidden': !showNavbar }">
-      <a class="navbar-brand" href="#">
+      <a class="navbar-brand" href="/">
         Wine
         <span>Route</span>
       </a>
@@ -20,7 +20,6 @@
       </button>
 
       <div class="collapse navbar-collapse navbar-toggleable-sm" id="navbarTogglerDemo02">
-        <!-- mostrar página atual a vermelho -->
         <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
           <!-- INÍCIO -->
           <li class="nav-item active" v-if="this.$store.state.currentPath === '/'">

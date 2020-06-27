@@ -27,9 +27,23 @@
                     </tr>
                     <tr>
                       <th>
+                        <pre class="tab"><i class="fas fa-clock"></i>  Tempo</pre>
+                      </th>
+                      <td>{{appRoute.time}} minutos</td>
+                    </tr>
+                    <tr>
+                      <th>
+                        <pre class="tab"><i class="fas fa-walking"></i>  Distância</pre>
+                      </th>
+                      <td>{{appRoute.distance}} metros</td>
+                    </tr>
+                    <tr>
+                      <th>
                         <pre class="tab"><i class="fas fa-signal"></i> Dificuldade</pre>
                       </th>
-                      <td v-if="appRoute.dif == 'easy'">Fácil</td>
+                      <td v-if="appRoute.difficulty == 'easy'">Fácil</td>
+                      <td v-if="appRoute.difficulty == 'medium'">Médio</td>
+                      <td v-if="appRoute.difficulty == 'hard'">Difícil</td>
                     </tr>
                     <tr>
                       <th></th>

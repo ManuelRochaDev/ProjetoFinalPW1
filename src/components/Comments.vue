@@ -18,7 +18,7 @@
         <div class="col-xs-2 col-sm-2 col-md-2">
           <p id="date" class="text-muted">{{comment.commentDate}}</p>
         </div>
-        <template v-if="this.curUsedId == comment.id_user">
+        <template v-if="curUserId == comment.id_user || curUserType == 0">
           <div class="col-xs-1 col-sm-1 col-md-1">
             <button
               type="button"
@@ -46,12 +46,16 @@ export default {
     routeComments: [],
     commentsUsers: [],
     userName: "",
-    curUserId: 0
+    curUserId: 0,
+    curUserType: 1
   }),
-  mounted: function() {},
+  mounted: function() {
+    this.curUserId = this.$store.state.currentUser[0].id_user;
+  },
   created: function() {
     this.$store.dispatch("getComments");
     this.curUserId = this.$store.state.currentUser[0].id_user;
+    this.curUserType = this.$store.state.currentUser[0].userType;
     if (this.$store.state.APIComments != []) {
       this.renderComments;
 

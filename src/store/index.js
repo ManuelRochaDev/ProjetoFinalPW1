@@ -86,6 +86,7 @@ export default new Vuex.Store({
     APILoginData: [],
     APIPois: [],
     APIComments: [],
+    APIRatings: [],
     API_ADDRESS: "127.0.0.1:3000"
   },
   mutations: {
@@ -359,6 +360,9 @@ export default new Vuex.Store({
     SET_COMMENTS(state, payload) {
       state.APIComments = payload
     },
+    SET_RATINGS(state, payload) {
+      state.APIRatings = payload
+    },
 
 
   },
@@ -512,6 +516,22 @@ export default new Vuex.Store({
         .then(response => {
           let comments = response.data;
           commit('SET_COMMENTS', comments)
+        })
+        .catch(function (error) {
+          alert(error)
+        })
+        .finally(() => this.loading = false)
+    },
+    getRatings({ commit, state }) {
+      axios
+        .get('http://' + state.API_ADDRESS + '/rating/', {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+        .then(response => {
+          let ratings = response.data;
+          commit('SET_RATINGS', ratings)
         })
         .catch(function (error) {
           alert(error)

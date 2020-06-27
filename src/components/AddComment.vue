@@ -22,7 +22,7 @@
           <input
             id="submit"
             type="submit"
-            value="Submit"
+            value="Submeter"
             class="btn btn-lg"
             @click.prevent="addComment() "
           />

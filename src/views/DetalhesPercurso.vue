@@ -16,6 +16,12 @@
                   <tr></tr>
                 </thead>
                 <tbody>
+                  <tr v-if="this.$store.state.currentRoute[0].id_category">
+                    <th classscope="row">
+                      <pre class="tab"><i class="fas fa-tags"></i>&nbsp;Categoria</pre>
+                    </th>
+                    <td class="descData">{{this.curCategory}}</td>
+                  </tr>
                   <tr>
                     <th classscope="row">
                       <pre class="tab"><i class="fas fa-walking"></i> &nbsp; Distância</pre>
@@ -136,6 +142,7 @@ export default {
     mapPois2: [],
     curDistance: 0,
     curTime: 0,
+    curCategory: "",
     commentsNumber: 0,
     curAudio: "",
     myStyle: {
@@ -151,72 +158,17 @@ export default {
 
   methods: {
     //insert the map on the page
+
     renderMap() {
-      /* 
-      var contentString =
-        '<div id="content">' +
-        '<div id="siteNotice">' +
-        "</div>" +
-        '<h1 id="firstHeading" class="firstHeading">Uluru</h1>' +
-        '<div id="bodyContent">' +
-        "<p><b>Uluru</b>, also referred to as <b>Ayers Rock</b>, is a large " +
-        "sandstone rock formation in the southern part of the " +
-        "Northern Territory, central Australia. It lies 335&#160;km (208&#160;mi) " +
-        "south west of the nearest large town, Alice Springs; 450&#160;km " +
-        "(280&#160;mi) by road. Kata Tjuta and Uluru are the two major " +
-        "features of the Uluru - Kata Tjuta National Park. Uluru is " +
-        "sacred to the Pitjantjatjara and Yankunytjatjara, the " +
-        "Aboriginal people of the area. It has many springs, waterholes, " +
-        "rock caves and ancient paintings. Uluru is listed as a World " +
-        "Heritage Site.</p>" +
-        '<p>Attribution: Uluru, <a href="https://en.wikipedia.org/w/index.php?title=Uluru&oldid=297882194">' +
-        "https://en.wikipedia.org/w/index.php?title=Uluru</a> " +
-        "(last visited June 22, 2009).</p>" +
-        "</div>" +
-        "</div>";
-
-      let infoWindow = new google.maps.InfoWindow({
-        content: contentString
-      });
-
-      // Try to get HTML5 geolocation
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          position => {
-            this.myPos = {
-              lat: position.coords.latitude,
-              lng: position.coords.longitude
-            };
-
-            infoWindow.setPosition(this.myPos);
-            infoWindow.setContent("You are here");
-            infoWindow.open(this.map);
-
-            this.map.setCenter(this.myPos);
-          },
-          () => this.handleLocationError(true, infoWindow, this.map.getCenter())
-        );
-      } else {
-        // Browser doesn't support Geolocation
-        this.handleLocationError(false, this.infoWindow, this.map.getCenter());
-      } */
-      //this.calcRoute(directionsService, directionsRenderer);
       this.map = new google.maps.Map(document.querySelector("#myMap"), {
         center: { lat: -34.397, lng: 150.644 },
-        zoom: 8
+        zoom: 10
       });
 
       const directionsService = new google.maps.DirectionsService();
       const directionsRenderer = new google.maps.DirectionsRenderer();
       directionsRenderer.setMap(this.map);
       this.calcRoute(directionsService, directionsRenderer);
-    },
-
-    saveStorage() {
-      localStorage.setItem(
-        "comments",
-        JSON.stringify(this.$store.state.comments)
-      );
     },
 
     handleLocationError(browserHasGeolocation, infoWindow, pos) {
@@ -237,7 +189,7 @@ export default {
       /* alert(this.mapPois.lat); */
       /* this.mapPois.forEach(function(poi) { */
       for (const poi of this.mapPois) {
-        /* alert(poi.lat) */
+        /* alert(poi.longitude) */
 
         this.mapPois2.push({
           location: new google.maps.LatLng(poi.lat, poi.longitude),
@@ -286,29 +238,21 @@ export default {
   },
 
   created: function() {
-    /* if (localStorage.getItem("comments")) {
-      this.$store.state.comments = JSON.parse(localStorage.getItem("comments"));
-    } */
-    /* if (localStorage.getItem("currentRoute")) {
-      this.$store.state.currentRoute = JSON.parse(
-        localStorage.getItem("currentRoute")
-      );
-    } */
+    this.$store.dispatch("getCategories");
+    for (const category of this.$store.state.APICategories) {
+      /* alert(category.id_category)
+      alert(this.$store.state.currentRoute[0].id_category) */
+      if (
+        category.id_category == this.$store.state.currentRoute[0].id_category
+      ) {
+        this.curCategory = category.name;
+      }
+    }
 
     this.curAudio =
       "https://w.soundcloud.com/player/?url=" +
       this.$store.state.currentRoute[0].audiolink +
       "&show_artwork=false&liking=false&sharing=false&auto_play=false";
-
-    /* if (localStorage.getItem("appRoutes")) {
-      this.$store.state.appRoutes = JSON.parse(
-        localStorage.getItem("appRoutes")
-      );
-    }
-
-    if (localStorage.getItem("pois")) {
-      this.$store.state.pois = JSON.parse(localStorage.getItem("pois"));
-    } */
   }
 };
 </script>

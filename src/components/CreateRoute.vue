@@ -462,7 +462,7 @@
                 />
               </div>
               <div class="form-group">
-                <label for="desc">Descrição ({{oldRoute.desc}})</label>
+                <label for="desc">Descrição ({{oldRoute.description}})</label>
                 <textarea
                   rows="4"
                   name="desc"
@@ -484,7 +484,7 @@
               </div>
 
               <div class="form-group">
-                <label for="dif">Dificuldade ({{oldRoute.dif}})</label>
+                <label for="dif">Dificuldade ({{oldRoute.difficulty}})</label>
                 <select v-model="newDif" name="dif" class="form-control">
                   <option value="easy">Fácil</option>
                   <option value="medium">Médio</option>
@@ -515,7 +515,7 @@
                 <option
                   v-bind:key="poi"
                   v-bind:value="poi"
-                  v-for="poi in $store.state.pois"
+                  v-for="poi in $store.state.APIPois"
                 >{{ poi.name }}</option>
               </select>
             </p>
@@ -560,6 +560,8 @@ export default {
     appRoutes: [],
     newRoute: [{}],
     showPois: [],
+    newShowPois: [],
+    newRoutePois: [],
     showRoutes: [],
     pois: [],
     idRoute: 0,
@@ -586,13 +588,14 @@ export default {
     routeArray: [],
     newTitle: "",
     newCity: "",
-    newRoutePois: "",
     newRouteCategory: "",
     newDesc: "",
     newDif: "",
+    newAudiolink: "",
     oldRoute: [],
     deleteCategory: "",
-    deletePoi: ""
+    deletePoi: "",
+    routeToEditID: 0
   }),
 
   created: function() {
@@ -639,6 +642,7 @@ export default {
     addShowPoiTextbox() {
       this.selectCount++;
       this.showPois.push({ name: "" });
+      this.newShowPois.push({ name: "" });
     },
 
     getLastRouteId() {
@@ -835,39 +839,60 @@ export default {
       this.routeArray.push(this.selectedRoute);
     },
 
-    editRoute(routeId) {
+    editRoute() {
       //Só comitar se o campo não estiver vazio
       if (this.newTitle == "") {
         this.newTitle = this.routeArray[0].title;
       }
       if (this.newSelectedRoute == "") {
-        this.nnewSelectedRoute = this.routeArray[0].selectedRoute;
+        this.newSelectedRoute = this.routeArray[0].selectedRoute;
       }
       if (this.newCity == "") {
         this.newCity = this.routeArray[0].city;
       }
-      if (this.newRoutePois == "") {
+      if (this.newRoutePois == []) {
         this.newRoutePois = this.routeArray[0].routePois;
+      } else {
+        for (let i = 0; i < this.showPois.length; i++) {
+          this.newRoutePois[i] = this.showPois[i].name;
+        }
       }
       if (this.newDesc == "") {
-        this.newDesc = this.routeArray[0].desc;
+        this.newDesc = this.routeArray[0].description;
       }
 
+      if (this.newAudiolink == "") {
+        this.newAudiolink = this.routeArray[0].audiolink;
+      }
+      /* alert("oi:" + this.newAudiolink) */
+      if (this.newDif == "") {
+        this.newDif = this.routeArray[0].difficulty;
+      }
+
+      if (this.newPois == "") {
+        this.newPois = this.routeArray[0].difficulty;
+      }
+
+      this.routeToEditID = this.routeArray[0].id_route;
+
       axios
-        .put("http://" + this.$store.state.API_ADDRESS + "/routes/" + routeId, {
-          id_route: routeId,
-          /* name: this.name,
-          email: this.email,
-          lastName: this.lastName, */
-          newTitle: this.newTitle,
-          newCity: this.selectedRoute.city,
-          newDif: this.selectedRoute.dif,
-          newRoutePois: this.selectedRoute.routePois,
-          newDesc: this.selectedRoute.desc,
-          headers: {
-            "Content-Type": "application/json"
+        .put(
+          "http://" +
+            this.$store.state.API_ADDRESS +
+            "/routes/" +
+            this.routeToEditID,
+          {
+            title: this.newTitle,
+            city: this.newCity,
+            dif: this.newDif,
+            routePois: this.newRoutePois,
+            desc: this.newDesc,
+            audiolink: this.newAudiolink,
+            headers: {
+              "Content-Type": "application/json"
+            }
           }
-        })
+        )
         .then(response => {
           this.APILoginData = response;
           alert("filho: " + this.APILoginData);
@@ -881,15 +906,6 @@ export default {
         .catch(function() {
           swal.fire("Erro", "erro", "warning");
         });
-
-      /* this.$store.commit("EDIT_ROUTE", {
-        id: this.routeArray[0].id,
-        newTitle: this.newTitle,
-        newCity: this.selectedRoute.city,
-        newDif: this.selectedRoute.dif,
-        newRoutePois: this.selectedRoute.routePois,
-        newDesc: this.selectedRoute.desc
-      }); */
     },
 
     addCategory() {

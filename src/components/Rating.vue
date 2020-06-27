@@ -1,5 +1,11 @@
 <template>
   <div class="rating">
+    
+    <div class="info counter">
+      <span>Avalie esta rota:</span>
+      <br />
+      <br />
+    </div>
     <ul class="list">
       <li
         @click="rate(star)"
@@ -11,22 +17,40 @@
         <i :class="star <= stars ? 'fas fa-star' : 'far fa-star'"></i>
       </li>
     </ul>
+
     <div v-if="hasCounter" class="info counter">
+      
       <span class="score-max">{{ maxStars }}</span>
       <span class="divider">/</span>
-      <span class="score-rating">{{ stars }}</span>
+      <span class="score-rating">{{ stars }} </span>
+      
+
+      <!-- <span>Classificação atual: {{ratingCalc}}</span> -->
     </div>
+    <span>Classificação atual: {{ratingCalc}} </span>
+    <button
+      class="botaozito btn my-4 btn-block btn-lg"
+      type="submit"
+      @click="checkRating()"
+    >Enviar classificação</button>
   </div>
 </template>
 <script>
+import axios from "axios";
+import swal from "sweetalert2";
 export default {
   name: "Rating",
   props: ["grade", "maxStars", "hasCounter"],
   data() {
     return {
       stars: this.grade,
-      rating: this.$store.state.currentRoute.rating
+      rating: this.$store.state.currentRoute.rating,
+      ratingCalc: 0
     };
+  },
+  mounted: function() {
+    this.$store.dispatch("getRatings");
+    this.ratingTotal();
   },
   beforeDestroy: function() {
     //por aqui a mandar o rating para a bd
@@ -41,6 +65,62 @@ export default {
         }
       }
     },
+    checkRating() {
+      let firstRating = 0;
+      if (Object.keys(this.$store.state.APIRatings).length != 0) {
+        for (const rating of this.$store.state.APIRatings) {
+          if (rating.id_user == this.$store.state.currentUser[0].id_user) {
+            axios
+              .put(
+                "http://" +
+                  this.$store.state.API_ADDRESS +
+                  "/rating/" +
+                  rating.id_rating,
+                {
+                  rating_value: this.stars,
+                  id_user: this.$store.state.currentUser[0].id_user,
+                  headers: {
+                    "Content-Type": "application/json"
+                  }
+                }
+              )
+              .then(swal.fire("Sucesso", "Rating enviado", "info"))
+              .catch(function() {
+                swal.fire("Erro", "erro", "warning");
+              });
+            firstRating = 0;
+          } else {
+            firstRating = 1;
+          }
+        }
+      } else {
+        firstRating = 1;
+      }
+
+      if (firstRating != 0) {
+        axios
+          .post("http://" + this.$store.state.API_ADDRESS + "/rating/", {
+            rating_value: this.stars,
+            id_user: this.$store.state.currentUser[0].id_user,
+            headers: {
+              "Content-Type": "application/json"
+            }
+          })
+          .then(swal.fire("Sucesso", "Rating enviado", "info"))
+          .catch(function() {
+            swal.fire("Erro", "erro", "warning");
+          });
+      }
+    },
+    ratingTotal() {
+      let ratingSum = 0;
+      let ratingNum = 0;
+      for (const rating of this.$store.state.APIRatings) {
+        ratingSum = rating.rating_value + ratingSum;
+        ratingNum++;
+      }
+      this.ratingCalc = (ratingSum / ratingNum).toFixed(1)
+    }
   }
 };
 </script>
@@ -103,5 +183,11 @@ export default {
       margin-right: 0px;
     }
   }
+}
+
+.botaozito {
+  font-size: 14px;
+  background-color: #221d23;
+  color: #ffffff;
 }
 </style>
