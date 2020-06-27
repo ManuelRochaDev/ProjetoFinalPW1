@@ -663,18 +663,12 @@ export default {
     changeUsertype(userId) {
       if (confirm("Tem a certeza que quer atualizar utilizador?")) {
         axios
-          .put(
-            "https://" +
-              this.$store.state.API_ADDRESS +
-              "/users/upgrade/" +
-              userId,
-            {
-              id_user: userId,
-              headers: {
-                "Content-Type": "application/json"
-              }
+          .put(this.$store.state.API_ADDRESS + "/users/upgrade/" + userId, {
+            id_user: userId,
+            headers: {
+              "Content-Type": "application/json"
             }
-          )
+          })
           .then(
             swal.fire("Sucesso", "Utilizador atualizado com successo", "info")
           )
@@ -689,8 +683,7 @@ export default {
       /* alert(userId); */
       if (confirm("Tem a certeza que pretende apagar o utilizador?")) {
         axios
-          .delete(
-            "https://" + this.$store.state.API_ADDRESS + "/users/" + userId,
+          .delete(this.$store.state.API_ADDRESS + "/users/" + userId,
             {
               headers: {
                 "Content-Type": "application/json"
@@ -711,8 +704,7 @@ export default {
     removeRoute(routeId) {
       if (confirm("Tem a certeza que pretende remover esta rota?")) {
         axios
-          .delete(
-            "https://" + this.$store.state.API_ADDRESS + "/routes/" + routeId,
+          .delete(this.$store.state.API_ADDRESS + "/routes/" + routeId,
             {
               headers: {
                 "Content-Type": "application/json"
@@ -734,9 +726,7 @@ export default {
       alert(userId);
       if (confirm("Tem a certeza que quer bloquear/desbloquear utilizador?")) {
         axios
-          .put(
-            "https://" +
-              this.$store.state.API_ADDRESS +
+          .put(this.$store.state.API_ADDRESS +
               "/users/block/" +
               userId,
             {
@@ -764,11 +754,13 @@ export default {
 
     removePoi(poi_id) {
       axios
-        .delete("https://" + this.$store.state.API_ADDRESS + "/pois/" + poi_id, {
-          headers: {
-            "Content-Type": "application/json"
+        .delete(this.$store.state.API_ADDRESS + "/pois/" + poi_id,
+          {
+            headers: {
+              "Content-Type": "application/json"
+            }
           }
-        })
+        )
         .then(response => {
           this.APILoginData = response;
           if (response.data == "success") {
@@ -792,7 +784,7 @@ export default {
         this.routePois[i] = this.showPois[i].name;
       }
       axios
-        .post("https://" + this.$store.state.API_ADDRESS + "/routes/", {
+        .post(this.$store.state.API_ADDRESS + "/routes/", {
           title: this.title,
           city: this.city,
           dif: this.dif,
@@ -876,9 +868,7 @@ export default {
       this.routeToEditID = this.routeArray[0].id_route;
 
       axios
-        .put(
-          "https://" +
-            this.$store.state.API_ADDRESS +
+        .put(this.$store.state.API_ADDRESS +
             "/routes/" +
             this.routeToEditID,
           {
@@ -909,7 +899,7 @@ export default {
 
     addCategory() {
       axios
-        .post("https://" + this.$store.state.API_ADDRESS + "/categories/", {
+        .post(this.$store.state.API_ADDRESS + "/categories/", {
           name: this.category,
           headers: {
             "Content-Type": "application/json"
@@ -935,9 +925,7 @@ export default {
 
     removeCategory(category_id) {
       axios
-        .delete(
-          "https://" +
-            this.$store.state.API_ADDRESS +
+        .delete(this.$store.state.API_ADDRESS +
             "/categories/" +
             category_id,
           {
@@ -982,7 +970,7 @@ export default {
             /* this.$store.state.lat = markerr.getPosition().lat();
             this.$store.state.lng = markerr.getPosition().lng(); */
             axios
-              .post("https://" + this.$store.state.API_ADDRESS + "/pois/", {
+              .post(this.$store.state.API_ADDRESS + "/pois/", {
                 idRoute: Number(this.getLastRouteId()) + 1,
                 name: address[i],
                 lat: this.coord.getPosition().lat(),

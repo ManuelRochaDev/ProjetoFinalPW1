@@ -1,13 +1,13 @@
 <template>
   <div id="myComment">
     <div class="container">
-      <div class="row" id="commentRow">
-        <div class="col-md-12 col-sm-12 col-xs-12">
-          <template v-if="this.$store.state.currentUser[0].avatar == null">  
+      <div class="row" id="commentRow" v-if="Object.keys(this.$store.state.currentUser).length != 0">
+        <div class="col-md-12 col-sm-12 col-xs-12" >
+          
+          <template v-if="this.$store.state.currentUser[0].avatar == null">
           <img src="../assets/avatar.png" id="avatar" />
           </template>
-          <template v-else>  
-            
+          <template v-else>
           <img :src="this.$store.state.currentUser[0].avatar" id="avatar" />
           </template>
           <!-- <img id="avatar" src="../assets/manuel.jpg" /> -->
@@ -70,7 +70,7 @@ export default {
     let year = this.currentDate.getFullYear();
     this.formattedDate = date + "/" + month + "/" + year;
       axios
-        .post("https://" + this.$store.state.API_ADDRESS + "/comments/", {
+        .post(this.$store.state.API_ADDRESS + "/comments/", {
           text: this.text,
           id_route: this.$store.state.currentRoute[0].id_route,
           id_user: this.$store.state.currentUser[0].id_user,

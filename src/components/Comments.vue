@@ -1,6 +1,10 @@
 <template>
   <div class="row" id="main">
-    <div id="comments" class="col-xs-12 col-sm-12 col-md-12">
+    <div
+      id="comments"
+      class="col-xs-12 col-sm-12 col-md-12"
+      v-if="Object.keys(renderComments).length != 0"
+    >
       <div class="row" id="row" v-for="comment in renderComments" :key="comment.id_comment">
         <div class="col-xs-2 col-sm-2 col-md-2">
           <template v-if="comment.avatar == ''">
@@ -50,13 +54,20 @@ export default {
     curUserType: 1
   }),
   mounted: function() {
-    this.curUserId = this.$store.state.currentUser[0].id_user;
+    if (Object.keys(this.$store.state.currentUser).length != 0) {
+      this.curUserId = this.$store.state.currentUser[0].id_user;
+    }
   },
   created: function() {
     this.$store.dispatch("getComments");
     this.$store.dispatch("getUsers");
-    this.curUserId = this.$store.state.currentUser[0].id_user;
-    this.curUserType = this.$store.state.currentUser[0].userType;
+    if (Object.keys(this.$store.state.currentUser).length != 0) {
+      this.curUserId = this.$store.state.currentUser[0].id_user;
+    }
+    if (Object.keys(this.$store.state.currentUser).length != 0) {
+      this.curUserType = this.$store.state.currentUser[0].userType;
+    }
+
     if (this.$store.state.APIComments != []) {
       this.renderComments;
 
@@ -66,7 +77,7 @@ export default {
   computed: {
     renderComments() {
       //get comments from this route only
-      
+
       let routeComments = [];
       let userName = "";
       let avatar = "";
@@ -110,10 +121,7 @@ export default {
           if (result.value) {
             axios
               .delete(
-                "https://" +
-                  this.$store.state.API_ADDRESS +
-                  "/comments/" +
-                  id_comment,
+                this.$store.state.API_ADDRESS + "/comments/" + id_comment,
                 {
                   headers: {
                     "Content-Type": "application/json"

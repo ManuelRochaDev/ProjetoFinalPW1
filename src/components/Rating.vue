@@ -1,11 +1,11 @@
 <template>
   <div class="rating">
-    <div class="info counter">
+    <div class="info counter" v-if="Object.keys(this.$store.state.currentUser).length != 0">
       <span>Avalie esta rota:</span>
       <br />
       <br />
     </div>
-    <ul class="list">
+    <ul class="list" v-if="Object.keys(this.$store.state.currentUser).length != 0">
       <li
         @click="rate(star)"
         v-for="star in maxStars"
@@ -17,7 +17,10 @@
       </li>
     </ul>
 
-    <div v-if="hasCounter" class="info counter">
+    <div
+      v-if="hasCounter && Object.keys(this.$store.state.currentUser).length != 0"
+      class="info counter"
+    >
       <span class="score-max">{{ maxStars }}</span>
       <span class="divider">/</span>
       <span class="score-rating">{{ stars }}</span>
@@ -27,6 +30,7 @@
     <span v-if="this.ratingCalc == 0">Sem classificação</span>
     <span v-else>Classificação atual: {{ratingCalc}}</span>
     <button
+      v-if="Object.keys(this.$store.state.currentUser).length != 0"
       class="botaozito btn my-4 btn-block btn-lg"
       type="submit"
       @click="checkRating()"
@@ -70,9 +74,7 @@ export default {
         for (const rating of this.$store.state.APIRatings) {
           if (rating.id_user == this.$store.state.currentUser[0].id_user) {
             axios
-              .put(
-                "https://" +
-                  this.$store.state.API_ADDRESS +
+              .put(this.$store.state.API_ADDRESS +
                   "/rating/" +
                   rating.id_rating,
                 {
@@ -110,7 +112,7 @@ export default {
 
       if (firstRating != 0) {
         axios
-          .post("https://" + this.$store.state.API_ADDRESS + "/rating/", {
+          .post(this.$store.state.API_ADDRESS + "/rating/", {
             rating_value: this.stars,
             id_user: this.$store.state.currentUser[0].id_user,
             id_route: this.$store.state.currentRoute[0].id_route,

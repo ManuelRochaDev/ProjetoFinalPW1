@@ -3,10 +3,11 @@
 
   <div class="container-fluid">
     <nav id="navbar" class="navbar navbar-expand-lg" :class="{ 'navbar--hidden': !showNavbar }">
-      <a class="navbar-brand" href="/">
+      <router-link to="/">
+      <a class="navbar-brand">
         Wine
         <span>Route</span>
-      </a>
+      </a></router-link>
       <button
         class="navbar-toggler navbar-dark"
         type="button"
