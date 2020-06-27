@@ -895,9 +895,8 @@ export default {
         )
         .then(response => {
           this.APILoginData = response;
-          alert("filho: " + this.APILoginData);
           if (response.data == "success") {
-            swal.fire("Atualização", "Conta atualizada com sucesso", "info");
+            swal.fire("Atualização", "Rota atualizada com sucesso", "info");
           }
           if (response.data == "empty field") {
             swal.fire("Erro", "Algum campo está vazio!", "warning");

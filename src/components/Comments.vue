@@ -54,6 +54,7 @@ export default {
   },
   created: function() {
     this.$store.dispatch("getComments");
+    this.$store.dispatch("getUsers");
     this.curUserId = this.$store.state.currentUser[0].id_user;
     this.curUserType = this.$store.state.currentUser[0].userType;
     if (this.$store.state.APIComments != []) {
@@ -65,7 +66,7 @@ export default {
   computed: {
     renderComments() {
       //get comments from this route only
-      this.$store.dispatch("getUsers");
+      
       let routeComments = [];
       let userName = "";
       let avatar = "";

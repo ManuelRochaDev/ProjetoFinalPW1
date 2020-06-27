@@ -133,9 +133,9 @@ export default new Vuex.Store({
 
     LOGIN(state, payload) {
       /* commit("LOGIN", await users.login()) */
-
       for (const user of state.APIUsers) {
         if (user.email === payload.email) {
+
           state.currentUser = []
           state.currentUser.push({
             id_user: user.id_user,
@@ -147,56 +147,10 @@ export default new Vuex.Store({
           })
         }
       }
-      /* alert(state.currentUser[0].userType) */
-
-
-      /* axios
-        .post('http://' + state.API_ADDRESS + '/login/', {
-          email: this.emailLogin,
-          password: this.passwordLogin,
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        })
-        .then(response => { */
-      /* let APILoginData = response; */
-
-      /* alert(response) */
-      /* commit('LOGIN', APILoginData) */
-      /* })
-      .catch(function (error) {
-        alert(error)
-      })
-      .finally(() => this.loading = false) */
-
-
-      /* swal("Login", "Utilizador autenticado", "success") */
-
-      /* if (state.currentUser.userType === 0) {
-        window.location.href = "../admin"
-      } else if (state.currentUser.userType === 1) {
-        window.location.href = "../"
-      } */
-      /* 
-            localStorage.setItem("currentUser", JSON.stringify(this.state.currentUser))
-          swal("Login", "Utilizador autenticado", "success")
-     
-     
-          /* state.credCorrect = true */
-      /* if (state.currentUser.userType === 0) {
-    window.location.href = "../admin"
-    } else if (state.currentUser.userType === 1) {
-    window.location.href = "../"
-    } */
-      /* } else {
-        swal("Erro", "Credenciais incorretas", "warning")
-      } */
-      /*     } */
     },
 
     LOGOUT(state) {
       state.currentUser = [];
-      /* localStorage.removeItem("currentUser", JSON.stringify(this.state.currentUser)); */
       swal("Sair", "Até à próxima!", "success");
       /* window.location.href = ".." */
     },

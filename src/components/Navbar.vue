@@ -97,6 +97,7 @@ export default {
   },
 
   beforeDestroy() {
+    this.logout();
     window.removeEventListener("scroll", this.onScroll);
   },
 
@@ -117,7 +118,6 @@ export default {
   }
 };
 </script>
-
 
 <style scoped>
 nav {

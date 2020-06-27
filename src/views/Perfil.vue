@@ -138,7 +138,15 @@ export default {
   },
   methods: {
     newInfo(userId) {
-      /* alert(userId); */
+      if (this.name == "") {
+        this.name = this.$store.state.currentUser[0].name
+      }
+      if (this.email == "") {
+        this.email = this.$store.state.currentUser[0].email
+      }
+      if (this.lastName == "") {
+        this.lastName = this.$store.state.currentUser[0].lastName
+      }
       axios
         .put("http://" + this.$store.state.API_ADDRESS + "/users/" + userId, {
           id_user: userId,
@@ -151,7 +159,6 @@ export default {
         })
         .then(response => {
           this.APILoginData = response;
-          alert("filho: " + this.APILoginData)
           if (response.data == "success") {
             swal.fire("Atualização", "Conta atualizada com sucesso", "info");
           }
@@ -161,10 +168,9 @@ export default {
         })
         .catch(function() {
           swal.fire("Erro", "erro", "warning");
-        })
+        });
     },
     newPassword(userId) {
-      alert(userId);
       axios
         .put(
           "http://" +

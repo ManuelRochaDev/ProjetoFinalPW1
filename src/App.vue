@@ -21,6 +21,16 @@ export default {
   components: {
     Navbar,
     Footer
+  },
+
+  ready() {
+    window.addEventListener("beforeunload", this.leaving);
+  },
+
+  methods: {
+    leaving: function() {
+      this.$store.commit("LOGOUT");
+    }
   }
 };
 </script>

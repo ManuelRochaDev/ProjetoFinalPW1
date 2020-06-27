@@ -125,22 +125,36 @@ export default {
           }
         })
         .then(response => {
+          this.$store.dispatch("getUsers");
           this.APILoginData = response;
-          if (response.data == "success") {
-            swal.fire("Novo utilizador", "Bem-vindo!", "info");
 
-            this.$store.commit("LOGIN", {
-              email: this.email,
-              password: this.password,
-              firstName: this.name,
-              lastName: this.lastName,
-              userType: 1,
-              isBlocked: 0,
-              avatar: "../assets/avatar.png"
+          if (response.data == "success") {
+            swal.fire("Novo utilizador", "Bem-vindo!", "info").then(value => {
+              if (value) {
+                this.$store.commit("LOGIN", {
+                  email: this.email,
+                  password: this.password,
+                  firstName: this.name,
+                  lastName: this.lastName,
+                  userType: 1,
+                  isBlocked: 0,
+                  avatar: "../assets/avatar.png"
+                });
+              } else {
+                this.$store.commit("LOGIN", {
+                  email: this.email,
+                  password: this.password,
+                  firstName: this.name,
+                  lastName: this.lastName,
+                  userType: 1,
+                  isBlocked: 0,
+                  avatar: "../assets/avatar.png"
+                });
+              }
             });
 
-            this.$router.push("/");
-          } else if (response.data == "email already exists"){
+            /* this.$router.push("/"); */
+          } else if (response.data == "email already exists") {
             swal.fire("Aviso", "Este email já está registado", "warning");
           }
         })
@@ -148,23 +162,6 @@ export default {
           alert("erro: " + error);
         })
         .finally(() => (this.loading = false));
-      /* this.$store.commit("REGISTER_USER", {
-        id: this.getLastId() + 1,
-        email: this.email,
-        name: this.name,
-        lastName: this.lastName,
-        password: this.password,
-        userType: 1,
-        isBlocked: 0,
-        img: "../assets/avatar.png"
-      }); */
-    },
-
-    saveStorage() {
-      /* localStorage.setItem(
-        "currentUser",
-        JSON.stringify(this.$store.state.currentUser)
-      ); */
     }
   }
 };

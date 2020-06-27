@@ -1,6 +1,5 @@
 <template>
   <div class="rating">
-    
     <div class="info counter">
       <span>Avalie esta rota:</span>
       <br />
@@ -19,15 +18,14 @@
     </ul>
 
     <div v-if="hasCounter" class="info counter">
-      
       <span class="score-max">{{ maxStars }}</span>
       <span class="divider">/</span>
-      <span class="score-rating">{{ stars }} </span>
-      
+      <span class="score-rating">{{ stars }}</span>
 
       <!-- <span>Classificação atual: {{ratingCalc}}</span> -->
     </div>
-    <span>Classificação atual: {{ratingCalc}} </span>
+    <span v-if="this.ratingCalc == 0">Sem classificação</span>
+    <span v-else>Classificação atual: {{ratingCalc}}</span>
     <button
       class="botaozito btn my-4 btn-block btn-lg"
       type="submit"
@@ -50,6 +48,7 @@ export default {
   },
   mounted: function() {
     this.$store.dispatch("getRatings");
+
     this.ratingTotal();
   },
   beforeDestroy: function() {
@@ -79,15 +78,27 @@ export default {
                 {
                   rating_value: this.stars,
                   id_user: this.$store.state.currentUser[0].id_user,
+                  id_route: this.$store.state.currentRoute[0].id_route,
                   headers: {
                     "Content-Type": "application/json"
                   }
                 }
               )
-              .then(swal.fire("Sucesso", "Rating enviado", "info"))
-              .catch(function() {
-                swal.fire("Erro", "erro", "warning");
-              });
+              .then(
+                swal
+                  .fire("Sucesso", "Rating enviado", "info")
+                  .then(value => {
+                    this.$store.dispatch("getRatings");
+                    if (value || !value) {
+                      this.$store.dispatch("getRatings");
+                    }
+                  })
+                  .catch(
+                    function() {
+                      swal.fire("Erro", "erro", "warning");
+                    }.finally(() => this.ratingTotal())
+                  )
+              );
             firstRating = 0;
           } else {
             firstRating = 1;
@@ -102,24 +113,38 @@ export default {
           .post("http://" + this.$store.state.API_ADDRESS + "/rating/", {
             rating_value: this.stars,
             id_user: this.$store.state.currentUser[0].id_user,
+            id_route: this.$store.state.currentRoute[0].id_route,
             headers: {
               "Content-Type": "application/json"
             }
           })
-          .then(swal.fire("Sucesso", "Rating enviado", "info"))
+          .then(
+            swal.fire("Sucesso", "Rating enviado", "info").then(value => {
+              if (value) {
+                this.$forceUpdate();
+              }
+            })
+          )
           .catch(function() {
             swal.fire("Erro", "erro", "warning");
           });
+        this.$store.dispatch("getRatings");
+        this.ratingTotal();
       }
     },
     ratingTotal() {
       let ratingSum = 0;
       let ratingNum = 0;
       for (const rating of this.$store.state.APIRatings) {
-        ratingSum = rating.rating_value + ratingSum;
-        ratingNum++;
+        if (rating.id_route == this.$store.state.currentRoute[0].id_route) {
+          ratingSum = rating.rating_value + ratingSum;
+          ratingNum++;
+        }
       }
-      this.ratingCalc = (ratingSum / ratingNum).toFixed(1)
+      this.ratingCalc = (ratingSum / ratingNum).toFixed(1);
+      if (this.ratingCalc == "NaN") {
+        this.ratingCalc = 0;
+      }
     }
   }
 };
