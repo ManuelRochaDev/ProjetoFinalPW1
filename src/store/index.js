@@ -87,7 +87,7 @@ export default new Vuex.Store({
     APIPois: [],
     APIComments: [],
     APIRatings: [],
-    API_ADDRESS: "127.0.0.1:3000"
+    API_ADDRESS: "https://winerouteapi.herokuapp.com"
   },
   mutations: {
     REGISTER_USER(state, payload) {
@@ -391,7 +391,7 @@ export default new Vuex.Store({
   actions: {
     getUsers({ commit, state }) {
       axios
-        .get('http://' + state.API_ADDRESS + '/users/', {
+        .get('https://' + state.API_ADDRESS + '/users/', {
           headers: {
             'Content-Type': 'application/json'
           }
@@ -412,7 +412,7 @@ export default new Vuex.Store({
     },
     getCategories({ commit, state }) {
       axios
-        .get('http://' + state.API_ADDRESS + '/categories/', {
+        .get('https://' + state.API_ADDRESS + '/categories/', {
           headers: {
             'Content-Type': 'application/json'
           }
@@ -429,7 +429,7 @@ export default new Vuex.Store({
     },
     getAppRoutes({ commit, state }) {
       axios
-        .get('http://' + state.API_ADDRESS + '/routes/', {
+        .get('https://' + state.API_ADDRESS + '/routes/', {
           headers: {
             'Content-Type': 'application/json'
           }
@@ -446,7 +446,7 @@ export default new Vuex.Store({
     },
     getPois({ commit, state }) {
       axios
-        .get('http://' + state.API_ADDRESS + '/pois/', {
+        .get('https://' + state.API_ADDRESS + '/pois/', {
           headers: {
             'Content-Type': 'application/json'
           }
@@ -462,7 +462,7 @@ export default new Vuex.Store({
     },
     getComments({ commit, state }) {
       axios
-        .get('http://' + state.API_ADDRESS + '/comments/', {
+        .get('https://' + state.API_ADDRESS + '/comments/', {
           headers: {
             'Content-Type': 'application/json'
           }
@@ -478,7 +478,7 @@ export default new Vuex.Store({
     },
     getRatings({ commit, state }) {
       axios
-        .get('http://' + state.API_ADDRESS + '/rating/', {
+        .get('https://' + state.API_ADDRESS + '/rating/', {
           headers: {
             'Content-Type': 'application/json'
           }

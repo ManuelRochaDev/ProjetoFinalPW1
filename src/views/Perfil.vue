@@ -148,7 +148,7 @@ export default {
         this.lastName = this.$store.state.currentUser[0].lastName
       }
       axios
-        .put("http://" + this.$store.state.API_ADDRESS + "/users/" + userId, {
+        .put("https://" + this.$store.state.API_ADDRESS + "/users/" + userId, {
           id_user: userId,
           name: this.name,
           email: this.email,
@@ -173,7 +173,7 @@ export default {
     newPassword(userId) {
       axios
         .put(
-          "http://" +
+          "https://" +
             this.$store.state.API_ADDRESS +
             "/users/updatepassword/" +
             userId,

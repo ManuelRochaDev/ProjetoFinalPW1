@@ -110,7 +110,7 @@ export default {
           if (result.value) {
             axios
               .delete(
-                "http://" +
+                "https://" +
                   this.$store.state.API_ADDRESS +
                   "/comments/" +
                   id_comment,

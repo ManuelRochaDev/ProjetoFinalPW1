@@ -115,7 +115,7 @@ export default {
     },
     addUser() {
       axios
-        .post("http://" + this.$store.state.API_ADDRESS + "/users/", {
+        .post("https://" + this.$store.state.API_ADDRESS + "/users/", {
           firstName: this.name,
           lastName: this.lastName,
           email: this.email,

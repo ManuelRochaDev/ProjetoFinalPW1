@@ -71,7 +71,7 @@ export default {
           if (rating.id_user == this.$store.state.currentUser[0].id_user) {
             axios
               .put(
-                "http://" +
+                "https://" +
                   this.$store.state.API_ADDRESS +
                   "/rating/" +
                   rating.id_rating,
@@ -110,7 +110,7 @@ export default {
 
       if (firstRating != 0) {
         axios
-          .post("http://" + this.$store.state.API_ADDRESS + "/rating/", {
+          .post("https://" + this.$store.state.API_ADDRESS + "/rating/", {
             rating_value: this.stars,
             id_user: this.$store.state.currentUser[0].id_user,
             id_route: this.$store.state.currentRoute[0].id_route,

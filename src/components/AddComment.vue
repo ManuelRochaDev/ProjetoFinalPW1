@@ -70,7 +70,7 @@ export default {
     let year = this.currentDate.getFullYear();
     this.formattedDate = date + "/" + month + "/" + year;
       axios
-        .post("http://" + this.$store.state.API_ADDRESS + "/comments/", {
+        .post("https://" + this.$store.state.API_ADDRESS + "/comments/", {
           text: this.text,
           id_route: this.$store.state.currentRoute[0].id_route,
           id_user: this.$store.state.currentUser[0].id_user,

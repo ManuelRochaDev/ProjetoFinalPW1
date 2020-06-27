@@ -93,7 +93,7 @@ export default {
   methods: {
     login() {
       axios
-        .post("http://" + this.$store.state.API_ADDRESS + "/login/", {
+        .post("https://" + this.$store.state.API_ADDRESS + "/login/", {
           email: this.emailLogin,
           password: this.passwordLogin,
           headers: {

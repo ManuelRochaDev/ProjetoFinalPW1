@@ -664,7 +664,7 @@ export default {
       if (confirm("Tem a certeza que quer atualizar utilizador?")) {
         axios
           .put(
-            "http://" +
+            "https://" +
               this.$store.state.API_ADDRESS +
               "/users/upgrade/" +
               userId,
@@ -690,7 +690,7 @@ export default {
       if (confirm("Tem a certeza que pretende apagar o utilizador?")) {
         axios
           .delete(
-            "http://" + this.$store.state.API_ADDRESS + "/users/" + userId,
+            "https://" + this.$store.state.API_ADDRESS + "/users/" + userId,
             {
               headers: {
                 "Content-Type": "application/json"
@@ -712,7 +712,7 @@ export default {
       if (confirm("Tem a certeza que pretende remover esta rota?")) {
         axios
           .delete(
-            "http://" + this.$store.state.API_ADDRESS + "/routes/" + routeId,
+            "https://" + this.$store.state.API_ADDRESS + "/routes/" + routeId,
             {
               headers: {
                 "Content-Type": "application/json"
@@ -735,7 +735,7 @@ export default {
       if (confirm("Tem a certeza que quer bloquear/desbloquear utilizador?")) {
         axios
           .put(
-            "http://" +
+            "https://" +
               this.$store.state.API_ADDRESS +
               "/users/block/" +
               userId,
@@ -764,7 +764,7 @@ export default {
 
     removePoi(poi_id) {
       axios
-        .delete("http://" + this.$store.state.API_ADDRESS + "/pois/" + poi_id, {
+        .delete("https://" + this.$store.state.API_ADDRESS + "/pois/" + poi_id, {
           headers: {
             "Content-Type": "application/json"
           }
@@ -792,7 +792,7 @@ export default {
         this.routePois[i] = this.showPois[i].name;
       }
       axios
-        .post("http://" + this.$store.state.API_ADDRESS + "/routes/", {
+        .post("https://" + this.$store.state.API_ADDRESS + "/routes/", {
           title: this.title,
           city: this.city,
           dif: this.dif,
@@ -877,7 +877,7 @@ export default {
 
       axios
         .put(
-          "http://" +
+          "https://" +
             this.$store.state.API_ADDRESS +
             "/routes/" +
             this.routeToEditID,
@@ -909,7 +909,7 @@ export default {
 
     addCategory() {
       axios
-        .post("http://" + this.$store.state.API_ADDRESS + "/categories/", {
+        .post("https://" + this.$store.state.API_ADDRESS + "/categories/", {
           name: this.category,
           headers: {
             "Content-Type": "application/json"
@@ -936,7 +936,7 @@ export default {
     removeCategory(category_id) {
       axios
         .delete(
-          "http://" +
+          "https://" +
             this.$store.state.API_ADDRESS +
             "/categories/" +
             category_id,
@@ -982,7 +982,7 @@ export default {
             /* this.$store.state.lat = markerr.getPosition().lat();
             this.$store.state.lng = markerr.getPosition().lng(); */
             axios
-              .post("http://" + this.$store.state.API_ADDRESS + "/pois/", {
+              .post("https://" + this.$store.state.API_ADDRESS + "/pois/", {
                 idRoute: Number(this.getLastRouteId()) + 1,
                 name: address[i],
                 lat: this.coord.getPosition().lat(),
