@@ -5,7 +5,7 @@
         <div class="col-md-12 col-sm-12 col-xs-12" >
           
           <template v-if="this.$store.state.currentUser[0].avatar == null">
-          <img src="../assets/avatar.png" id="avatar" />
+          <img src="@/assets/avatar.png" id="avatar" />
           </template>
           <template v-else>
           <img :src="this.$store.state.currentUser[0].avatar" id="avatar" />
@@ -126,7 +126,7 @@ export default {
   margin: auto;
   margin-left: 5%;
   margin-bottom: 10px;
-  opacity: 60%;
+  opacity: 100%;
   border: 1px solid rgb(83, 83, 83);
   border-radius: 10px;
 }
@@ -190,7 +190,7 @@ export default {
     width: 90%;
     margin: auto;
     margin-bottom: 10px;
-    opacity: 60%;
+    opacity: 100%;
     border: 1px solid rgb(83, 83, 83);
     border-radius: 10px;
   }

@@ -87,7 +87,7 @@ export default new Vuex.Store({
     APIPois: [],
     APIComments: [],
     APIRatings: [],
-    API_ADDRESS: "winerouteapi.herokuapp.com"
+    API_ADDRESS: "https://winerouteapi.herokuapp.com"
   },
   mutations: {
     REGISTER_USER(state, payload) {
@@ -429,7 +429,7 @@ export default new Vuex.Store({
     },
     getAppRoutes({ commit, state }) {
       axios
-        .get(state.API_ADDRESS + '/routes/', {
+        .get(state.API_ADDRESS + "/routes/", {
           headers: {
             'Content-Type': 'application/json'
           }

@@ -192,7 +192,7 @@ h4 {
 img {
   width: 40px !important;
   height: 40px;
-  background-color: black;
+  background-color: white;
 }
 
 #user {
